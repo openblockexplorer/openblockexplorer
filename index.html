@@ -2,9 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>DFINITY Explorer</title>		
-</head>	
+    <title>DFINITY Explorer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Istok+Web|Nunito+Sans">
+    <link rel="stylesheet" href="css/main.css">
+</head>
 <body>
-    DFINITY Explorer
+
+    <!-- Bootstrap navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">
+            <img src="/img/dfinity-logo.png" height="27" class="d-inline-block align-top" alt="">
+            <span>
+                <span id="navbar-brand-dfinity">DFINITY</span>
+                <!-- Use 'I' rather than 'l' because it looks better. -->
+                <span id="navbar-brand-explorer">ExpIorer</span>
+            </span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>       
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Blocks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Transactions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Accounts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contracts</a>
+                </li>
+            </ul>
+             <div class="input-group col-md-4">
+                <input class="form-control border-secondary border-right-0 border" type="search" placeholder="Search for block, transaction, or address" aria-label="Search">
+                <span class="input-group-append">
+                    <button class="btn btn-outline-secondary border-secondary border-left-0 border" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Bootstrap scripts -->
+    <!-- Replaced jquery-3.3.1.slim.min.js with jquery-3.3.1.min.js for fadeIn() support. -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 </body>
 </html>

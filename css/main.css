@@ -1,0 +1,36 @@
+body {
+    background-size: cover;
+    background-color: rgb(34, 34, 34);
+}
+
+.navbar {
+    background-color: rgb(51, 51, 51);
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 1.0em;  
+    letter-spacing: 1px;
+}
+
+.navbar-brand {
+    font-family: 'Istok Web', sans-serif;
+    font-weight: bold;
+}
+
+#navbar-brand-dfinity {
+    margin-left: 6px;
+    letter-spacing: 12px;
+    border-right: 1px solid rgb(204, 204, 204);
+}
+
+#navbar-brand-explorer {
+    margin-left: 5px;
+    letter-spacing: 7.5px;
+    color: rgb(250, 177, 59);
+}
+
+.navbar-nav > li {
+    padding-left: 25px;
+}
+
+.form-control {
+    background-color: rgb(51, 51, 51);
+}
