@@ -34,3 +34,49 @@ body {
 .form-control {
     background-color: rgb(51, 51, 51);
 }
+
+.footer {
+    width: 100%;
+    height: 72px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background-color: rgb(51, 51, 51);
+    color: rgba(255, 255, 255, 0.5);
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+#footer-copyright {
+    padding-top: 30px;
+    font-size: 12px;
+}
+
+#footer-subscribe {
+    padding-top: 5px;
+}
+
+#footer-subscribe-button {
+    margin-top: -3px;
+    border-radius: 300px;
+    background-color: rgb(41, 171, 226, 0.75);
+    border-color: rgb(85, 85, 85);
+    color: rgb(220, 220, 220);
+}
+
+#footer-subscribe-button:hover {
+    cursor: pointer;
+    background-color: rgb(41, 171, 226, 0.9);
+}
+
+.footer .fa {
+    margin-top: 26px;
+    margin-left: 30px;
+    text-align: center;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 20px;
+}
+  
+.footer .fa:hover {
+    color: rgb(220, 220, 220);
+}
