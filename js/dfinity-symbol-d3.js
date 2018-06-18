@@ -79,7 +79,7 @@ class DfinitySymbolD3 {
     this.rotateTimeMs = 33.3; // 30 frames/sec max
 
     // The amount of rotation for every rotate interval.
-    this.rotateAmount = 0.00004;
+    this.rotateAmount = 0.00001;
 
     // The block time.  
     this.blockTimeMs = 3500;
