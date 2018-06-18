@@ -1,6 +1,6 @@
 # DFINITY Explorer
 
-DFINITY Explorer is an open-source block explorer for the DFINITY blockchain.
+[DFINITY Explorer](https://www.dfinityexplorer.org/) is an open-source block explorer for the DFINITY blockchain.
 
 ## Open-Source Libraries Used
 * Bootstrap
