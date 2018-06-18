@@ -32,7 +32,98 @@ body {
 }
 
 .form-control {
-    background-color: rgb(51, 51, 51);
+  background-color: rgb(51, 51, 51);
+}
+
+#dfinity-symbol {
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -31px;
+}
+
+#recent-container {
+  margin-top: -31px;
+}
+
+.recent {
+  color: rgb(220, 220, 220);
+  text-align: left;
+  letter-spacing: 1px;
+  font-family: 'Nunito Sans', sans-serif;
+}
+
+table {
+  color: rgb(220, 220, 220);    
+  table-layout: fixed;
+  letter-spacing: 1px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 15px;
+}
+
+tfoot {
+  font-size: 9px;
+  opacity: 0.3;
+}
+
+#recent-blocks {
+  width: 100%;
+}
+
+#recent-blocks thead th:nth-child(1) {
+  width: 30%;
+}
+
+#recent-blocks thead th:nth-child(2)  {
+  width: 40%;
+}
+
+#recent-blocks thead th:nth-child(3)  {
+  width: 30%;
+}
+
+#recent-txns {
+  width: 100%;
+}
+
+#recent-txns thead th:nth-child(1) {
+  width: 60%;
+}
+
+#recent-txns thead th:nth-child(2)  {
+  width: 40%;
+}
+
+tbody {
+  border-top: 2px solid rgb(85, 85, 85);
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgb(51, 51, 51);
+}
+
+tbody tr:nth-child(odd) {
+  background-color: rgb(34, 34, 34);
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+
+td {
+  border-top: 1px solid rgb(85, 85, 85);    
+}
+
+.text-right {
+  text-align: right;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .footer {
