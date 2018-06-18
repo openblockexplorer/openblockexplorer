@@ -275,9 +275,9 @@ class DfinitySymbolD3 {
         .style("fill", this.nodeFillColor)
         .style("opacity", this.nodeOpacity)
         .call(d3.drag()
-          .on("start", this.dragStarted)
+          .on("start", function(d) {return _this.dragStarted(_this, d);})
           .on("drag", this.dragged)
-          .on("end", this.dragEnded));
+          .on("end", function(d) {return _this.dragEnded(_this, d);}));
 
     // Draw lines for the links.
     this.link = this.svg.append("g")
@@ -424,11 +424,11 @@ class DfinitySymbolD3 {
    * @param {Object} d The node being dragged.
    * @private
    */
-  dragStarted(d) {
-    isSimulationRunning = simulation.alphaDecay() === 0;
+  dragStarted(_this, d) {
+    const isSimulationRunning = _this.simulation.alphaDecay() === 0;
     if (!isSimulationRunning) {
       if (!d3.event.active)
-        this.simulation.alphaTarget(0.3).restart();
+        _this.simulation.alphaTarget(0.3).restart();
     }
     d.fx = d.x;
     d.fy = d.y;
@@ -449,11 +449,11 @@ class DfinitySymbolD3 {
    * @param {Object} d The node being dragged.
    * @private
    */
-  dragEnded(d) {
-    isSimulationRunning = simulation.alphaDecay() === 0;
+  dragEnded(_this, d) {
+    const isSimulationRunning = _this.simulation.alphaDecay() === 0;
     if (!isSimulationRunning) {
       if (!d3.event.active)
-        this.simulation.alphaTarget(0);
+        _this.simulation.alphaTarget(0);
     }
     d.fx = d._fx;
     d.fy = d._fy;
