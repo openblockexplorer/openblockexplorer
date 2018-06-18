@@ -8,6 +8,7 @@
 * Popper
 * Google Fonts
 * Font Awesome
+* D3
 
 ## Copyright and license
 
