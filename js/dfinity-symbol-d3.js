@@ -26,6 +26,11 @@ class DfinitySymbolD3 {
     // shape, and then allow the caller to specify which group of settings to use. Since there is
     // currently only one group of settings defined, settings groups would not currently be useful.
 
+    // PixiJS members.
+    this.stage = null;
+    this.renderer = null;
+    this.linksGraphics = null;
+
     // Code is customized for this window size. Modifying these values will cause the d3 force-
     // directed graph to change shape unless scaleToWindow is adjusted to keep the object the same
     // size.
@@ -56,15 +61,15 @@ class DfinitySymbolD3 {
     this.linkDistance = 14;
 
     // Specify node and link drawing properties.
+    this.nodeStrokeWidth = 1;
     this.nodeRadius = 4.5;
     this.nodeRadiusSelected = 5.5;
-    this.nodeFillColor = "rgb(127, 127, 127)";
-    this.nodeFillColorSelected = "rgb(255, 255, 255)";
-    this.nodeStrokeColorSelected = "rgb(255, 255, 255)";
+    this.nodeFillColorArray = [127, 127, 127];
+    this.nodeSelectedFillColorArray = [255, 255, 255];
+    this.nodeSelectedStrokeColorArray = [255, 255, 255];
     this.nodeOpacity = 0.5;
     this.nodeOpacitySelected = 0.75;
     this.linkStrokeWidth = 2; // why do lines get blurry when this is increased?
-    this.glowStdDeviation = 4;
 
     // Adjust the symbolHeightMultiplier to make the symbol shorter or taller. A value of 1.0
     // represents normal height.
@@ -79,13 +84,19 @@ class DfinitySymbolD3 {
     this.rotateTimeMs = 33.3; // 30 frames/sec max
 
     // The amount of rotation for every rotate interval.
-    this.rotateAmount = 0.00004;
+    this.rotateAmount = 0.000015;
 
     // The block time.  
     this.blockTimeMs = 3500;
 
     // The currently selected node index.
     this.selectedNodeIndex = -1;
+
+    // New block timer members.
+    this.newBlockNodeStartTime = null;
+    this.newBlockLinksStartTime = null;
+    this.newBlockNodeTimerMs = 1000;
+    this.newBlockLinksTimerMs = 1500;
   }
 
   /**
@@ -100,22 +111,22 @@ class DfinitySymbolD3 {
     // Create the d3 simulation.
     this.createSimulation();
 
-    // Set up SVG to draw the simulation.
-    this.setupSvg();
+    // Set up PixiJS to draw the simulation.
+    this.setupPixi();
   }
 
   /**
-   * Populate nodes_data[] with the nodes of the graph.
+   * Populate nodesData[] with the nodes of the graph.
    * @private
    */
   addNodes() {
-    // Add the symbol nodes to nodes_data[] at fixed positions (fx, fy). _fx and _fy save the fixed
+    // Add the symbol nodes to nodesData[] at fixed positions (fx, fy). _fx and _fy save the fixed
     // position across drag/drop operations, linkCount is used to calculate the strength of the
     // force of a link.
-    this.nodes_data = [];
+    this.nodesData = [];
     for (let i = 0; i < this.numSymbolNodes; i++) {
       const pos = this.getNodePosition(i);
-      this.nodes_data.push({
+      this.nodesData.push({
         "fx" : pos[0],
         "fy" : pos[1],
         "_fx" : pos[0],
@@ -125,7 +136,7 @@ class DfinitySymbolD3 {
 
     // Add the non-symbol nodes at non-fixed positions.
     for (let i = this.numSymbolNodes; i < this.numNodes; i++) {
-      this.nodes_data.push({"linkCount" : 0});
+      this.nodesData.push({"linkCount" : 0});
     }
   }
 
@@ -147,11 +158,11 @@ class DfinitySymbolD3 {
   }
 
   /**
-   * Populate links_data[] with the links of the graph.
+   * Populate linksData[] with the links of the graph.
    * @private
    */
   addLinks() {
-    this.links_data = [];
+    this.linksData = [];
     for (let i = 0; i < this.numSymbolNodes; i++) {   
       // Define the ith link of the symbol.
       const indexSymbol = i;
@@ -191,7 +202,7 @@ class DfinitySymbolD3 {
   }
 
   /**
-   * Add a link of the graph to links_data[].
+   * Add a link of the graph to linksData[].
    * @param {Number} indexSource The index of the source node of the link.
    * @param {Number} indexTarget The index of the target node of the link.
    * @param {Number} The strength of the link, or 0 for use default strength.
@@ -199,14 +210,14 @@ class DfinitySymbolD3 {
    * @private
    */
   addLink(indexSource, indexTarget, strength, opacity) {
-    this.links_data.push({
+    this.linksData.push({
       "source": indexSource.toString(),
       "target": indexTarget.toString(),
       "_strength" : strength,
       "opacity" : opacity,
       "_opacity" : opacity});
-    this.nodes_data[indexSource].linkCount++;
-    this.nodes_data[indexTarget].linkCount++;
+    this.nodesData[indexSource].linkCount++;
+    this.nodesData[indexTarget].linkCount++;
   }
 
   /**
@@ -216,7 +227,7 @@ class DfinitySymbolD3 {
    */
   createSimulation() {
     // Create a new simulation containing the nodes.
-    this.simulation = d3.forceSimulation(this.nodes_data);
+    this.simulation = d3.forceSimulation(this.nodesData);
 
     // Add a charge to each node and a centering force.
     const _this = this;
@@ -230,7 +241,7 @@ class DfinitySymbolD3 {
 
     // Add the links, with the strength of the force of a link optionally specified by the link's
     // _strength.
-    const link_force =  d3.forceLink(this.links_data)
+    const link_force =  d3.forceLink(this.linksData)
       .strength(function(d) {
         return d._strength > 0 ?
           d._strength :
@@ -254,65 +265,60 @@ class DfinitySymbolD3 {
   }
 
   /**
-   * Set up SVG to draw the simulation.
+   * Set up PixiJS to draw the simulation using WebGL (with Canvas fallback for older platforms).
    * @private
    */
-  setupSvg() {
-    // Create svg element to hold the force-directed graph.
-    this.svg = d3.select(this.element).append("svg");
-    this.svg.attr("width", this.width);
-    this.svg.attr("height", this.height);
-    
+  setupPixi() {
+    // Create PixiJS WebGL renderer element to hold the force-directed graph. We set the resolution
+    // to 3, then auto-resize the window back down to the correct size in order to increase the
+    // resolution. With resolution set to 1, it looks low resolution and pixelated.
+    this.stage = new PIXI.Container();
+    this.renderer = PIXI.autoDetectRenderer(
+      this.width,
+      this.height,
+      {antialias: true, transparent: true, resolution: 3}
+    );
+    this.renderer.autoResize = true;
+    this.renderer.resize(this.width, this.height);
+    this.element.appendChild(this.renderer.view);
+
     // Draw circles for the nodes.
+    this.nodesData.forEach((node) => {
+      node.graphics = new PIXI.Graphics();
+      node.graphics.lineStyle(
+        this.nodeStrokeWidth,
+        this.rgbNumberFromArray(this.getNodeStrokeColorArray(node)),
+        this.nodeOpacity, 1);
+      node.graphics.beginFill(
+        this.rgbNumberFromArray(this.nodeFillColorArray),
+        this.nodeOpacity);
+      node.graphics.drawCircle(0, 0, this.nodeRadius);
+      this.stage.addChild(node.graphics);
+    });
+
+    // Set up drag/drop.
     const _this = this;
-    this.node = this.svg.append("g")
-      .attr("class", "nodes")
-      .selectAll("circle")
-      .data(this.nodes_data)
-      .enter().append("circle")
-        .attr("r", _this.nodeRadius)
-        .style("stroke", function(d) {return _this.nodeStroke(_this, d);})
-        .style("fill", this.nodeFillColor)
-        .style("opacity", this.nodeOpacity)
-        .call(d3.drag()
-          .on("start", function(d) {return _this.dragStarted(_this, d);})
-          .on("drag", this.dragged)
-          .on("end", function(d) {return _this.dragEnded(_this, d);}));
+    d3.select(this.renderer.view)
+      .call(d3.drag()
+        .container(this.renderer.view)
+        .subject(() => this.simulation.find(d3.event.x, d3.event.y))
+        .on("start", function(d) {return _this.dragStarted(_this, d);})
+        .on("drag", this.dragged)
+        .on("end", function(d) {return _this.dragEnded(_this, d);}));
 
-    // Draw lines for the links.
-    this.link = this.svg.append("g")
-      .attr("class", "links")
-      .selectAll("line")
-      .data(this.links_data)
-      .enter().append("line")
-        .attr("stroke-width", this.linkStrokeWidth)
-        .style("stroke", function(d) { return _this.getColor(d.index, _this.links_data.length); })
-        .style("opacity", function(d) { return d.opacity; });
-
-    // Glow effect
-    this.defs = this.svg.append("defs");
-    const filter = this.defs.append("filter")
-      .attr("id", "glow")
-      .attr("filterUnits", "userSpaceOnUse"); // remove clipping           
-    filter.append("feGaussianBlur")
-      .attr("class", "blur")
-      .attr("stdDeviation", _this.glowStdDeviation.toString())
-      .attr("result", "coloredBlur");
-    const feMerge = filter.append("feMerge");
-    feMerge.append("feMergeNode")
-      .attr("in", "coloredBlur");
-    feMerge.append("feMergeNode")
-      .attr("in", "SourceGraphic")
+    // Set up graphics for the links.
+    this.linksGraphics = new PIXI.Graphics();
+    this.stage.addChild(this.linksGraphics);
   }
 
   /**
    * Return the color based on the specified index and number of indices.
    * @param {Number} index The index to return the color of.
    * @param {Number} numIndices The total number of indices used to determine the color.
-   * @return {Number} The color of the specified index.
+   * @return {Object} The color arrayof the specified index.
    * @private
    */
-  getColor(index, numIndices) {
+  getColorArray(index, numIndices) {
     // These colors come from the DFINITY logo.
     const purple = [99,38,132];
     const pink = [237,30,121];
@@ -339,44 +345,39 @@ class DfinitySymbolD3 {
 
     // Determine the color based on the color zone the index is in.
     if (index <= lastPurpleIndex)
-      return this.rgbFromArray(purple);
+      return purple;
     else if (index <= lastPurpleIndex + transitionIndicesGradual)
     {
       const percentage = (index - lastPurpleIndex) / transitionIndicesGradual;
-      const array = this.gradientColor(pink, purple, percentage);
-      return this.rgbFromArray(array);
+      return this.gradientColor(pink, purple, percentage);
     }
     else if (index <= lastPinkIndex)
-      return this.rgbFromArray(pink);
+      return pink;
     else if (index <= lastPinkIndex + transitionIndicesSmall)
     {
       const percentage = (index - lastPinkIndex) / transitionIndicesSmall;
-      const array = this.gradientColor(darkOrange, pink, percentage);
-      return this.rgbFromArray(array);
+      return this.gradientColor(darkOrange, pink, percentage);
     }
     else if (index <= lastDarkOrangeIndex)
-      return this.rgbFromArray(darkOrange);
+      return darkOrange;
     else if (index <= lastDarkOrangeIndex + transitionIndicesGradual)
     {
       const percentage = (index - lastDarkOrangeIndex) / transitionIndicesGradual;
-      const array = this.gradientColor(lightOrange, darkOrange, percentage);
-      return this.rgbFromArray(array);
+      return this.gradientColor(lightOrange, darkOrange, percentage);
     }
     else if (index <= lastLightOrangeIndex)
-      return this.rgbFromArray(lightOrange);
+      return lightOrange;
     else if (index <= lastLightOrangeIndex + transitionIndicesSmall)
     {
       const percentage = (index - lastLightOrangeIndex) / transitionIndicesSmall;
-      const array = this.gradientColor(blue, lightOrange, percentage);
-      return this.rgbFromArray(array);
+      return this.gradientColor(blue, lightOrange, percentage);
     }     
     else if (index <= lastBlueIndex)
-      return this.rgbFromArray(blue);
+      return blue;
     else
     {
       const percentage = (index - lastBlueIndex) / transitionIndicesSmall;
-      const array = this.gradientColor(purple, blue, percentage);
-      return this.rgbFromArray(array);
+      return this.gradientColor(purple, blue, percentage);
     }
   }
 
@@ -399,24 +400,37 @@ class DfinitySymbolD3 {
   }
 
   /**
+   * Return the RGB color number corresponding to the specified RGB color array.
+   * @param {Object} array The RGB array.
+   * @return {Object} The RGB color number.
+   * @private
+   */
+  rgbNumberFromArray(array) {
+    let color = 0;
+    array.forEach(element => {
+      color = (color << 8) + element;
+    });
+    return Number(color);
+  }
+
+/**
    * Return the RGB color string corresponding to the specified RGB color array.
    * @param {Object} array The RGB array.
    * @return {Object} The RGB color string.
    * @private
    */
-  rgbFromArray(array) {
+  rgbStringFromArray(array) {
     return "rgb(" + array.join() + ")";
   }
 
-  /**
+/**
    * Return the stroke color of the specified node.
-   * @param {Object} _this This class object.
-   * @param {Object} d The node to return the stroke color of.
-   * @return {Number} The stroke color of the specified node.
+   * @param {Object} node The node to return the stroke color of.
+   * @return {Object} The stroke color array of the specified node.
    * @private
    */
-  nodeStroke(_this, d) {
-    return _this.getColor(d.index % _this.numSymbolNodes, _this.numSymbolNodes);
+  getNodeStrokeColorArray(node) {
+    return this.getColorArray(node.index % this.numSymbolNodes, this.numSymbolNodes)
   }
 
 /**
@@ -430,8 +444,8 @@ class DfinitySymbolD3 {
       if (!d3.event.active)
         _this.simulation.alphaTarget(0.3).restart();
     }
-    d.fx = d.x;
-    d.fy = d.y;
+    d3.event.subject.fx = d3.event.subject.x;
+    d3.event.subject.fy = d3.event.subject.y;
   }
 
   /**
@@ -440,8 +454,8 @@ class DfinitySymbolD3 {
    * @private
    */
   dragged(d) {
-    d.fx = d3.event.x;
-    d.fy = d3.event.y;
+    d3.event.subject.fx = d3.event.x;
+    d3.event.subject.fy = d3.event.y;
   }
 
   /**
@@ -455,8 +469,8 @@ class DfinitySymbolD3 {
       if (!d3.event.active)
         _this.simulation.alphaTarget(0);
     }
-    d.fx = d._fx;
-    d.fy = d._fy;
+    d3.event.subject.fx = d3.event.subject._fx;
+    d3.event.subject.fy = d3.event.subject._fy;
   }
 
   /**
@@ -465,14 +479,106 @@ class DfinitySymbolD3 {
    * @private
    */
   tick(_this) {
-    _this.node
-        .attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
-    _this.link
-        .attr("x1", function(d) { return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; });   
+    // Move the node positions.
+    _this.nodesData.forEach((node) => {
+      let { x, y, graphics } = node;
+      graphics.position = new PIXI.Point(x, y);
+    });
+
+    // Animate the selected node to grow larger and change to white, then shrink smaller and change
+    // back to original colors.
+    if (_this.newBlockNodeStartTime != null) {
+      const node = _this.nodesData[_this.selectedNodeIndex];
+      const elapsedMs = new Date() - _this.newBlockNodeStartTime;
+      if (elapsedMs > _this.newBlockNodeTimerMs) {
+        // Draw a normal node circle.
+        node.graphics.clear();
+        node.graphics.lineStyle(
+          _this.nodeStrokeWidth,
+          _this.rgbNumberFromArray(_this.getNodeStrokeColorArray(node)),
+          _this.nodeOpacity);
+        node.graphics.beginFill(
+          _this.rgbNumberFromArray(_this.nodeFillColorArray),
+          _this.nodeOpacity);
+        node.graphics.filters = null;
+        node.graphics.drawCircle(0, 0, _this.nodeRadius);
+
+        // Disable new block node timer.
+        _this.newBlockNodeStartTime = null;
+      }
+      else {
+        // Calculate the magnitude based on the timer.
+        const nodeMagnitude =
+          (elapsedMs <= _this.newBlockNodeTimerMs / 2 ?
+            elapsedMs :
+            _this.newBlockNodeTimerMs - elapsedMs) /
+          (_this.newBlockNodeTimerMs / 2);
+
+        // Scale the node properties based on the magnitude.
+        const nodeStrokeColor = _this.rgbNumberFromArray(
+          _this.gradientColor(
+            _this.nodeSelectedStrokeColorArray,
+            _this.getNodeStrokeColorArray(node),
+            nodeMagnitude));
+        const nodeFillColor = _this.rgbNumberFromArray(
+          _this.gradientColor(
+            _this.nodeSelectedFillColorArray,
+            _this.nodeFillColorArray,
+            nodeMagnitude));
+        const nodeOpacity =
+          _this.nodeOpacity + (_this.nodeOpacitySelected - _this.nodeOpacity) * nodeMagnitude;
+        const nodeRadius =
+          _this.nodeRadius + (_this.nodeRadiusSelected - _this.nodeRadius) * nodeMagnitude;
+
+        // Draw the modified node circle.
+        node.graphics.clear();
+        node.graphics.lineStyle(_this.nodeStrokeWidth, nodeStrokeColor, nodeOpacity);
+        node.graphics.beginFill(nodeFillColor, nodeOpacity);
+        node.graphics.filters = [
+          new PIXI.filters.GlowFilter(
+            5,                  // distance
+            4 * nodeMagnitude,  // outerStrength
+            0,                  // innerStrength
+            nodeStrokeColor,    // color
+            0.5)                // quality
+        ]
+        node.graphics.drawCircle(0, 0, nodeRadius);
+      }
+    }
+
+    // Calculate link magnitude.
+    let linkMagnitude = 0;
+    if (_this.newBlockLinksStartTime != null) {
+      const elapsedMs = new Date() - _this.newBlockLinksStartTime;
+      if (elapsedMs > _this.newBlockLinksTimerMs) {
+        // Disable new block links timer.
+        _this.newBlockLinksStartTime = null;
+      }
+      else {
+        // Calculate the magnitude based on the timer.
+        linkMagnitude =
+          elapsedMs <= _this.newBlockLinksTimerMs / 3 ?
+            elapsedMs / (_this.newBlockLinksTimerMs / 3) :
+            (_this.newBlockLinksTimerMs - elapsedMs) /
+              (_this.newBlockLinksTimerMs * 2 / 3);
+      }
+    }
+
+    // Draw lines for the links.
+    _this.linksGraphics.clear();
+    _this.linksData.forEach((link) => {
+      let { source, target, opacity } = link;
+      const linkOpacity = opacity + 0.25 * linkMagnitude;
+      _this.linksGraphics.alpha = linkOpacity;
+      _this.linksGraphics.lineStyle(
+        _this.linkStrokeWidth,
+        _this.rgbNumberFromArray(_this.getColorArray(link.index, _this.linksData.length)));
+      _this.linksGraphics.moveTo(source.x, source.y);
+      _this.linksGraphics.lineTo(target.x, target.y);
+    });
+    _this.linksGraphics.endFill();
+
+    _this.renderer.render(_this.stage);
   }
 
   /**
@@ -494,8 +600,8 @@ class DfinitySymbolD3 {
     for (let i = 0; i < _this.numSymbolNodes; i++) {
       _this.rotateOffset += _this.rotateAmount;
       const pos = _this.getNodePosition(i);
-      _this.nodes_data[i].fx = _this.nodes_data[i]._fx = pos[0];
-      _this.nodes_data[i].fy = _this.nodes_data[i]._fy = pos[1];
+      _this.nodesData[i].fx = _this.nodesData[i]._fx = pos[0];
+      _this.nodesData[i].fy = _this.nodesData[i]._fy = pos[1];
     }
   }
 
@@ -506,40 +612,10 @@ class DfinitySymbolD3 {
    * @private
    */
   addNewBlock(_this, elapsed) {
+    // Select node and enable new block timers.
     _this.selectedNodeIndex = getRandomInt(0, _this.numNodes - 1);
+    _this.newBlockNodeStartTime = _this.newBlockLinksStartTime = new Date();
 
     _this.addNewBlockCallback();
-
-    // Link node and link transitions so that they start at the same time.
-    const t = d3.transition();
-
-    d3.select(_this.node.nodes()[_this.selectedNodeIndex])
-      .transition(t)
-        .ease(d3.easeCubic)
-        .duration(500)
-        .attr("r", _this.nodeRadiusSelected)
-        .style("stroke", _this.nodeStrokeColorSelected)
-        .style("fill", _this.nodeFillColorSelected)
-        .style("filter", "url(#glow)")
-        .style("opacity", _this.nodeOpacitySelected)
-      .transition()
-        .ease(d3.easeCubic)
-        .duration(500)
-        .attr("r", _this.nodeRadius)
-        .style("stroke", function(d) {return _this.nodeStroke(_this, d);})
-        .style("fill", _this.nodeFillColor)
-        .style("opacity", _this.nodeOpacity)
-      .transition()
-        .style("filter", null);
-
-    _this.svg.selectAll("line")
-      .transition(t)
-        .duration(500)
-        .ease(d3.easeLinear)
-        .style("opacity", function(d) {return Math.min(d._opacity + 0.25, 1);})
-      .transition()
-        .duration(1000)
-        .ease(d3.easeLinear)
-        .style("opacity", function(d) {return d._opacity;});
   }
 }
