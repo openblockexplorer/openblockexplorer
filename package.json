@@ -1,0 +1,27 @@
+{
+  "name": "dfinityexplorer",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^3.0.2",
+    "@material-ui/icons": "^3.0.1",
+    "@types/d3": "^5.0.0",
+    "@types/pixi.js": "^4.8.0",
+    "ajv": "^6.5.3",
+    "d3": "^5.7.0",
+    "fg-loadcss": "^2.0.1",
+    "js-sha3": "^0.8.0",
+    "pixi-filters": "^2.6.1",
+    "pixi.js": "^4.8.1",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-scripts": "1.1.5",
+    "styled-components": "^3.4.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
