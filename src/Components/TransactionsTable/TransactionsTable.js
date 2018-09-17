@@ -46,15 +46,14 @@ class TransactionsTable extends FadeTable {
    */
   getBodyRows() {
     const { transactions } = this.props;
-    let bodyRows = [];
-    transactions.map((transaction) => {
-      bodyRows.push({
+    let bodyRows = transactions.map((transaction) => {
+      return {
         mapKey: transaction.hash,
         cells: [
           {value: this.getHashString(transaction.hash), isNumeric: false},
           {value: transaction.amount.toFixed(8).toString() + ' DFN', isNumeric: true}
         ]
-      });
+      };
     });
     return bodyRows;    
   }

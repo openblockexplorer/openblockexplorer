@@ -47,16 +47,15 @@ class BlocksTable extends FadeTable {
    */
   getBodyRows() {
     const { blocks } = this.props;
-    let bodyRows = [];
-    blocks.map((block) => {
-      bodyRows.push({
+    let bodyRows = blocks.map((block) => {
+      return {
         mapKey: block.height,
         cells: [
           {value: block.height.toLocaleString(), isNumeric: false},
           {value: block.date.toLocaleString(), isNumeric: false},
           {value: block.numTransactions.toLocaleString(), isNumeric: true}
         ]
-      });
+      };
     });
     return bodyRows;
   }

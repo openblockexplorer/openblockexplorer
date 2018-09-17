@@ -6,8 +6,6 @@
 import React, { Component, Fragment } from 'react';
 import { loadCSS } from 'fg-loadcss';
 import { Grid } from '@material-ui/core';
-import Block from '../../lib/block';
-import Transaction from '../../lib/transaction';
 import DfinitySimulator from '../DfinitySimulator/DfinitySimulator';
 import DEAppBar from '../DEAppBar/DEAppBar';
 import DfinitySymbolD3 from '../DfinitySymbolD3/DfinitySymbolD3';
