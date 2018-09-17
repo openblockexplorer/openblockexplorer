@@ -3,12 +3,15 @@
 [DFINITY Explorer](https://www.dfinityexplorer.org/) is an open-source block explorer for the DFINITY blockchain.
 
 ## Open-Source Libraries Used
-* Bootstrap
-* jQuery
-* Popper
+* React
+* Styled-Components
+* Material-UI
+* D3
+* PixiJS
+* js-sha3
+* loadCSS
 * Google Fonts
 * Font Awesome
-* D3
 
 ## Code of Conduct
 
