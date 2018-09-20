@@ -3,12 +3,12 @@
  * @copyright Copyright (c) 2018 Dylan Miller, Todd Kitchens and dfinityexplorer contributors
  * @license MIT License
  */
- 
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { injectGlobal } from 'styled-components';
 import Constants from './constants';
-import Main from './Main';
+import App from './App';
 
 injectGlobal`
    body {
@@ -19,5 +19,5 @@ injectGlobal`
 `
 
 ReactDOM.render(
-    <Main/>,
+    <App/>,
 document.getElementById("root"));

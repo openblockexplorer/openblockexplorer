@@ -3,7 +3,7 @@
  * @copyright Copyright (c) 2018 Dylan Miller, Todd Kitchens and dfinityexplorer contributors
  * @license MIT License
  */
- 
+
 import React, { Component, Fragment } from 'react';
 import { NavLink } from "react-router-dom";
 import styled from 'styled-components';

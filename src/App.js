@@ -3,7 +3,7 @@
  * @copyright Copyright (c) 2018 Dylan Miller, Todd Kitchens and dfinityexplorer contributors
  * @license MIT License
  */
- 
+
 import React, { Component } from 'react';
 import {
   Route,
@@ -19,7 +19,7 @@ import Footer from './Components/Footer/Footer';
 /**
  * Top-level component of the app.
  */
-class Main extends Component {
+class App extends Component {
 render() {
     return (
       <HashRouter>
@@ -39,4 +39,4 @@ render() {
 }
 }
 
-export default Main;
+export default App;
