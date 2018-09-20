@@ -1,22 +1,23 @@
 /**
- * @file App
+ * @file Home
  * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
+ 
 import React, { Component, Fragment } from 'react';
 import { loadCSS } from 'fg-loadcss';
 import { Grid } from '@material-ui/core';
-import DfinitySimulator from '../DfinitySimulator/DfinitySimulator';
-import DEAppBar from '../DEAppBar/DEAppBar';
-import DfinitySymbolD3 from '../DfinitySymbolD3/DfinitySymbolD3';
-import BlocksTable from '../BlocksTable/BlocksTable';
-import TransactionsTable from '../TransactionsTable/TransactionsTable';
-import Footer from '../Footer/Footer';
+import DfinitySimulator from './Components/DfinitySimulator/DfinitySimulator';
+import DEAppBar from './Components/DEAppBar/DEAppBar';
+import DfinitySymbolD3 from './Components/DfinitySymbolD3/DfinitySymbolD3';
+import BlocksTable from './Components/BlocksTable/BlocksTable';
+import TransactionsTable from './Components/TransactionsTable/TransactionsTable';
+import Footer from './Components/Footer/Footer';
 
 /**
  * Top-level component of the app.
  */
-class App extends Component {
+class Home extends Component {
   /**
    * Create a DfinitySymbolD3 object.
    * @constructor
@@ -43,9 +44,9 @@ class App extends Component {
     this.setDfinitySimulatorRef = this.setDfinitySimulatorRef.bind(this);
     this.setDfinitySymbolD3Ref = this.setDfinitySymbolD3Ref.bind(this);
   }
-  
+
   /**
-   * Invoked by React immediately after a component is mounted (inserted into the tree). 
+   * Invoked by React immediately after a component is mounted (inserted into the tree).
    * @public
    */
   componentDidMount() {
@@ -130,7 +131,7 @@ class App extends Component {
   setDfinitySimulatorRef(element) {
     this.dfinitySimulatorRef = element;
   };
-  
+
   /**
    * Set a reference to the DfinitySymbolD3 element.
    * @public
@@ -140,4 +141,4 @@ class App extends Component {
   };
 }
 
-export default App;
+export default Home;

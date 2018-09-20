@@ -1,21 +1,23 @@
 /**
  * @file index
- * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018 Dylan Miller, Todd Kitchens and dfinityexplorer contributors
  * @license MIT License
  */
+ 
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ReactDOM from 'react-dom';
 import { injectGlobal } from 'styled-components';
 import Constants from './constants';
-import App from './Components/App/App';
+import Main from './Main';
 
 injectGlobal`
-  body {
+   body {
     margin: 0;
     padding: 0;
     background: ${Constants.COLOR_DFINITY_BLACK_DARKER};
-  }
+   }
 `
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+    <Main/>,
+document.getElementById("root"));
