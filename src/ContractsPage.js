@@ -47,7 +47,7 @@ class ContractsPage extends Component {
     return (
       <div>
         <ExplorerTypography>Contracts</ExplorerTypography>
-        <StyledTypography><p>Contracts details coming soon.</p></StyledTypography>
+        <StyledTypography><p>Contracts page coming soon.</p></StyledTypography>
       </div>
     );
   }

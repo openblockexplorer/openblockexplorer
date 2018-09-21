@@ -47,7 +47,7 @@ class TransactionsPage extends Component {
    return (
      <div>
        <ExplorerTypography>Transactions</ExplorerTypography>
-       <StyledTypography><p>Transactions details coming soon.</p></StyledTypography>
+       <StyledTypography><p>Transactions page coming soon.</p></StyledTypography>
      </div>
    );
  }

@@ -49,7 +49,7 @@ class BlocksPage extends Component {
 
       <div>
         <ExplorerTypography>Blocks</ExplorerTypography>
-        <StyledTypography><p>Block details coming soon.</p></StyledTypography>
+        <StyledTypography><p>Blocks page coming soon.</p></StyledTypography>
       </div>
     );
   }
