@@ -1,9 +1,11 @@
 /**
  * @file DEAppBar
- * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018 Dylan Miller, Todd Kitchens and dfinityexplorer contributors
  * @license MIT License
  */
-import React, { Fragment } from 'react';
+
+import React, { Component, Fragment } from 'react';
+import { NavLink, Link } from "react-router-dom";
 import styled from 'styled-components';
 import {
   AppBar,
@@ -108,7 +110,7 @@ const StyledSearchIcon = styled(SearchIcon)`
 /**
  * The App Bar provides content and actions related to the current screen.
  */
-class DEAppBar extends React.Component {
+class DEAppBar extends Component {
   /**
    * Create a DEAppBar object.
    * @constructor
@@ -168,46 +170,46 @@ class DEAppBar extends React.Component {
           <Slide direction='down' in={!isSearchOn} timeout={200} mountOnEnter unmountOnExit>
             <StyledAppBar>
               <Toolbar>
-                <a style={{ textDecoration: 'none' }} href='/'>
+                <a style={{ textDecoration: 'none' }}>
                   <Grid container alignItems='center' justify='flex-start' wrap='nowrap'>
                     <Grid item>
                       <img src={dfinityLogo} height='27' alt='logo'></img>
                     </Grid>
                     <Grid item>
-                      <DfinityTypography>DFINITY</DfinityTypography>
+                      <Link style={{ textDecoration: 'none' }} exact to='/'><DfinityTypography>DFINITY</DfinityTypography></Link>
                     </Grid>
                     <Grid item>
-                      <ExplorerTypography>ExpIorer</ExplorerTypography>
-                    </Grid>
-                  </Grid>
-                </a>
-                <Grid container alignItems='center' justify='flex-end' wrap='nowrap'>
-                  <Grid item>
-                    <StyledTabs value={tabValue} onChange={this.handleTabChange} >
-                      <StyledTab label='Blocks' />
-                      <StyledTab label='Transactions' />
-                      <StyledTab label='Accounts' />
-                      <StyledTab label='Contracts' />
-                    </StyledTabs>
-                  </Grid>
-                  <Grid item>
-                  <Zoom
-                    in={!isSearchOn}
-                    timeout={300}
-                    unmountOnExit
-                  >
-                    <StyledIconButton onClick={this.handleSearchClick}>
-                      <StyledSearchIcon />
-                    </StyledIconButton>
-                  </Zoom>
+                    <ExplorerTypography>ExpIorer</ExplorerTypography>
                   </Grid>
                 </Grid>
-              </Toolbar>
-            </StyledAppBar>
-          </Slide>
-      </Fragment>
-    );
-  }
+              </a>
+              <Grid container alignItems='center' justify='flex-end' wrap='nowrap'>
+                <Grid item>
+                  <StyledTabs value={tabValue} onChange={this.handleTabChange} >
+                    <StyledTab label='Blocks' component={Link} to='/BlocksPage' />
+                    <StyledTab label='Transactions' component={Link} to='/TransactionsPage' />
+                    <StyledTab label='Accounts' component={Link} to='/AccountsPage' />
+                    <StyledTab label='Contracts' component={Link} to='/ContractsPage' />
+                  </StyledTabs>
+                </Grid>
+                <Grid item>
+                <Zoom
+                  in={!isSearchOn}
+                  timeout={300}
+                  unmountOnExit
+                >
+                  <StyledIconButton onClick={this.handleSearchClick}>
+                    <StyledSearchIcon />
+                  </StyledIconButton>
+                </Zoom>
+                </Grid>
+              </Grid>
+            </Toolbar>
+          </StyledAppBar>
+        </Slide>
+    </Fragment>
+  );
+}
 
   /**
    * Callback fired when the value of the Tabs component changes.
