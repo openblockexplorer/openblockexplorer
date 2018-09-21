@@ -5,7 +5,7 @@
  */
 
 import React, { Component, Fragment } from 'react';
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import styled from 'styled-components';
 import {
   AppBar,
@@ -176,7 +176,7 @@ class DEAppBar extends Component {
                       <img src={dfinityLogo} height='27' alt='logo'></img>
                     </Grid>
                     <Grid item>
-                      <DfinityTypography><NavLink exact to='/'>DFINITY</NavLink></DfinityTypography>
+                      <Link style={{ textDecoration: 'none' }} exact to='/'><DfinityTypography>DFINITY</DfinityTypography></Link>
                     </Grid>
                     <Grid item>
                       <ExplorerTypography>ExpIorer</ExplorerTypography>
