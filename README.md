@@ -8,6 +8,7 @@
 * Material-UI
 * D3
 * PixiJS
+* lodash
 * js-sha3
 * loadCSS
 * Google Fonts
