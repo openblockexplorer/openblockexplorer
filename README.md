@@ -8,6 +8,7 @@
 * Material-UI
 * D3
 * PixiJS
+* throttle-debounce
 * js-sha3
 * loadCSS
 * Google Fonts
