@@ -26,7 +26,7 @@
      font-weight: regular;
      font-size: 1em;
      margin-left: 25px;
-     font: ${Constants.FONT_PRIMARY};
+     font-family: ${Constants.FONT_PRIMARY};
      color: ${Constants.COLOR_TEXT_LIGHT};
    }
  `;
