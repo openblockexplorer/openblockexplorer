@@ -1,11 +1,11 @@
 /**
  * @file DEAppBar
- * @copyright Copyright (c) 2018 Dylan Miller, Todd Kitchens and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018 Dylan Miller, Todd Kitchens, and dfinityexplorer contributors
  * @license MIT License
  */
 
-import React, { Component, Fragment } from 'react';
-import { NavLink, Link } from "react-router-dom";
+import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   AppBar,
@@ -21,6 +21,7 @@ import {
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import SearchIcon from '@material-ui/icons/Search';
+import ResponsiveComponent from '../ResponsiveComponent/ResponsiveComponent'
 import Constants from '../../constants';
 import dfinityLogo from './dfinity-logo.png';
 
@@ -41,6 +42,9 @@ const StyledTypography = styled(Typography)`
     font-family: 'Istok Web', sans-serif;
     font-weight: bold;
     font-size: 1.25em;
+    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+      font-size: 0.8em;
+    }
   }
 `;
 
@@ -50,6 +54,10 @@ const DfinityTypography = styled(StyledTypography)`
     letter-spacing: 12px;
     color: ${Constants.COLOR_TEXT_LIGHT};
     border-right: 1px solid ${Constants.COLOR_TEXT_LIGHT};
+    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+      margin-left: 9px;
+      letter-spacing: 8px;
+    }
   }
 `;
 
@@ -58,6 +66,10 @@ const ExplorerTypography = styled(StyledTypography)`
     margin-left: 14px;
     letter-spacing: 7.5px;
     color: ${Constants.COLOR_DFINITY_LIGHT_ORANGE};
+    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+      margin-left: 9px;
+      letter-spacing: 5px;
+    }
   }
 `;
 
@@ -74,6 +86,12 @@ const StyledTab = styled(Tab)`
   && {
     font-family: ${Constants.FONT_PRIMARY};
     letter-spacing: 1px;
+    @media (max-width: ${Constants.BREAKPOINT_LG + 'px'}) {
+      min-width: 50px;
+    }
+    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+      font-size: 6.5px;
+    }
   }
 `;
 
@@ -81,6 +99,9 @@ const StyledInput = styled(Input)`
   && {
     font-family: ${Constants.FONT_PRIMARY};
     font-size: 24px;
+    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+      font-size: 12px;
+    }
   }
 `;
 
@@ -107,22 +128,31 @@ const StyledSearchIcon = styled(SearchIcon)`
   }
 `;
 
+const TabsValues = {
+  HOME: 0,
+  BLOCKS: 1,
+  TRANSACTIONS: 2,
+  ACCOUNTS: 3,
+  CONTRACTS: 4
+}
+
 /**
  * The App Bar provides content and actions related to the current screen.
  */
-class DEAppBar extends Component {
+class DEAppBar extends ResponsiveComponent {
   /**
    * Create a DEAppBar object.
    * @constructor
    */
-  constructor(props) {
-    super(props);
-    this.state = {tabValue: false, isSearchOn: false};
+  constructor() {
+    super();
+    this.state = {tabValue: TabsValues.HOME, isSearchOn: false};
 
     // Bind to make 'this' work in callbacks.
     this.handleTabChange = this.handleTabChange.bind(this);
-    this.handleCloseClick = this.handleCloseClick.bind(this);
+    this.handleLogoLinkClick = this.handleLogoLinkClick.bind(this);
     this.handleSearchClick = this.handleSearchClick.bind(this);
+    this.handleCloseClick = this.handleCloseClick.bind(this);
   }
 
   /**
@@ -131,7 +161,7 @@ class DEAppBar extends Component {
    * @public
    */
   render() {
-    const { tabValue, isSearchOn } = this.state;
+    const { isSearchOn } = this.state;
     return (
       <Fragment>
         {/* Shim to compensate for AppBar position='fixed'. */}
@@ -153,7 +183,7 @@ class DEAppBar extends Component {
                   <Grid style={{flexBasis: '0'}} container alignItems='center' justify='flex-end' wrap='nowrap'>
                     <Grid item>
                       <Zoom
-                        in={isSearchOn}
+                        in={true}
                         timeout={300}
                         unmountOnExit
                       >
@@ -169,48 +199,154 @@ class DEAppBar extends Component {
           </Slide>
           <Slide direction='down' in={!isSearchOn} timeout={200} mountOnEnter unmountOnExit>
             <StyledAppBar>
-              <Toolbar>
-                <a style={{ textDecoration: 'none' }}>
-                  <Grid container alignItems='center' justify='flex-start' wrap='nowrap'>
-                    <Grid item>
-                      <img src={dfinityLogo} height='27' alt='logo'></img>
-                    </Grid>
-                    <Grid item>
-                      <Link style={{ textDecoration: 'none' }} exact to='/'><DfinityTypography>DFINITY</DfinityTypography></Link>
-                    </Grid>
-                    <Grid item>
-                    <ExplorerTypography>ExpIorer</ExplorerTypography>
-                  </Grid>
-                </Grid>
-              </a>
+              {this.getToolbarContent()}
+            </StyledAppBar>
+          </Slide>
+      </Fragment>
+    );
+  }
+
+  /**
+   * Return the elements for the toolbar based on the current breakpoint.
+   * @return The elements for the toolbar based on the current breakpoint.
+   * @private
+   */
+  getToolbarContent() {
+    const is_breakpoint_md =
+      window.matchMedia('(max-width: ' + Constants.BREAKPOINT_MD + 'px)').matches;
+    if (is_breakpoint_md) {
+      return (
+        <Toolbar>
+          <Grid container direction='column'>
+            <Grid container alignItems='center' wrap='nowrap'>
+              {this.getAppTitle()}
               <Grid container alignItems='center' justify='flex-end' wrap='nowrap'>
                 <Grid item>
-                  <StyledTabs value={tabValue} onChange={this.handleTabChange} >
-                    <StyledTab label='Blocks' component={Link} to='/BlocksPage' />
-                    <StyledTab label='Transactions' component={Link} to='/TransactionsPage' />
-                    <StyledTab label='Accounts' component={Link} to='/AccountsPage' />
-                    <StyledTab label='Contracts' component={Link} to='/ContractsPage' />
-                  </StyledTabs>
-                </Grid>
-                <Grid item>
-                <Zoom
-                  in={!isSearchOn}
-                  timeout={300}
-                  unmountOnExit
-                >
-                  <StyledIconButton onClick={this.handleSearchClick}>
-                    <StyledSearchIcon />
-                  </StyledIconButton>
-                </Zoom>
+                  {this.getSearchButton()}
                 </Grid>
               </Grid>
-            </Toolbar>
-          </StyledAppBar>
-        </Slide>
-    </Fragment>
-  );
-}
+            </Grid>
+            <Grid container alignItems='center' justify='center' wrap='nowrap' style={{marginTop: '-10px'}}>
+              <Grid item>
+                {this.getTabs()}
+              </Grid>
+            </Grid>
+          </Grid>
+        </Toolbar>
+      );
+    }
+    else {
+      return (
+        <Toolbar>
+          <Grid container alignItems='center' wrap='nowrap'>
+            {this.getAppTitle()}
+            <Grid container alignItems='center' justify='flex-end' wrap='nowrap'>
+              <Grid item>
+                {this.getTabs()}
+              </Grid>
+              <Grid item>
+                {this.getSearchButton()}
+              </Grid>
+            </Grid>
+          </Grid>
+        </Toolbar>
+      );
+    }  
+  }
 
+  /**
+   * Return the elements for the app title based on the current breakpoint.
+   * @return The elements for the app title based on the current breakpoint.
+   * @private
+   */
+  getAppTitle() {
+    return (
+      <Link
+        style={{ textDecoration: 'none' }}
+        exact='true'
+        to='/'
+        onClick={this.handleLogoLinkClick}
+      >
+        <Grid container alignItems='center' justify='flex-start' wrap='nowrap'>
+          <Grid item>
+            <img
+              src={dfinityLogo}
+              height={this.getDfinityLogoHeight()}
+              alt='logo'>
+            </img>
+          </Grid>
+          <Grid item>
+            <DfinityTypography>DFINITY</DfinityTypography>
+          </Grid>
+          <Grid item>
+            <ExplorerTypography>ExpIorer</ExplorerTypography>
+          </Grid>
+        </Grid>
+      </Link>
+    );
+  }
+
+  /**
+   * Return the height of the DFINITY logo based on the current breakpoint.
+   * @return The height of the DFINITY logo based on the current breakpoint.
+   * @private
+   */
+  getDfinityLogoHeight() {
+    if (window.matchMedia('(max-width: ' + Constants.BREAKPOINT_SM + 'px)').matches)
+      return 18;
+    else
+      return 27;
+  }
+
+  /**
+   * Return the elements for the tabs based on the current breakpoint.
+   * @return The elements for the tabs based on the current breakpoint.
+   * @private
+   */
+  getTabs() {
+    const is_breakpoint_sm =
+      window.matchMedia('(max-width: ' + Constants.BREAKPOINT_SM + 'px)').matches;
+    return (
+      <StyledTabs value={this.getTabsComponentValue()} onChange={this.handleTabChange}>
+        { is_breakpoint_sm ? <StyledTab label='Home' hidden component={Link} to='/' /> : null }
+        <StyledTab label='Blocks' component={Link} to='/BlocksPage' />
+        <StyledTab label='Transactions' component={Link} to='/TransactionsPage' />
+        <StyledTab label='Accounts' component={Link} to='/AccountsPage' />
+        <StyledTab label='Contracts' component={Link} to='/ContractsPage' />
+      </StyledTabs>
+    );
+  }  
+
+  /**
+   * Return the elements for the search button on the current breakpoint.
+   * @return The elements for the search button based on the current breakpoint.
+   * @private
+   */
+  getSearchButton() {
+    return (
+      <Zoom
+        in={true}
+        timeout={300}
+        unmountOnExit
+      >
+        <StyledIconButton onClick={this.handleSearchClick}>
+          <StyledSearchIcon />
+        </StyledIconButton>
+      </Zoom>
+    );
+  }
+
+  /**
+   * Return the value for the Tabs component based on the tabValue enum.
+   * @private
+   */
+  getTabsComponentValue() {
+    const { tabValue } = this.state;
+    const is_breakpoint_sm =
+      window.matchMedia('(max-width: ' + Constants.BREAKPOINT_SM + 'px)').matches;
+    return is_breakpoint_sm ? tabValue : (tabValue === TabsValues.HOME ? false : tabValue - 1);
+  }
+  
   /**
    * Callback fired when the value of the Tabs component changes.
    * @param {Object} event The event source of the callback.
@@ -218,18 +354,20 @@ class DEAppBar extends Component {
    * @private
    */
   handleTabChange(event, value) {
+    const is_breakpoint_sm =
+      window.matchMedia('(max-width: ' + Constants.BREAKPOINT_SM + 'px)').matches;
     this.setState({
-      tabValue: value
+      tabValue: (is_breakpoint_sm ? value : value + 1)
     });
   }
 
   /**
-   * Callback fired when the close button is clicked.
+   * Callback fired when the logo link is clicked.
    * @private
    */
-  handleCloseClick() {
+  handleLogoLinkClick() {
     this.setState({
-      isSearchOn: false
+      tabValue: TabsValues.HOME
     });
   }
 
@@ -240,6 +378,16 @@ class DEAppBar extends Component {
   handleSearchClick() {
     this.setState({
       isSearchOn: true
+    });
+  }
+
+  /**
+   * Callback fired when the close button is clicked.
+   * @private
+   */
+  handleCloseClick() {
+    this.setState({
+      isSearchOn: false
     });
   }
 };

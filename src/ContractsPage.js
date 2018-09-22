@@ -45,9 +45,9 @@
 class ContractsPage extends Component {
   render() {
     return (
-      <div>
+      <div style={{'marginTop': '40px'}}>
         <ExplorerTypography>Contracts</ExplorerTypography>
-        <StyledTypography><p>Contracts page coming soon.</p></StyledTypography>
+        <StyledTypography>Contracts page coming soon.</StyledTypography>
       </div>
     );
   }

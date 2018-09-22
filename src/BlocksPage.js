@@ -20,7 +20,7 @@
    Typography,
    // Zoom
  } from '@material-ui/core';
- // import FadeTable from './Components/FadeTable/Fade'
+// import FadeTable from './Components/FadeTable/Fade'
 
  const StyledTypography = styled(Typography)`
    && {
@@ -46,10 +46,9 @@
 class BlocksPage extends Component {
   render() {
     return (
-
-      <div>
+      <div style={{'marginTop': '40px'}}>
         <ExplorerTypography>Blocks</ExplorerTypography>
-        <StyledTypography><p>Blocks page coming soon.</p></StyledTypography>
+        <StyledTypography>Blocks page coming soon.</StyledTypography>
       </div>
     );
   }

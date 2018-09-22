@@ -1,6 +1,6 @@
 /**
  * @file index
- * @copyright Copyright (c) 2018 Dylan Miller, Todd Kitchens and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018 Dylan Miller, Todd Kitchens, and dfinityexplorer contributors
  * @license MIT License
  */
 

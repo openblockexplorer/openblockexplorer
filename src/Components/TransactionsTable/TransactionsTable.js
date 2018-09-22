@@ -3,6 +3,7 @@
  * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
+
 import FadeTable from '../FadeTable/FadeTable';
 
 /**
@@ -77,7 +78,7 @@ class TransactionsTable extends FadeTable {
    * @protected
    */
   getHashString(hash) {
-    const maxLength = 32;
+    const maxLength = 24;
     if (hash.length > maxLength) {
       const first = hash.substring(0, maxLength - 4);
       const last = hash.substr(hash.length - 4);

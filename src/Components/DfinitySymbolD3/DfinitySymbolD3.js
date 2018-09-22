@@ -3,6 +3,7 @@
  * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
+
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import * as PIXI from 'pixi.js';
@@ -17,11 +18,12 @@ class DfinitySymbolD3 extends Component  {
    * Create a DfinitySymbolD3 object.
    * @constructor
    */
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     // Bind to make 'this' work in callbacks.
     this.dragStarted = this.dragStarted.bind(this);
+    this.dragged = this.dragged.bind(this);
     this.dragEnded = this.dragEnded.bind(this);
     this.tick = this.tick.bind(this);
     this.rotate = this.rotate.bind(this);
@@ -42,12 +44,13 @@ class DfinitySymbolD3 extends Component  {
     // Code is customized for this window size. Modifying these values will cause the d3 force-
     // directed graph to change shape unless scaleToWindow is adjusted to keep the object the same
     // size.
-    this.width = 800;
-    this.height = 400;
+    this.simulationWidth = 800;
+    this.simulationHeight = 400;
+    this.scaleSimulationToPixi = 1.0;
 
-    this.centerX = this.width / 2;
-    this.centerY = this.height / 2;
-    this.scaleToWindow = this.width / 2 * 0.8;
+    this.centerX = this.simulationWidth / 2;
+    this.centerY = this.simulationHeight / 2;
+    this.scaleToWindow = this.simulationWidth / 2 * 0.8;
 
     // Specify the number of symbol nodes and the number of vertices for each symbol node. The
     // current values of 36 symbol nodes and 8 vertices (octagon) was arrived at after trial and
@@ -109,8 +112,46 @@ class DfinitySymbolD3 extends Component  {
    * @public
    */
   componentDidMount() {
+    // Set the value of scaleSimulationToPixi based on the widths prop. We scale the force-directed
+    // graph by keeping the d3 simulation as is, since it is finely tuned to appear in a certain
+    // way, and instead scaling coordinates from simulation space to PixiJS space when rendering.
+    // In this way, the graph can be scaled to any width by changing the widths prop. A width prop
+    // of 0 indicates no scaling. Note that drag/drop is not currently implemented when scaling.
+    this.scaleSimulationToPixi = this.props.width ? this.props.width / this.simulationWidth : 1.0;
+
     // Draw the DFINITY logo infinity symbol.
     this.draw();
+  }
+
+  /**
+   * Invoked by React immediately before a component is unmounted and destroyed.
+   * @public
+   */
+  componentWillUnmount() {
+    // Cleanup PixiJS properties.
+    this.renderer.destroy();
+    this.stage.destroy();
+  }
+
+  /**
+   * Invoked by React immediately after updating occurs. This method is not called for the initial
+   * render.
+   * @public
+   */
+  componentDidUpdate() {
+    // Make the necessary PixiJS adjustments when the width prop changes.
+    const scaleSimulationToPixi = this.props.width ? this.props.width / this.simulationWidth : 1.0;
+    if (this.scaleSimulationToPixi !== scaleSimulationToPixi) {
+      this.scaleSimulationToPixi = scaleSimulationToPixi;
+
+      // Resize the renderer.
+      this.pixiResizeRenderer();
+
+      // Draw circles for the nodes.
+      if (this.nodesData) {
+        this.nodesData.forEach((node) => { this.pixiDrawNode(node); });
+      }
+    }
   }
 
   /**
@@ -135,7 +176,7 @@ class DfinitySymbolD3 extends Component  {
     this.createSimulation();
 
     // Set up PixiJS to draw the simulation.
-    this.setupPixi();
+    this.pixiSetup();
   }
 
   /**
@@ -269,7 +310,7 @@ class DfinitySymbolD3 extends Component  {
           return d.index < this.numSymbolNodes ?
             this.forceManyBodyStrengthSymbolNodes : this.forceManyBodyStrengthNonSymbolNodes;
         }))
-      .force('center', d3.forceCenter(this.width / 2, this.height / 2));
+      .force('center', d3.forceCenter(this.simulationWidth / 2, this.simulationHeight / 2));
 
     // Add the links, with the strength of the force of a link optionally specified by the link's
     // _strength.
@@ -282,8 +323,7 @@ class DfinitySymbolD3 extends Component  {
       .distance(this.linkDistance);        
       this.simulation.force('links', link_force);
 
-    // Call tick() for every tick. We have to jump through some hoops to get the this pointer into
-    // the tick() function.
+    // Call tick() for every tick.
     this.simulation.on('tick', this.tick);
 
     // Set the decay rate to zero to have the simulation run forever at the current alpha.
@@ -297,31 +337,27 @@ class DfinitySymbolD3 extends Component  {
    * Set up PixiJS to draw the simulation using WebGL (with Canvas fallback for older platforms).
    * @private
    */
-  setupPixi() {
+  pixiSetup() {
+    // Disable PIXI console log message.
+    PIXI.utils.skipHello();
+    
     // Create PixiJS WebGL renderer element to hold the force-directed graph. We set the resolution
     // to 3, then auto-resize the window back down to the correct size in order to increase the
     // resolution. With resolution set to 1, it looks low resolution and pixelated.
     this.stage = new PIXI.Container();
     this.renderer = PIXI.autoDetectRenderer(
-      this.width,
-      this.height,
+      this.simulationWidth * this.scaleSimulationToPixi,
+      this.simulationHeight * this.scaleSimulationToPixi,
       {antialias: true, transparent: true, resolution: 3}
     );
     this.renderer.autoResize = true;
-    this.renderer.resize(this.width, this.height);
+    this.pixiResizeRenderer();
     this.element.appendChild(this.renderer.view);
 
     // Draw circles for the nodes.
     this.nodesData.forEach((node) => {
       node.graphics = new PIXI.Graphics();
-      node.graphics.lineStyle(
-        this.nodeStrokeWidth,
-        this.rgbNumberFromArray(this.getNodeStrokeColorArray(node)),
-        this.nodeOpacity, 1);
-      node.graphics.beginFill(
-        this.rgbNumberFromArray(this.nodeFillColorArray),
-        this.nodeOpacity);
-      node.graphics.drawCircle(0, 0, this.nodeRadius);
+      this.pixiDrawNode(node);
       this.stage.addChild(node.graphics);
     });
 
@@ -337,6 +373,105 @@ class DfinitySymbolD3 extends Component  {
     // Set up graphics for the links.
     this.linksGraphics = new PIXI.Graphics();
     this.stage.addChild(this.linksGraphics);
+  }
+
+  /**
+   * Resize the PixiJS renderer based on the width and height.
+   * @private
+   */
+   pixiResizeRenderer() {
+    this.renderer.resize(
+      this.simulationWidth * this.scaleSimulationToPixi,
+      this.simulationHeight * this.scaleSimulationToPixi);
+  }
+
+  /**
+   * Move the PixiJS position of the specified node.
+   * @param {Object} node The node to move the position of.
+   * @private
+   */
+  pixiMoveNode(node) {
+    let { x, y, graphics } = node;
+    graphics.position =
+      new PIXI.Point(x * this.scaleSimulationToPixi, y * this.scaleSimulationToPixi);
+  }
+
+  /**
+   * Use PixiJS to draw the circle for a node.
+   * @param {Object} node The node to draw the circle for.
+   * @param {Number} selectedNodeMagnitude If this is the currently selected node, indicates the
+   * magnitude percentage (0 - 1.0) of the selection. A value of 0 indicates that this is not the
+   * currently selected node.
+   * @private
+   */
+  pixiDrawNode(node, selectedNodeMagnitude = 0) {
+    let nodeStrokeColor;
+    let nodeFillColor;
+    let nodeOpacity;
+    let nodeRadius;
+    if (selectedNodeMagnitude) {
+      // Scale the node properties based on the magnitude.
+      nodeStrokeColor = this.rgbNumberFromArray(
+        this.gradientColor(
+          this.nodeSelectedStrokeColorArray,
+          this.getNodeStrokeColorArray(node),
+          selectedNodeMagnitude));
+      nodeFillColor = this.rgbNumberFromArray(
+        this.gradientColor(
+          this.nodeSelectedFillColorArray,
+          this.nodeFillColorArray,
+          selectedNodeMagnitude));
+      nodeOpacity =
+        this.nodeOpacity + (this.nodeOpacitySelected - this.nodeOpacity) * selectedNodeMagnitude;
+      nodeRadius =
+        this.nodeRadius + (this.nodeRadiusSelected - this.nodeRadius) * selectedNodeMagnitude;
+    }
+    else {
+      nodeStrokeColor = this.rgbNumberFromArray(this.getNodeStrokeColorArray(node));
+      nodeFillColor = this.rgbNumberFromArray(this.nodeFillColorArray);
+      nodeOpacity = this.nodeOpacity;
+      nodeRadius = this.nodeRadius;
+    }
+
+    node.graphics.clear();
+    node.graphics.lineStyle(
+      this.nodeStrokeWidth * this.scaleSimulationToPixi,
+      nodeStrokeColor,
+      nodeOpacity);
+    node.graphics.beginFill(nodeFillColor, nodeOpacity);
+    if (selectedNodeMagnitude) {
+      node.graphics.filters = [
+        new filters.GlowFilter(
+          5,                          // distance
+          4 * selectedNodeMagnitude,  // outerStrength
+          0,                          // innerStrength
+          nodeStrokeColor,            // color
+          0.5)                        // quality
+      ]
+    }
+    else
+      node.graphics.filters = null;
+    node.graphics.drawCircle(0, 0, nodeRadius * this.scaleSimulationToPixi);
+  }
+
+  /**
+   * Use PixiJS to draw the line for a link between nodes.
+   * @param {Object} link The link to draw the line for.
+   * @param {Number} linkMagnitude Indicates the magnitude percentage (0 - 1.0) of the link opacity
+   * boost.
+   * @private
+   */
+  pixiDrawLink(link, linkMagnitude) {
+    let { source, target, opacity } = link;
+    const linkOpacity = opacity + 0.25 * linkMagnitude;
+    this.linksGraphics.alpha = linkOpacity;
+    this.linksGraphics.lineStyle(
+      this.linkStrokeWidth * this.scaleSimulationToPixi,
+      this.rgbNumberFromArray(this.getColorArray(link.index, this.linksData.length)));
+      this.linksGraphics.moveTo(
+        source.x * this.scaleSimulationToPixi, source.y * this.scaleSimulationToPixi);
+      this.linksGraphics.lineTo(
+        target.x * this.scaleSimulationToPixi, target.y * this.scaleSimulationToPixi);
   }
 
   /**
@@ -467,6 +602,10 @@ class DfinitySymbolD3 extends Component  {
    * @private
    */
   dragStarted(d) {
+    // Disable dragging when scaling.
+    if (this.scaleSimulationToPixi !== 1.0)
+      return;
+
     const isSimulationRunning = this.simulation.alphaDecay() === 0;
     if (!isSimulationRunning) {
       if (!d3.event.active)
@@ -482,6 +621,10 @@ class DfinitySymbolD3 extends Component  {
    * @private
    */
   dragged(d) {
+    // Disable dragging when scaling.
+    if (this.scaleSimulationToPixi !== 1.0)
+      return;
+
     d3.event.subject.fx = d3.event.x;
     d3.event.subject.fy = d3.event.y;
   }
@@ -492,6 +635,10 @@ class DfinitySymbolD3 extends Component  {
    * @private
    */
   dragEnded(d) {
+    // Disable dragging when scaling.
+    if (this.scaleSimulationToPixi !== 1.0)
+      return;
+
     const isSimulationRunning = this.simulation.alphaDecay() === 0;
     if (!isSimulationRunning) {
       if (!d3.event.active)
@@ -507,10 +654,7 @@ class DfinitySymbolD3 extends Component  {
    */
   tick() {
     // Move the node positions.
-    this.nodesData.forEach((node) => {
-      let { x, y, graphics } = node;
-      graphics.position = new PIXI.Point(x, y);
-    });
+    this.nodesData.forEach((node) => { this.pixiMoveNode(node); });
 
     // Animate the selected node to grow larger and change to white, then shrink smaller and change
     // back to original colors.
@@ -519,57 +663,21 @@ class DfinitySymbolD3 extends Component  {
       const elapsedMs = new Date() - this.newBlockNodeStartTime;
       if (elapsedMs > this.newBlockNodeTimerMs) {
         // Draw a normal node circle.
-        node.graphics.clear();
-        node.graphics.lineStyle(
-          this.nodeStrokeWidth,
-          this.rgbNumberFromArray(this.getNodeStrokeColorArray(node)),
-          this.nodeOpacity);
-        node.graphics.beginFill(
-          this.rgbNumberFromArray(this.nodeFillColorArray),
-          this.nodeOpacity);
-        node.graphics.filters = null;
-        node.graphics.drawCircle(0, 0, this.nodeRadius);
+        this.pixiDrawNode(node);
 
         // Disable new block node timer.
         this.newBlockNodeStartTime = null;
       }
       else {
         // Calculate the magnitude based on the timer.
-        const nodeMagnitude =
+        const selectedNodeMagnitude =
           (elapsedMs <= this.newBlockNodeTimerMs / 2 ?
             elapsedMs :
             this.newBlockNodeTimerMs - elapsedMs) /
           (this.newBlockNodeTimerMs / 2);
 
-        // Scale the node properties based on the magnitude.
-        const nodeStrokeColor = this.rgbNumberFromArray(
-          this.gradientColor(
-            this.nodeSelectedStrokeColorArray,
-            this.getNodeStrokeColorArray(node),
-            nodeMagnitude));
-        const nodeFillColor = this.rgbNumberFromArray(
-          this.gradientColor(
-            this.nodeSelectedFillColorArray,
-            this.nodeFillColorArray,
-            nodeMagnitude));
-        const nodeOpacity =
-          this.nodeOpacity + (this.nodeOpacitySelected - this.nodeOpacity) * nodeMagnitude;
-        const nodeRadius =
-          this.nodeRadius + (this.nodeRadiusSelected - this.nodeRadius) * nodeMagnitude;
-
-        // Draw the modified node circle.
-        node.graphics.clear();
-        node.graphics.lineStyle(this.nodeStrokeWidth, nodeStrokeColor, nodeOpacity);
-        node.graphics.beginFill(nodeFillColor, nodeOpacity);
-        node.graphics.filters = [
-          new filters.GlowFilter(
-            5,                  // distance
-            4 * nodeMagnitude,  // outerStrength
-            0,                  // innerStrength
-            nodeStrokeColor,    // color
-            0.5)                // quality
-        ]
-        node.graphics.drawCircle(0, 0, nodeRadius);
+        // Draw a modifified node circle based on the magnitude.
+        this.pixiDrawNode(node, selectedNodeMagnitude);
       }
     }
 
@@ -594,14 +702,7 @@ class DfinitySymbolD3 extends Component  {
     // Draw lines for the links.
     this.linksGraphics.clear();
     this.linksData.forEach((link) => {
-      let { source, target, opacity } = link;
-      const linkOpacity = opacity + 0.25 * linkMagnitude;
-      this.linksGraphics.alpha = linkOpacity;
-      this.linksGraphics.lineStyle(
-        this.linkStrokeWidth,
-        this.rgbNumberFromArray(this.getColorArray(link.index, this.linksData.length)));
-        this.linksGraphics.moveTo(source.x, source.y);
-        this.linksGraphics.lineTo(target.x, target.y);
+      this.pixiDrawLink(link, linkMagnitude);
     });
     this.linksGraphics.endFill();
 

@@ -45,9 +45,9 @@
 class AccountsPage extends Component {
   render() {
     return (
-      <div>
+      <div style={{'marginTop': '40px'}}>
         <ExplorerTypography>Accounts</ExplorerTypography>
-        <StyledTypography><p>Accounts page coming soon.</p></StyledTypography>
+        <StyledTypography>Accounts page coming soon.</StyledTypography>
       </div>
     );
   }

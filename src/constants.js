@@ -5,6 +5,12 @@
  */
 
 const Constants = Object.freeze({
+  URI_CDN_FONT_AWESOME:
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
+  URI_CDN_GOOGLE_FONTS: 'https://fonts.googleapis.com/css?family=Istok+Web|Nunito+Sans',
+  URI_DFINITY_EXPLORER_TWITTER: 'https://twitter.com/dfinityexplorer',
+  URI_DFINITY_EXPLORER_FACEBOOK: 'https://www.facebook.com/dfinityexplorer',
+  URI_DFINITY_EXPLORER_GITHUB: 'https://github.com/dfinityexplorer/dfinityexplorer',
   COLOR_DFINITY_BLACK: 'rgb(41, 42, 46)', // from dfinity.org/press
   COLOR_DFINITY_BLACK_LIGHTER: 'rgb(73, 75, 82)', //  COLOR_DFINITY_BLACK scaled lighter
   COLOR_DFINITY_BLACK_DARKER: 'rgb(27, 28, 31)', // COLOR_DFINITY_BLACK scaled darker
@@ -16,6 +22,13 @@ const Constants = Object.freeze({
   COLOR_TEXT_DARKER: 'rgb(148, 149, 151)', // rgb(255, 255, 255, 0.5) on COLOR_DFINITY_BLACK
   COLOR_TEXT_DARKEST: 'rgb(106, 106, 109)', // rgb(255, 255, 255, 0.3) on COLOR_DFINITY_BLACK
   FONT_PRIMARY: '\'Nunito Sans\', sans-serif',
+  BREAKPOINT_XS: 0,
+  BREAKPOINT_SM: 600,
+  BREAKPOINT_MD: 960,
+  BREAKPOINT_LG: 1280,
+  BREAKPOINT_XL: 1920,
+  BREAKPOINT_LG_MAX_WIDTH: 1140, // from Bootstrap
+  FOOTER_HEIGHT: 72
 });
 
 export default Constants;

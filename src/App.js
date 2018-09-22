@@ -1,6 +1,6 @@
 /**
- * @file Main
- * @copyright Copyright (c) 2018 Dylan Miller, Todd Kitchens and dfinityexplorer contributors
+ * @file App
+ * @copyright Copyright (c) 2018 Dylan Miller, Todd Kitchens, and dfinityexplorer contributors
  * @license MIT License
  */
 
@@ -20,7 +20,7 @@ import Footer from './Components/Footer/Footer';
  * Top-level component of the app.
  */
 class App extends Component {
-render() {
+  render() {
     return (
       <HashRouter>
         <div>
@@ -32,11 +32,11 @@ render() {
             <Route path="/ContractsPage" component={ContractsPage}/>
             <Route path="/TransactionsPage" component={TransactionsPage}/>
           </div>
-         < Footer />
+          <Footer />
         </div>
       </HashRouter>
     );
-}
+  }
 }
 
 export default App;

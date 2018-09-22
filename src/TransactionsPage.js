@@ -45,9 +45,9 @@ const ExplorerTypography = styled(StyledTypography)`
 class TransactionsPage extends Component {
  render() {
    return (
-     <div>
+     <div style={{'marginTop': '40px'}}>
        <ExplorerTypography>Transactions</ExplorerTypography>
-       <StyledTypography><p>Transactions page coming soon.</p></StyledTypography>
+       <StyledTypography>Transactions page coming soon.</StyledTypography>
      </div>
    );
  }

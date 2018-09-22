@@ -3,6 +3,7 @@
  * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
+
 import React from 'react';
 import styled from 'styled-components';
 import {
@@ -33,6 +34,9 @@ const TitleTypography = styled(Typography)`
     font-family: ${Constants.FONT_PRIMARY};
     font-size: 32px;
     letter-spacing: 1px;
+    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+      font-size: 24px;
+    }
   }
 `;
 
@@ -60,6 +64,14 @@ const StyledTableCell = styled(TableCell)`
     color: ${Constants.COLOR_TEXT_LIGHT};
     font-size: 15px;
     white-space: nowrap;
+    /* Reducing the font size for narrow page widths seems sufficient for resizing the table when
+       Grid spacing is 0 and padding={'checkbox'}. Other settings, such as 'overflow: hidden' and
+       'max-width: 0px', were also helpful in improving the table at narrow page widths, but do
+       not seem to be necessary with the current settings. Another useful setting is
+       'text-overflow: ellipsis', though we reduce the font size rather than using ellipsis. */
+    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+      font-size: 11px;
+    }
   }
 `;
 
@@ -120,7 +132,7 @@ class FadeTable extends React.Component {
                 return (
                   // Using index as the key is fine here and for cells in other rows, since we never
                   // add, remove, reorder, or filter items in the cell arrays.
-                  <HeaderTableCell key={index} numeric={cell.isNumeric}>
+                  <HeaderTableCell key={index} numeric={cell.isNumeric} padding={'checkbox'}>
                     {cell.value}
                   </HeaderTableCell>
                 );
@@ -142,7 +154,7 @@ class FadeTable extends React.Component {
                     <BodyTableRow>
                       {bodyRow.cells.map((cell, index) => {
                         return (
-                          <StyledTableCell key={index} numeric={cell.isNumeric}>
+                          <StyledTableCell key={index} numeric={cell.isNumeric} padding={'checkbox'}>
                             {cell.value}
                           </StyledTableCell>
                         );
@@ -153,7 +165,7 @@ class FadeTable extends React.Component {
                   <BodyTableRow key={bodyRow.mapKey}>
                     {bodyRow.cells.map((cell, index) => {
                       return (
-                        <StyledTableCell key={index} numeric={cell.isNumeric}>
+                        <StyledTableCell key={index} numeric={cell.isNumeric} padding={'checkbox'}>
                           {cell.value}
                         </StyledTableCell>
                       );
@@ -166,7 +178,7 @@ class FadeTable extends React.Component {
             <FooterTableRow>
               {this.getFooterRow().map((cell, index) => {
                 return (
-                  <FooterTableCell key={index} numeric={cell.isNumeric}>
+                  <FooterTableCell key={index} numeric={cell.isNumeric} padding={'checkbox'}>
                     {cell.value}
                   </FooterTableCell>
                 );
