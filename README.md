@@ -2,7 +2,7 @@
 [![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/dfinityexplorer/dfinityexplorer/blob/master/LICENSE)
 [![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/dfinityexplorer)
 
-[DFINITY Explorer](https://www.dfinityexplorer.org/) is an open-source block explorer for the DFINITY blockchain. Read more about the project in the [wiki](https://github.com/dfinityexplorer/dfinityexplorer/wiki).
+[DFINITY Explorer](https://www.dfinityexplorer.org/) is an open-source block explorer built by the DFINITY community. Read more about the project in the [wiki](https://github.com/dfinityexplorer/dfinityexplorer/wiki).
 
 ## Open-Source Libraries Used
 * React
