@@ -1,0 +1,43 @@
+###
+ # @file schema.graphql
+ # @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
+ # @license MIT License
+ ##
+ 
+# Queries
+type Query {
+  blocks(first: Int): [Block!]!
+  block(id: ID!): Block
+  transactions(first: Int): [Transaction!]!
+  transaction(id: ID!): Transaction
+}
+
+# Mutations
+# Do not expose mutations on deployed server.
+#type Mutation {
+#  createBlock(height: Int!, timestamp: Int!, numTransactions: Int!): Block
+#  createTransaction(hash: Int!, amount: Float!): Transaction
+#}
+
+# Subscriptions
+type Subscription {
+  newBlock: Block!
+  newTransaction: Transaction!
+  blocks: [Block!]!
+  transactions: [Transaction!]!
+}
+
+# This type represents a DFINITY block.
+type Block {
+  id: ID!
+  height: Int!
+  timestamp: String!
+  numTransactions: Int!
+}
+
+# This type represents a DFINITY transaction.
+type Transaction {
+  id: ID!
+  hash: String!
+  amount: Float!
+}

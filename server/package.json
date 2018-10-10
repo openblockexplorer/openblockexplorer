@@ -1,0 +1,16 @@
+{
+  "name": "dfinityexplorer-server",
+  "version": "0.0.1",
+  "private": true,
+  "homepage": "https://www.dfinityexplorer.org",
+  "dependencies": {
+    "graphql-yoga": "^1.16.2",
+    "js-sha3": "^0.8.0"
+  },
+  "scripts": {
+    "start": "nodemon ./src/server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}

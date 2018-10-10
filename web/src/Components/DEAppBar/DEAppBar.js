@@ -263,7 +263,6 @@ class DEAppBar extends ResponsiveComponent {
     return (
       <Link
         style={{ textDecoration: 'none' }}
-        exact='true'
         to='/'
         onClick={this.handleLogoLinkClick}
       >
@@ -309,10 +308,10 @@ class DEAppBar extends ResponsiveComponent {
     return (
       <StyledTabs value={this.getTabsComponentValue()} onChange={this.handleTabChange}>
         { is_breakpoint_sm ? <StyledTab label='Home' hidden component={Link} to='/' /> : null }
-        <StyledTab label='Blocks' component={Link} to='/BlocksPage' />
-        <StyledTab label='Transactions' component={Link} to='/TransactionsPage' />
-        <StyledTab label='Accounts' component={Link} to='/AccountsPage' />
-        <StyledTab label='Contracts' component={Link} to='/ContractsPage' />
+        <StyledTab label='Blocks' component={Link} to='/blocks' />
+        <StyledTab label='Transactions' component={Link} to='/txs' />
+        <StyledTab label='Accounts' component={Link} to='/accounts' />
+        <StyledTab label='Contracts' component={Link} to='/contracts' />
       </StyledTabs>
     );
   }  

@@ -4,7 +4,7 @@
  * @license MIT License
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import {
   Fade,
@@ -106,7 +106,7 @@ const FooterTableCell = styled(StyledTableCell)`
 /**
  * Base class that implements a table component where new rows fade in.
  */
-class FadeTable extends React.Component {
+class FadeTable extends Component { 
   /**
    * Return a reference to a React element to render into the DOM.
    * @return {Object} A reference to a React element to render into the DOM.

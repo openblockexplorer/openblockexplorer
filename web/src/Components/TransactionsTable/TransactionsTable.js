@@ -4,12 +4,95 @@
  * @license MIT License
  */
 
+import React, { Component } from 'react';
+import { Query } from "react-apollo";
 import FadeTable from '../FadeTable/FadeTable';
+import queryTransactions from '../../graphql/queryTransactions';
+import subscriptionNewTransaction from '../../graphql/subscriptionNewTransaction';
+
+/**
+ * This component displays a table of Transaction objects with data retrieved via GraphQL.
+ */
+class TransactionsTableWithData extends Component {
+  /**
+   * Return a reference to a React element to render into the DOM.
+   * @return {Object} A reference to a React element to render into the DOM.
+   * @public
+   */
+  render() {
+    return (
+      <Query query={queryTransactions} variables={{ first: this.props.maxRows }}>
+        {({ loading, error, data, subscribeToMore }) => {
+          const subscribeToNewObjects = () => this.subscribeToNewObjects(subscribeToMore);
+          if (loading)
+            return (
+              <TransactionsTable
+                transactions={[]}
+                subscribeToNewObjects={subscribeToNewObjects}
+                loading
+              />
+            );
+          else if (error)
+            return (
+              <TransactionsTable
+                transactions={[]}
+                subscribeToNewObjects={subscribeToNewObjects}
+                error
+              />
+            );
+          else
+            return (
+              <TransactionsTable
+                transactions={data.transactions}
+                subscribeToNewObjects={subscribeToNewObjects}
+                maxRows={this.props.maxRows}
+              />
+            );
+        }}
+      </Query>
+    );
+  }
+
+  /**
+   * Subscribe to receive new objects of the body of the table using subscribeToMore and update the
+   * query's store by merging the subscription data with the previous data.
+   * @protected
+   */
+  subscribeToNewObjects(subscribeToMore) {
+    subscribeToMore({
+      document: subscriptionNewTransaction,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data)
+          return prev;
+
+        // Add the new transaction to the front of the transactions[] array, keeping at most
+        // this.props.maxRows transactions.
+        return {
+          transactions: [
+            subscriptionData.data.newTransaction,
+            ...prev.transactions
+          ].slice(0, this.props.maxRows)
+        };
+      }
+    });
+
+  }
+}
 
 /**
  * This component displays a table of Transaction objects.
  */
-class TransactionsTable extends FadeTable {
+class TransactionsTable extends FadeTable { 
+  /**
+   * Invoked by React immediately after a component is mounted (inserted into the tree). 
+   * @public
+   */
+  componentDidMount() {
+    // Subscribe to receive new objects of the body of the table.
+    if (this.props.subscribeToNewObjects)
+      this.props.subscribeToNewObjects();
+  }
+
   /**
    * Return the title of the table.
    * @return {String} The title of the table.
@@ -46,17 +129,23 @@ class TransactionsTable extends FadeTable {
    * @protected
    */
   getBodyRows() {
-    const { transactions } = this.props;
-    let bodyRows = transactions.map((transaction) => {
-      return {
-        mapKey: transaction.hash,
-        cells: [
-          {value: this.getHashString(transaction.hash), isNumeric: false},
-          {value: transaction.amount.toFixed(8).toString() + ' DFN', isNumeric: true}
-        ]
-      };
-    });
-    return bodyRows;    
+    const { transactions, loading, error } = this.props;
+    if (loading)
+      return [{mapKey: 'LOADING', cells: [{value: 'Loading...', isNumeric: false}]}];
+    else if (error)
+      return [{mapKey: 'ERROR', cells: [{value: 'Network error', isNumeric: false}]}];
+    else {
+      let bodyRows = transactions.map((transaction) => {
+        return {
+          mapKey: transaction.hash,
+          cells: [
+            {value: this.getHashString(transaction.hash), isNumeric: false},
+            {value: transaction.amount.toFixed(8).toString() + ' DFN', isNumeric: true}
+          ]
+        };
+      });
+      return bodyRows;
+    }
   }
 
   /**
@@ -89,4 +178,4 @@ class TransactionsTable extends FadeTable {
   }
 }
 
-export default TransactionsTable;
+export default TransactionsTableWithData;

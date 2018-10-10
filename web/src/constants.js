@@ -5,6 +5,9 @@
  */
 
 const Constants = Object.freeze({
+  // Server URIs have to change for production!!!
+  URI_SERVER_HTTP: 'http://localhost:4000',
+  URI_SERVER_WEB_SOCKETS: 'ws://localhost:4000',
   URI_CDN_FONT_AWESOME:
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
   URI_CDN_GOOGLE_FONTS: 'https://fonts.googleapis.com/css?family=Istok+Web|Nunito+Sans',
