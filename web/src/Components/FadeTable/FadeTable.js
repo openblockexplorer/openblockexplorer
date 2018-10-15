@@ -142,27 +142,12 @@ class FadeTable extends Component {
           <StyledTableBody>
             {this.getBodyRows().slice(0, this.props.maxRows).map((bodyRow, index) => {
               return (
-                // TODO: Fading in the first item will not be correct if there are multiple new rows
-                // since the last render. Fix this code to detect new rows using a mechanism other
-                // than checking if it is the first row.
-                !index ?
-                  <Fade
-                    key={bodyRow.mapKey}
-                    in={true}
-                    timeout={500}
-                  >
-                    <BodyTableRow>
-                      {bodyRow.cells.map((cell, index) => {
-                        return (
-                          <StyledTableCell key={index} numeric={cell.isNumeric} padding={'checkbox'}>
-                            {cell.value}
-                          </StyledTableCell>
-                        );
-                      })}
-                    </BodyTableRow>
-                  </Fade>
-                :
-                  <BodyTableRow key={bodyRow.mapKey}>
+                <Fade
+                  key={bodyRow.mapKey}
+                  in={true}
+                  timeout={500}
+                >
+                  <BodyTableRow>
                     {bodyRow.cells.map((cell, index) => {
                       return (
                         <StyledTableCell key={index} numeric={cell.isNumeric} padding={'checkbox'}>
@@ -171,6 +156,7 @@ class FadeTable extends Component {
                       );
                     })}
                   </BodyTableRow>
+                </Fade>
               );
             })}
           </StyledTableBody>

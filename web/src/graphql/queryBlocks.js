@@ -12,7 +12,7 @@ import gql from 'graphql-tag'
  */
 const queryBlocks = gql`
   query Blocks($first: Int) {
-    blocks(first: $first) {
+    blocks(first: $first, orderBy: height_DESC) {
       id
       height
       timestamp

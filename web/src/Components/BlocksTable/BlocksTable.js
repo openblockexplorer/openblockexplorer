@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import { Query } from "react-apollo";
 import FadeTable from '../FadeTable/FadeTable';
 import queryBlocks from '../../graphql/queryBlocks';
-import subscriptionNewBlock from '../../graphql/subscriptionNewBlock';
+import subscriptionBlock from '../../graphql/subscriptionBlock';
 
 /**
  * This component displays a table of Block objects with data retrieved via GraphQL.
@@ -40,14 +40,14 @@ class BlocksTableWithData extends Component {
                 error
               />
             );
-          else
+          else {
             return (
               <BlocksTable
                 blocks={data.blocks}
                 subscribeToNewObjects={subscribeToNewObjects}
                 maxRows={this.props.maxRows}
               />
-            );
+            );}
         }}
       </Query>
     );
@@ -60,7 +60,7 @@ class BlocksTableWithData extends Component {
    */
   subscribeToNewObjects(subscribeToMore) {
     subscribeToMore({
-      document: subscriptionNewBlock,
+      document: subscriptionBlock,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data)
           return prev;
@@ -73,7 +73,7 @@ class BlocksTableWithData extends Component {
         // blocks.
         return {
           blocks: [
-            subscriptionData.data.newBlock,
+            subscriptionData.data.block.node,
             ...prev.blocks
           ].slice(0, this.props.maxRows)
         };
@@ -141,7 +141,7 @@ class BlocksTable extends FadeTable {
       return [{mapKey: 'ERROR', cells: [{value: 'Network error', isNumeric: false}]}];
     else {
       let bodyRows = blocks.map((block) => {
-        const date = new Date(parseInt(block.timestamp, 10));
+        const date = new Date(block.timestamp);
         return {
           mapKey: block.height,
           cells: [

@@ -6,8 +6,8 @@
 
 const Constants = Object.freeze({
   // Development server URIs
-  //URI_SERVER_HTTP: 'http://localhost:4000',
-  //URI_SERVER_WEB_SOCKETS: 'ws://localhost:4000',
+  // URI_SERVER_HTTP: 'http://localhost:4000',
+  // URI_SERVER_WEB_SOCKETS: 'ws://localhost:4000',
   // Production server URIs
   URI_SERVER_HTTP: 'https://dfinityexplorer-server.herokuapp.com/',
   URI_SERVER_WEB_SOCKETS: 'wss://dfinityexplorer-server.herokuapp.com/',

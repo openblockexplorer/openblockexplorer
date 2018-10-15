@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import { Query } from "react-apollo";
 import FadeTable from '../FadeTable/FadeTable';
 import queryTransactions from '../../graphql/queryTransactions';
-import subscriptionNewTransaction from '../../graphql/subscriptionNewTransaction';
+import subscriptionTransaction from '../../graphql/subscriptionTransaction';
 
 /**
  * This component displays a table of Transaction objects with data retrieved via GraphQL.
@@ -40,7 +40,7 @@ class TransactionsTableWithData extends Component {
                 error
               />
             );
-          else
+          else {
             return (
               <TransactionsTable
                 transactions={data.transactions}
@@ -48,6 +48,7 @@ class TransactionsTableWithData extends Component {
                 maxRows={this.props.maxRows}
               />
             );
+          }
         }}
       </Query>
     );
@@ -60,7 +61,7 @@ class TransactionsTableWithData extends Component {
    */
   subscribeToNewObjects(subscribeToMore) {
     subscribeToMore({
-      document: subscriptionNewTransaction,
+      document: subscriptionTransaction,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data)
           return prev;
@@ -69,7 +70,7 @@ class TransactionsTableWithData extends Component {
         // this.props.maxRows transactions.
         return {
           transactions: [
-            subscriptionData.data.newTransaction,
+            subscriptionData.data.transaction.node,
             ...prev.transactions
           ].slice(0, this.props.maxRows)
         };

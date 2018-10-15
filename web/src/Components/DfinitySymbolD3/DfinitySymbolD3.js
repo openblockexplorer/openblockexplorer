@@ -184,6 +184,12 @@ class DfinitySymbolD3 extends Component  {
    * @public
    */
   addNewBlock() {
+    // If there is a selected node still animating, stop the animation and return it to normal.
+    if (this.newBlockNodeStartTime) {
+        const node = this.nodesData[this.selectedNodeIndex];
+        this.pixiDrawNode(node);
+    }
+
     // Select node and enable new block timers.
     this.selectedNodeIndex = getRandomInt(0, this.numNodes - 1);
     this.newBlockNodeStartTime = this.newBlockLinksStartTime = new Date();

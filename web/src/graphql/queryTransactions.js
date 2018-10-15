@@ -12,7 +12,7 @@ import gql from 'graphql-tag'
  */
 const queryTransactions = gql`
   query Transactions($first: Int) {
-    transactions(first: $first) {
+    transactions(first: $first, orderBy: createdAt_DESC) {
       id
       hash
       amount
