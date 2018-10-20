@@ -68,14 +68,28 @@ const apolloClient = new ApolloClient({
  * Top-level component of the app.
  */
 class App extends Component {
+  /**
+   * Create an App object.
+   * @constructor
+   */
+  constructor(props) {
+    super(props);
+    this.state = {appBarRef: null};
+
+    // Bind to make 'this' work in callbacks.
+    this.setAppBarRef = this.setAppBarRef.bind(this);
+  }
+  
   render() {
     return (
       <ApolloProvider client={apolloClient}>
         <HashRouter>    
           <div>
-            <DEAppBar />
+            <DEAppBar ref={this.setAppBarRef} useDfinitySymbolD3 />
             <div className="content">
-              <Route exact path="/" component={Home}/>
+              <Route exact path='/'
+                render={(props) => <Home {...props} appBarRef={this.state.appBarRef} />}
+              />
               <Route exact path="/accounts" component={AccountsPage}/>
               <Route exact path="/blocks" component={BlocksPage}/>
               <Route exact path="/contracts" component={ContractsPage}/>
@@ -89,6 +103,14 @@ class App extends Component {
       </ApolloProvider>
     );
   }
+
+  /**
+   * Set a reference to the DEAppBar element.
+   * @public
+   */
+  setAppBarRef(element) {
+    this.setState({ appBarRef: element });
+  };
 }
 
 export default App;

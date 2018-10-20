@@ -70,7 +70,7 @@ const TransactionsTableGrid = styled(Grid)`
  */
 class Home extends ResponsiveComponent {
   /**
-   * Create a DfinitySymbolD3 object.
+   * Create a Home object.
    * @constructor
    */
   constructor(props) {
@@ -122,7 +122,11 @@ class Home extends ResponsiveComponent {
           <ContentGrid container>
             <Grid container alignItems='flex-start' justify='center'>
               <BlocksTableGrid item xs={12} md={6}>
-                <BlocksTable maxRows='8' dfinitySymbolD3Ref={this.state.dfinitySymbolD3Ref}/>
+                <BlocksTable
+                  maxRows='8'
+                  dfinitySymbolD3Ref={this.state.dfinitySymbolD3Ref}
+                  appBarRef={this.props.appBarRef}
+                />
               </BlocksTableGrid>
               <TransactionsTableGrid item xs={12} md={6}>
                 <TransactionsTable maxRows='8' />

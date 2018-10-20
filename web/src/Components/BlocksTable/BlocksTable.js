@@ -66,6 +66,8 @@ class BlocksTableWithData extends Component {
           return prev;
 
         // Add a new block to the DFINITY logo infinity symbol.
+        if (this.props.appBarRef)
+          this.props.appBarRef.addNewBlock();
         if (this.props.dfinitySymbolD3Ref)
           this.props.dfinitySymbolD3Ref.addNewBlock();
 

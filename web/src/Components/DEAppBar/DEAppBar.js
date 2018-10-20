@@ -22,6 +22,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import SearchIcon from '@material-ui/icons/Search';
 import ResponsiveComponent from '../ResponsiveComponent/ResponsiveComponent'
+import DfinitySymbolD3 from '../DfinitySymbolD3/DfinitySymbolD3';
 import Constants from '../../constants';
 import dfinityLogo from './dfinity-logo.png';
 
@@ -50,7 +51,6 @@ const StyledTypography = styled(Typography)`
 
 const DfinityTypography = styled(StyledTypography)`
   && {
-    margin-left: 14px;
     letter-spacing: 12px;
     color: ${Constants.COLOR_TEXT_LIGHT};
     border-right: 1px solid ${Constants.COLOR_TEXT_LIGHT};
@@ -146,13 +146,14 @@ class DEAppBar extends ResponsiveComponent {
    */
   constructor() {
     super();
-    this.state = {tabValue: TabsValues.HOME, isSearchOn: false};
+    this.state = {tabValue: TabsValues.HOME, isSearchOn: false, dfinitySymbolD3Ref: null};
 
     // Bind to make 'this' work in callbacks.
     this.handleTabChange = this.handleTabChange.bind(this);
     this.handleLogoLinkClick = this.handleLogoLinkClick.bind(this);
     this.handleSearchClick = this.handleSearchClick.bind(this);
     this.handleCloseClick = this.handleCloseClick.bind(this);
+    this.setDfinitySymbolD3Ref = this.setDfinitySymbolD3Ref.bind(this);
   }
 
   /**
@@ -268,11 +269,22 @@ class DEAppBar extends ResponsiveComponent {
       >
         <Grid container alignItems='center' justify='flex-start' wrap='nowrap'>
           <Grid item>
-            <img
-              src={dfinityLogo}
-              height={this.getDfinityLogoHeight()}
-              alt='logo'>
-            </img>
+          {
+            this.props.useDfinitySymbolD3 ?
+              <div style={{'marginLeft': '-10px', 'margin-right': '5px'}}>
+                <DfinitySymbolD3
+                  width={this.getDfinitySymbolD3Width()}
+                  logoMode
+                  ref={this.setDfinitySymbolD3Ref}
+                />
+              </div>
+            :
+              <img style={{'margin-right': '14px'}}
+                src={dfinityLogo}
+                height={this.getDfinityLogoHeight()}
+                alt='logo'>
+              </img>
+          }
           </Grid>
           <Grid item>
             <DfinityTypography>DFINITY</DfinityTypography>
@@ -295,6 +307,36 @@ class DEAppBar extends ResponsiveComponent {
       return 18;
     else
       return 27;
+  }
+
+  /**
+   * Return the width of the DfinitySymbolD3 component based on the current breakpoint.
+   * @return The width of the DfinitySymbolD3 component based on the current breakpoint.
+   * @private
+   */
+  getDfinitySymbolD3Width() {
+    if (window.matchMedia('(max-width: ' + Constants.BREAKPOINT_SM + 'px)').matches)
+      return 63;
+    else
+      return 95;
+  }
+  
+
+  /**
+   * Set a reference to the DfinitySymbolD3 element.
+   * @public
+   */
+  setDfinitySymbolD3Ref(element) {
+    this.setState({ dfinitySymbolD3Ref: element });
+  };
+  
+  /**
+   * Notify components that a new block has been added.
+   * @public
+   */
+  addNewBlock() {
+    if (this.state.dfinitySymbolD3Ref)
+      this.state.dfinitySymbolD3Ref.addNewBlock();
   }
 
   /**

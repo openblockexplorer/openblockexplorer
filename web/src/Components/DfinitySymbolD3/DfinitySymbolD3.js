@@ -44,7 +44,7 @@ class DfinitySymbolD3 extends Component  {
     // Code is customized for this window size. Modifying these values will cause the d3 force-
     // directed graph to change shape unless scaleToWindow is adjusted to keep the object the same
     // size.
-    this.simulationWidth = 800;
+    this.simulationWidth = this.props.logoMode ? 780 : 800;
     this.simulationHeight = 400;
     this.scaleSimulationToPixi = 1.0;
 
@@ -55,8 +55,8 @@ class DfinitySymbolD3 extends Component  {
     // Specify the number of symbol nodes and the number of vertices for each symbol node. The
     // current values of 36 symbol nodes and 8 vertices (octagon) was arrived at after trial and
     // error to produce a shape which resembles the DFINITY logo.
-    this.numSymbolNodes = 36;
-    this.numVertices = 8;
+    this.numSymbolNodes = this.props.logoMode ? 41 : 36;
+    this.numVertices = this.props.logoMode ? 10 : 8;
     this.numNodes = this.numSymbolNodes * this.numVertices;
 
     // Specify the charge of the symbol nodes and the non-symbol nodes. "A positive value causes
@@ -65,26 +65,27 @@ class DfinitySymbolD3 extends Component  {
     // much lower in magnitude values because we do not want the nodes to repel very much. For the
     // fixed nodes which draw the infinity symbol, we do not want any force at all.
     this.forceManyBodyStrengthSymbolNodes = 0;
-    this.forceManyBodyStrengthNonSymbolNodes = -9;
+    this.forceManyBodyStrengthNonSymbolNodes = this.props.logoMode ? -3.75 : -9;
 
     // Specify the link distance. "The link force pushes linked nodes together or apart according to
     // the desired link distance." The default value is 30.
-    this.linkDistance = 14;
+    this.linkDistance = this.props.logoMode ? 19 : 14;
 
     // Specify node and link drawing properties.
     this.nodeStrokeWidth = 1;
     this.nodeRadius = 4.5;
-    this.nodeRadiusSelected = 5.5;
+    this.nodeRadiusSelected = this.props.logoMode ? 11 : 5.5;
     this.nodeFillColorArray = [127, 127, 127];
     this.nodeSelectedFillColorArray = [255, 255, 255];
     this.nodeSelectedStrokeColorArray = [255, 255, 255];
     this.nodeOpacity = 0.5;
     this.nodeOpacitySelected = 0.75;
-    this.linkStrokeWidth = 2; // why do lines get blurry when this is increased?
+    this.linkStrokeWidth = this.props.logoMode ? 3 : 2; // why do lines get blurry when this is increased?
+    this.linkStrokeWidthIncreaseAtMagnitude = this.props.logoMode ? 1.5 : 0;
 
     // Adjust the symbolHeightMultiplier to make the symbol shorter or taller. A value of 1.0
     // represents normal height.
-    this.symbolHeightMultiplier = 1.111111;
+    this.symbolHeightMultiplier = this.props.logoMode ? 1.325 : 1.111111;
 
     // The initial rotateOffset does two things: it determines which part of the symbol goes in
     // front (blue is on top in the DFINITY logo), and it makes a small adjustment to align the
@@ -95,7 +96,7 @@ class DfinitySymbolD3 extends Component  {
     this.rotateTimeMs = 33.3; // 30 frames/sec max
 
     // The amount of rotation for every rotate interval.
-    this.rotateAmount = 0.000015;
+    this.rotateAmount = this.props.logoMode ? 0 : 0.000015;
 
     // The currently selected node index.
     this.selectedNodeIndex = -1;
@@ -336,7 +337,8 @@ class DfinitySymbolD3 extends Component  {
     this.simulation.alphaDecay(0);
 
     // Rotate the symbol using a d3 interval.
-    d3.interval(this.rotate, this.rotateTimeMs);
+    if (this.rotateAmount)
+      d3.interval(this.rotate, this.rotateTimeMs);
   }
 
   /**
@@ -425,7 +427,7 @@ class DfinitySymbolD3 extends Component  {
       nodeFillColor = this.rgbNumberFromArray(
         this.gradientColor(
           this.nodeSelectedFillColorArray,
-          this.nodeFillColorArray,
+          this.props.logoMode ? this.getNodeStrokeColorArray(node) : this.nodeFillColorArray,
           selectedNodeMagnitude));
       nodeOpacity =
         this.nodeOpacity + (this.nodeOpacitySelected - this.nodeOpacity) * selectedNodeMagnitude;
@@ -434,7 +436,8 @@ class DfinitySymbolD3 extends Component  {
     }
     else {
       nodeStrokeColor = this.rgbNumberFromArray(this.getNodeStrokeColorArray(node));
-      nodeFillColor = this.rgbNumberFromArray(this.nodeFillColorArray);
+      nodeFillColor = this.rgbNumberFromArray(
+        this.props.logoMode ? this.getNodeStrokeColorArray(node) : this.nodeFillColorArray);
       nodeOpacity = this.nodeOpacity;
       nodeRadius = this.nodeRadius;
     }
@@ -469,10 +472,11 @@ class DfinitySymbolD3 extends Component  {
    */
   pixiDrawLink(link, linkMagnitude) {
     let { source, target, opacity } = link;
-    const linkOpacity = opacity + 0.25 * linkMagnitude;
+    const linkOpacity = opacity + 0.25 * (this.props.logoMode ? 1 : linkMagnitude);
     this.linksGraphics.alpha = linkOpacity;
     this.linksGraphics.lineStyle(
-      this.linkStrokeWidth * this.scaleSimulationToPixi,
+      (this.linkStrokeWidth + this.linkStrokeWidthIncreaseAtMagnitude * linkMagnitude) *
+        this.scaleSimulationToPixi,
       this.rgbNumberFromArray(this.getColorArray(link.index, this.linksData.length)));
       this.linksGraphics.moveTo(
         source.x * this.scaleSimulationToPixi, source.y * this.scaleSimulationToPixi);
