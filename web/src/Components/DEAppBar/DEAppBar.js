@@ -261,6 +261,8 @@ class DEAppBar extends ResponsiveComponent {
    * @private
    */
   getAppTitle() {
+    const is_breakpoint_sm =
+      window.matchMedia('(max-width: ' + Constants.BREAKPOINT_SM + 'px)').matches;
     return (
       <Link
         style={{ textDecoration: 'none' }}
@@ -271,7 +273,9 @@ class DEAppBar extends ResponsiveComponent {
           <Grid item>
           {
             this.props.useDfinitySymbolD3 ?
-              <div style={{'marginLeft': '-10px', 'margin-right': '5px'}}>
+              <div
+                style={{'marginLeft': '-10px', 'margin-right': is_breakpoint_sm ? '-7px' : '5px'}}
+              >
                 <DfinitySymbolD3
                   width={this.getDfinitySymbolD3Width()}
                   logoMode
@@ -279,7 +283,7 @@ class DEAppBar extends ResponsiveComponent {
                 />
               </div>
             :
-              <img style={{'margin-right': '14px'}}
+              <img style={{'margin-right': is_breakpoint_sm ? '0px' : '14px'}}
                 src={dfinityLogo}
                 height={this.getDfinityLogoHeight()}
                 alt='logo'>
