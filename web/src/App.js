@@ -23,6 +23,7 @@ import BlockDetailsPage from './Components/BlockDetailsPage/BlockDetailsPage';
 import ContractsPage from './ContractsPage';
 import TransactionsPage from './TransactionsPage';
 import TransactionDetailsPage from './Components/TransactionDetailsPage/TransactionDetailsPage';
+import SearchPage from './Components/SearchPage/SearchPage';
 import DEAppBar from './Components/DEAppBar/DEAppBar';
 import Footer from './Components/Footer/Footer';
 import Constants from './constants';
@@ -74,18 +75,19 @@ class App extends Component {
    */
   constructor(props) {
     super(props);
-    this.state = {appBarRef: null};
+    this.state = {routerRef: null, appBarRef: null};
 
     // Bind to make 'this' work in callbacks.
+    this.setRouterRef = this.setRouterRef.bind(this);
     this.setAppBarRef = this.setAppBarRef.bind(this);
   }
   
   render() {
     return (
       <ApolloProvider client={apolloClient}>
-        <HashRouter>    
+        <HashRouter ref={this.setRouterRef}>    
           <div>
-            <DEAppBar ref={this.setAppBarRef} useDfinitySymbolD3 />
+            <DEAppBar ref={this.setAppBarRef} useDfinitySymbolD3 routerRef={this.state.routerRef} />
             <div className="content">
               <Route exact path='/'
                 render={(props) => <Home {...props} appBarRef={this.state.appBarRef} />}
@@ -96,6 +98,7 @@ class App extends Component {
               <Route exact path="/txs" component={TransactionsPage}/>
               <Route exact path="/block/:height" component={BlockDetailsPage}/>
               <Route exact path="/tx/:hash" component={TransactionDetailsPage}/>
+              <Route exact path="/search/:query" component={SearchPage}/>
             </div>
             <Footer />
           </div>
@@ -103,6 +106,14 @@ class App extends Component {
       </ApolloProvider>
     );
   }
+
+  /**
+   * Set a reference to the HashRouter element.
+   * @public
+   */
+  setRouterRef(element) {
+    this.setState({ routerRef: element });
+  };
 
   /**
    * Set a reference to the DEAppBar element.

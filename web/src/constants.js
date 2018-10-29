@@ -27,6 +27,8 @@ const Constants = Object.freeze({
   COLOR_TEXT_DARK: 'rgb(190, 191, 192)', // rgb(255, 255, 255, 0.7) on COLOR_DFINITY_BLACK, matches Material-UI Tab opacity
   COLOR_TEXT_DARKER: 'rgb(148, 149, 151)', // rgb(255, 255, 255, 0.5) on COLOR_DFINITY_BLACK
   COLOR_TEXT_DARKEST: 'rgb(106, 106, 109)', // rgb(255, 255, 255, 0.3) on COLOR_DFINITY_BLACK
+  COLOR_TEXT_ON_WHITE: 'black',
+  COLOR_GRAY_ON_WHITE: 'rgb(235, 235, 235)', // matches Material-UI IconButton hover
   FONT_PRIMARY: '\'Nunito Sans\', sans-serif',
   BREAKPOINT_XS: 0,
   BREAKPOINT_SM: 600,

@@ -47,7 +47,8 @@ class BlocksTableWithData extends Component {
                 subscribeToNewObjects={subscribeToNewObjects}
                 maxRows={this.props.maxRows}
               />
-            );}
+            );
+          }
         }}
       </Query>
     );

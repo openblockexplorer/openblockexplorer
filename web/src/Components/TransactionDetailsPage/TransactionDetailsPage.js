@@ -4,30 +4,33 @@
  * @license MIT License
  */
 
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+import { Query } from "react-apollo";
 import styled from 'styled-components';
 import {
   Typography
 } from '@material-ui/core';
+import queryTransaction from '../../graphql/queryTransaction';
 import Constants from '../../constants';
 
 const StyledTypography = styled(Typography)`
   && {
-    font-weight: regular;
-    font-size: 1em;
     margin-left: 25px;
-    font-family: '${Constants.FONT_PRIMARY}';
     color: ${Constants.COLOR_TEXT_LIGHT};
+    font-family: '${Constants.FONT_PRIMARY}';
+    font-size: 15px;
+    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+      font-size: 11px;
+    }
   }
 `;
 
 const ExplorerTypography = styled(StyledTypography)`
   && {
-    font-weight: bold;
-    font-size: 2em;
     margin-left: 25px;
     margin-top: 10px;
-    letter-spacing: 0;
+    font-weight: bold;
+    font-size: 2em;
     color: ${Constants.COLOR_DFINITY_LIGHT_ORANGE};
   }
 `;
@@ -42,10 +45,34 @@ class TransactionDetailsPage extends Component {
    * @public
    */
   render() {
+    let { hash } = this.props.match.params;
     return (
       <div style={{'marginTop': '40px'}}>
         <ExplorerTypography>Transaction Details</ExplorerTypography>
-        <StyledTypography>Transaction Details page coming soon.</StyledTypography>
+        <Query query={queryTransaction} variables={{ hash }}>
+          {({ loading, error, data }) => {
+            if (loading)
+              return (
+                <StyledTypography>Searching...</StyledTypography>
+              );
+            else if (error)
+              return (
+                <StyledTypography>Network error</StyledTypography>
+              );
+            else if (data.transaction)
+              return (
+                <Fragment>
+                  <StyledTypography>Hash: 0x{data.transaction.hash}</StyledTypography>
+                  <StyledTypography>Amount: {data.transaction.amount.toFixed(8).toString()} DFN</StyledTypography>
+                  <StyledTypography>Block Height: {data.transaction.block.height.toLocaleString()}</StyledTypography>
+                </Fragment>
+              );
+            else
+              return (
+                <StyledTypography>Transaction not found.</StyledTypography>
+              );
+          }}
+        </Query>
       </div>
     );
   }

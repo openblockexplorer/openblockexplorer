@@ -8,16 +8,21 @@ import gql from 'graphql-tag'
 
 /**
  * GraphQL query to get a block.
- * @param {ID} id The ID of the block to fetch.
- * @return {Object} The Block object with the specified ID.
+ * @param {Number} height The height of the block to fetch.
+ * @return {Object} The Block object with the specified height.
  */
 const queryBlock = gql`
-  query Block($id: ID!) {
-    block(id: $id) {
+  query Block($height: Int!) {
+    block(height: $height) {
       id
       height
       timestamp
       numTransactions
+      transactions {
+        id
+        hash
+        amount
+      }
     }
   }
 `;

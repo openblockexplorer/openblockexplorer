@@ -6,12 +6,16 @@
 
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import { Query } from "react-apollo";
 import styled from 'styled-components';
 import {
   AppBar,
   Grid,
   IconButton,
   Input,
+  List,
+  ListItem,
+  ListItemIcon,
   Slide,
   Tab,
   Tabs,
@@ -21,8 +25,10 @@ import {
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import SearchIcon from '@material-ui/icons/Search';
+import Downshift from 'downshift';
 import ResponsiveComponent from '../ResponsiveComponent/ResponsiveComponent'
 import DfinitySymbolD3 from '../DfinitySymbolD3/DfinitySymbolD3';
+import querySearchAutoComplete from '../../graphql/querySearchAutoComplete';
 import Constants from '../../constants';
 import dfinityLogo from './dfinity-logo.png';
 
@@ -35,6 +41,25 @@ const StyledAppBar = styled(AppBar)`
 const SearchAppBar = styled(AppBar)`
   && {
     background: white;
+  }
+`;
+
+const SearchGrid1 = styled(Grid)`
+  && {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+`;
+
+const SearchGrid2 = styled(Grid)`
+  && {
+    margin-top: 3px;
+    @media (max-width: ${Constants.BREAKPOINT_MD + 'px'}) {
+      margin-top: 6px;
+    }
+    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+      margin-top: 10px;
+    }
   }
 `;
 
@@ -99,8 +124,25 @@ const StyledInput = styled(Input)`
   && {
     font-family: ${Constants.FONT_PRIMARY};
     font-size: 24px;
+    @media (max-width: ${Constants.BREAKPOINT_MD + 'px'}) {
+      font-size: 18px;
+    }
     @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
       font-size: 12px;
+    }
+  }
+`;
+
+const StyledList = styled(List)`
+  && {
+    font-family: ${Constants.FONT_PRIMARY};
+    font-size: 16px;
+    color: ${Constants.COLOR_TEXT_ON_WHITE};
+    @media (max-width: ${Constants.BREAKPOINT_MD + 'px'}) {
+      font-size: 12px;
+    }
+    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+      font-size: 7px;
     }
   }
 `;
@@ -128,6 +170,20 @@ const StyledSearchIcon = styled(SearchIcon)`
   }
 `;
 
+const StyledListSearchIcon = styled(SearchIcon)`
+  && {
+    color: ${Constants.COLOR_TEXT_DARKER};
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+      width: 8px;
+      height: 8px;
+      margin-right: 4px;
+    }
+  }
+`;
+
 const TabsValues = {
   HOME: 0,
   BLOCKS: 1,
@@ -146,14 +202,24 @@ class DEAppBar extends ResponsiveComponent {
    */
   constructor() {
     super();
-    this.state = {tabValue: TabsValues.HOME, isSearchOn: false, dfinitySymbolD3Ref: null};
+
+    this.state = {
+      tabValue: TabsValues.HOME,
+      isSearchOn: false,
+      searchQuery: '',
+      dfinitySymbolD3Ref: null};
+
+    this.maxSearchAutoCompleteItems = 6;
 
     // Bind to make 'this' work in callbacks.
+    this.setDfinitySymbolD3Ref = this.setDfinitySymbolD3Ref.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
     this.handleLogoLinkClick = this.handleLogoLinkClick.bind(this);
     this.handleSearchClick = this.handleSearchClick.bind(this);
     this.handleCloseClick = this.handleCloseClick.bind(this);
-    this.setDfinitySymbolD3Ref = this.setDfinitySymbolD3Ref.bind(this);
+    this.handleDownshiftStateChange = this.handleDownshiftStateChange.bind(this);
+    this.handleDownshiftChange = this.handleDownshiftChange.bind(this);
+    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
   }
 
   /**
@@ -169,41 +235,107 @@ class DEAppBar extends ResponsiveComponent {
         <Toolbar />
           <Slide direction='down' in={isSearchOn} timeout={200} mountOnEnter unmountOnExit>
             <SearchAppBar>
-              <Toolbar>
-                <Grid container wrap='nowrap'>
-                  <Grid container alignItems='center' justify='flex-start' wrap='nowrap'>
-                    <Grid style={{flexGrow: '1'}} item>
-                      <StyledInput
-                        autoFocus
-                        disableUnderline
-                        fullWidth
-                        placeholder='Search for block, transaction, or address'
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid style={{flexBasis: '0'}} container alignItems='center' justify='flex-end' wrap='nowrap'>
-                    <Grid item>
-                      <Zoom
-                        in={true}
-                        timeout={300}
-                        unmountOnExit
-                      >
-                        <IconButton onClick={this.handleCloseClick}>
-                          <StyledCloseIcon />
-                        </IconButton>
-                      </Zoom>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Toolbar>
+              {this.getToolbarSearchContent()}
             </SearchAppBar>
           </Slide>
           <Slide direction='down' in={!isSearchOn} timeout={200} mountOnEnter unmountOnExit>
             <StyledAppBar>
-              {this.getToolbarContent()}
+              {this.getToolbarDefaultContent()}
             </StyledAppBar>
           </Slide>
       </Fragment>
+    );
+  }
+
+  /**
+   * Return the elements for the search toolbar based on the current breakpoint.
+   * @return The elements for the search toolbar based on the current breakpoint.
+   * @private
+   */
+  getToolbarSearchContent() {
+    return (
+      <Toolbar variant='dense'>
+        <SearchGrid1 container wrap='nowrap'>
+          <SearchGrid2 container alignItems='flex-start' justify='flex-start' wrap='nowrap'>
+            <Grid style={{flexGrow: '1'}} item>
+              <Downshift
+                onStateChange={this.handleDownshiftStateChange}
+                onChange={this.handleDownshiftChange}
+                selectedItem={this.state.searchQuery}
+              >
+                {({
+                  getInputProps,
+                  getItemProps,
+                  getMenuProps,
+                  isOpen,
+                  inputValue,
+                  highlightedIndex,
+                }) => (
+                  <div>
+                    <form onSubmit={this.handleSearchSubmit}>
+                      <StyledInput
+                        {...getInputProps({
+                          autoFocus: true,
+                          disableUnderline: true,
+                          fullWidth: true,
+                          placeholder: 'Search for block, transaction, or address'
+                        })}
+                      />
+                    </form>
+                    <Query
+                      query={querySearchAutoComplete}
+                      variables={{ query: inputValue, first: this.maxSearchAutoCompleteItems }}
+                    >
+                      {({ loading, error, data }) => {
+                        if (loading || error || !data.searchAutoComplete || !isOpen)
+                          return null;
+                        return (    
+                          <StyledList {...getMenuProps()}>
+                            {data.searchAutoComplete.items.map((item, index) => (
+                              <ListItem
+                                disableGutters
+                                {...getItemProps({
+                                  key: item,
+                                  index,
+                                  item,
+                                  style: {
+                                    backgroundColor:
+                                      highlightedIndex === index ?
+                                        Constants.COLOR_GRAY_ON_WHITE :
+                                        'white'
+                                  }
+                                })}
+                              >
+                                <ListItemIcon>
+                                  <StyledListSearchIcon />
+                                </ListItemIcon>
+                                {item}
+                              </ListItem>
+                            ))}
+                          </StyledList>
+                        );
+                      }}
+                    </Query>
+                  </div>
+                )}
+              </Downshift>
+            </Grid>
+          </SearchGrid2>
+          <Grid style={{flexBasis: '0'}} container alignItems='flex-start' justify='flex-end' wrap='nowrap'>
+            <Grid item>
+              <Zoom
+                in={true}
+                timeout={300}
+                unmountOnExit
+              >
+                <IconButton onClick={this.handleCloseClick}>
+                  <StyledCloseIcon />
+                </IconButton>
+              </Zoom>
+            </Grid>
+          </Grid>
+        </SearchGrid1>
+      </Toolbar>
     );
   }
 
@@ -212,7 +344,7 @@ class DEAppBar extends ResponsiveComponent {
    * @return The elements for the toolbar based on the current breakpoint.
    * @private
    */
-  getToolbarContent() {
+  getToolbarDefaultContent() {
     const is_breakpoint_md =
       window.matchMedia('(max-width: ' + Constants.BREAKPOINT_MD + 'px)').matches;
     if (is_breakpoint_md) {
@@ -274,7 +406,7 @@ class DEAppBar extends ResponsiveComponent {
           {
             this.props.useDfinitySymbolD3 ?
               <div
-                style={{'marginLeft': '-10px', 'margin-right': is_breakpoint_sm ? '-7px' : '5px'}}
+                style={{'marginLeft': '-10px', 'marginRight': is_breakpoint_sm ? '-7px' : '5px'}}
               >
                 <DfinitySymbolD3
                   width={this.getDfinitySymbolD3Width()}
@@ -283,7 +415,7 @@ class DEAppBar extends ResponsiveComponent {
                 />
               </div>
             :
-              <img style={{'margin-right': is_breakpoint_sm ? '0px' : '14px'}}
+              <img style={{'marginRight': is_breakpoint_sm ? '0px' : '14px'}}
                 src={dfinityLogo}
                 height={this.getDfinityLogoHeight()}
                 alt='logo'>
@@ -325,7 +457,6 @@ class DEAppBar extends ResponsiveComponent {
       return 95;
   }
   
-
   /**
    * Set a reference to the DfinitySymbolD3 element.
    * @public
@@ -434,6 +565,53 @@ class DEAppBar extends ResponsiveComponent {
     this.setState({
       isSearchOn: false
     });
+  }
+  
+ /**
+   * Callback fired any time the internal state of the Downshift component changes.
+   * @param {Object} changes The properties that have changed since the last state change.
+   * @private
+   */
+  handleDownshiftStateChange(changes) {
+    const { inputValue } = changes;
+    if (inputValue) {
+      this.setState({
+        searchQuery: inputValue
+      });
+    }
+  }
+
+  /**
+   * Callback fired when the value of the Downshift component changes.
+   * @param {Object} selectedItem The item that was just selected.
+   * @private
+   */
+  handleDownshiftChange(selectedItem) {
+    this.performSearch(selectedItem);
+  }
+
+  /**
+   * Callback fired when the SearchAppBar form is submitted.
+   * @param {Object} event The event source of the callback.
+   * @private
+   */
+  handleSearchSubmit(event) {
+    event.preventDefault();
+    this.performSearch(this.state.searchQuery);
+  }
+
+  /**
+   * Perform a search based on the specified search query.
+   * @param {String} searchQuery The search quert to use for the search.
+   * @private
+   */
+  performSearch(searchQuery) {
+    this.setState({
+      isSearchOn: false,
+      searchQuery: ''
+    });
+    if (this.props.routerRef)
+      this.props.routerRef.history.push(`/search/${searchQuery}`);
   }
 };
 

@@ -169,6 +169,7 @@ class TransactionsTable extends FadeTable {
    */
   getHashString(hash) {
     const maxLength = 24;
+    hash = "0x" + hash;
     if (hash.length > maxLength) {
       const first = hash.substring(0, maxLength - 4);
       const last = hash.substr(hash.length - 4);
