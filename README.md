@@ -10,6 +10,7 @@ This repo is the front end of DFINITY Explorer.
 * React
 * Styled-Components
 * Material-UI
+* Downshift
 * D3
 * PixiJS
 * Apollo
