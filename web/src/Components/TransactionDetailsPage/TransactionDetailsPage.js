@@ -5,6 +5,7 @@
  */
 
 import React, { Component, Fragment } from "react";
+import { Link } from 'react-router-dom';
 import { Query } from "react-apollo";
 import styled from 'styled-components';
 import {
@@ -32,6 +33,12 @@ const ExplorerTypography = styled(StyledTypography)`
     font-weight: bold;
     font-size: 2em;
     color: ${Constants.COLOR_DFINITY_LIGHT_ORANGE};
+  }
+`;
+
+const StyledLink = styled(Link)`
+  && {
+    color: ${Constants.COLOR_DFINITY_BLUE};
   }
 `;
 
@@ -64,7 +71,12 @@ class TransactionDetailsPage extends Component {
                 <Fragment>
                   <StyledTypography>Hash: 0x{data.transaction.hash}</StyledTypography>
                   <StyledTypography>Amount: {data.transaction.amount.toFixed(8).toString()} DFN</StyledTypography>
-                  <StyledTypography>Block Height: {data.transaction.block.height.toLocaleString()}</StyledTypography>
+                  <StyledTypography>
+                    {'Block Height: '}
+                    <StyledLink to={`/block/${data.transaction.block.height}`}>
+                      {data.transaction.block.height.toLocaleString()}
+                    </StyledLink>
+                  </StyledTypography>
                 </Fragment>
               );
             else

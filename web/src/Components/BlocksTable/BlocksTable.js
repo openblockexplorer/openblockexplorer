@@ -46,6 +46,7 @@ class BlocksTableWithData extends Component {
                 blocks={data.blocks}
                 subscribeToNewObjects={subscribeToNewObjects}
                 maxRows={this.props.maxRows}
+                routerRef={this.props.routerRef}
               />
             );
           }
@@ -89,7 +90,7 @@ class BlocksTableWithData extends Component {
 /**
  * This component displays a table of Block objects.
  */
-class BlocksTable extends FadeTable {  
+class BlocksTable extends FadeTable {
   /**
    * Invoked by React immediately after a component is mounted (inserted into the tree). 
    * @public
@@ -151,7 +152,8 @@ class BlocksTable extends FadeTable {
             {value: block.height.toLocaleString(), isNumeric: false},
             {value: date.toLocaleString(), isNumeric: false},
             {value: block.numTransactions.toLocaleString(), isNumeric: true}
-          ]
+          ],
+          height: block.height
         };
       });
       return bodyRows;
@@ -169,6 +171,16 @@ class BlocksTable extends FadeTable {
       {value: null, isNumeric: false},
       {value: '(simulated data)', isNumeric: true}
     ];
+  }
+
+  /**
+   * Callback fired when a body row is clicked.
+   * @param {Object} bodyRow A body row object returned by getBodyRows().
+   * @private
+   */
+  handleBodyRowClick(bodyRow) {
+    if (this.props.routerRef)
+      this.props.routerRef.history.push(`/block/${bodyRow.height}`);
   }
 }
 

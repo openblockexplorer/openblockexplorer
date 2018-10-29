@@ -126,10 +126,11 @@ class Home extends ResponsiveComponent {
                   maxRows='8'
                   dfinitySymbolD3Ref={this.state.dfinitySymbolD3Ref}
                   appBarRef={this.props.appBarRef}
+                  routerRef={this.props.routerRef}
                 />
               </BlocksTableGrid>
               <TransactionsTableGrid item xs={12} md={6}>
-                <TransactionsTable maxRows='8' />
+                <TransactionsTable maxRows='8' routerRef={this.props.routerRef} />
               </TransactionsTableGrid>
             </Grid>
           </ContentGrid>

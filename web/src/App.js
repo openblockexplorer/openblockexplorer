@@ -89,15 +89,33 @@ class App extends Component {
           <div>
             <DEAppBar ref={this.setAppBarRef} useDfinitySymbolD3 routerRef={this.state.routerRef} />
             <div className="content">
-              <Route exact path='/'
-                render={(props) => <Home {...props} appBarRef={this.state.appBarRef} />}
+              <Route
+                exact path='/'
+                render={(props) => 
+                  <Home
+                    {...props}
+                    appBarRef={this.state.appBarRef}
+                    routerRef={this.state.routerRef}
+                  />
+                }
               />
               <Route exact path="/accounts" component={AccountsPage}/>
               <Route exact path="/blocks" component={BlocksPage}/>
               <Route exact path="/contracts" component={ContractsPage}/>
               <Route exact path="/txs" component={TransactionsPage}/>
-              <Route exact path="/block/:height" component={BlockDetailsPage}/>
-              <Route exact path="/tx/:hash" component={TransactionDetailsPage}/>
+              <Route
+                exact path='/block/:height'
+                render={(props) => 
+                  <BlockDetailsPage
+                    {...props}
+                    routerRef={this.state.routerRef}
+                  />
+                }
+              />
+              <Route
+                exact path="/tx/:hash"
+                component={TransactionDetailsPage}
+              />
               <Route exact path="/search/:query" component={SearchPage}/>
             </div>
             <Footer />

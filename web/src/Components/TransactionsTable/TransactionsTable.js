@@ -46,6 +46,7 @@ class TransactionsTableWithData extends Component {
                 transactions={data.transactions}
                 subscribeToNewObjects={subscribeToNewObjects}
                 maxRows={this.props.maxRows}
+                routerRef={this.props.routerRef}
               />
             );
           }
@@ -142,7 +143,8 @@ class TransactionsTable extends FadeTable {
           cells: [
             {value: this.getHashString(transaction.hash), isNumeric: false},
             {value: transaction.amount.toFixed(8).toString() + ' DFN', isNumeric: true}
-          ]
+          ],
+          hash: transaction.hash
         };
       });
       return bodyRows;
@@ -177,6 +179,17 @@ class TransactionsTable extends FadeTable {
     }
     else
       return hash;
+  }
+
+  /**
+   * Callback fired when a body row is clicked.
+   * @param {Object} bodyRow A body row object returned by getBodyRows().
+   * @private
+   */
+  handleBodyRowClick(bodyRow) {
+    const hash = '0x' + bodyRow.hash;
+    if (this.props.routerRef)
+      this.props.routerRef.history.push(`/tx/${hash}`);
   }
 }
 

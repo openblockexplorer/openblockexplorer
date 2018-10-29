@@ -54,7 +54,8 @@ class BlockTransactionsTable extends FadeTable {
           cells: [
             {value: '0x' + transaction.hash, isNumeric: false},
             {value: transaction.amount.toFixed(8).toString() + ' DFN', isNumeric: true}
-          ]
+          ],
+          hash: transaction.hash
         };
       });
       return bodyRows;
@@ -73,6 +74,17 @@ class BlockTransactionsTable extends FadeTable {
       {value: null, isNumeric: false},
       {value: '(simulated data)', isNumeric: true}
     ];
+  }
+
+  /**
+   * Callback fired when a body row is clicked.
+   * @param {Object} bodyRow A body row object returned by getBodyRows().
+   * @private
+   */
+  handleBodyRowClick(bodyRow) {
+    const hash = '0x' + bodyRow.hash;
+    if (this.props.routerRef)
+      this.props.routerRef.history.push(`/tx/${hash}`);
   }
 }
 

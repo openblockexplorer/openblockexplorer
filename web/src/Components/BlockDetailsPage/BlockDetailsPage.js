@@ -67,7 +67,11 @@ class BlockDetailsPage extends Component {
                   <StyledTypography>Height: {data.block.height.toLocaleString()}</StyledTypography>
                   <StyledTypography>Timestamp: {date.toLocaleString()}</StyledTypography>
                   <br />
-                  <BlockTransactionsTable maxRows='100' transactions={data.block.transactions} />
+                  <BlockTransactionsTable
+                    maxRows='100'
+                    transactions={data.block.transactions}
+                    routerRef={this.props.routerRef}
+                  />
                 </Fragment>
               );
             }

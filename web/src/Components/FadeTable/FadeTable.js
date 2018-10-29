@@ -147,7 +147,7 @@ class FadeTable extends Component {
                   in={true}
                   timeout={500}
                 >
-                  <BodyTableRow>
+                  <BodyTableRow onClick={() => this.handleBodyRowClick(bodyRow)}>
                     {bodyRow.cells.map((cell, index) => {
                       return (
                         <StyledTableCell key={index} numeric={cell.isNumeric} padding={'checkbox'}>
@@ -219,6 +219,15 @@ class FadeTable extends Component {
    */
   getFooterRow() {
     throw new Error('FadeTable.getFooterRow() not implemented.');
+  }
+
+  /**
+   * Callback fired when a body row is clicked.
+   * @param {Object} bodyRow A body row object returned by getBodyRows().
+   * @private
+   */
+  handleBodyRowClick(bodyRow) {
+    // Derived classes can optionally implement this.
   }
 }
 
