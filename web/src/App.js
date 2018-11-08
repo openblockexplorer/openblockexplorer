@@ -87,7 +87,7 @@ class App extends Component {
       <ApolloProvider client={apolloClient}>
         <HashRouter ref={this.setRouterRef}>    
           <div>
-            <DEAppBar ref={this.setAppBarRef} useDfinitySymbolD3 routerRef={this.state.routerRef} />
+            <DEAppBar ref={this.setAppBarRef} routerRef={this.state.routerRef} />
             <div className="content">
               <Route
                 exact path='/'

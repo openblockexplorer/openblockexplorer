@@ -415,9 +415,9 @@ class DEAppBar extends ResponsiveComponent {
                 />
               </div>
             :
-              <img style={{'marginRight': is_breakpoint_sm ? '0px' : '14px'}}
+              <img style={{'marginRight': is_breakpoint_sm ? '0px' : '12px'}}
                 src={dfinityLogo}
-                height={this.getDfinityLogoHeight()}
+                height={this.getProductIconHeight()}
                 alt='logo'>
               </img>
           }
@@ -434,15 +434,15 @@ class DEAppBar extends ResponsiveComponent {
   }
 
   /**
-   * Return the height of the DFINITY logo based on the current breakpoint.
-   * @return The height of the DFINITY logo based on the current breakpoint.
+   * Return the height of the product icon based on the current breakpoint.
+   * @return The height of the product icon based on the current breakpoint.
    * @private
    */
-  getDfinityLogoHeight() {
+  getProductIconHeight() {
     if (window.matchMedia('(max-width: ' + Constants.BREAKPOINT_SM + 'px)').matches)
-      return 18;
+      return 23;
     else
-      return 27;
+      return 35;
   }
 
   /**
