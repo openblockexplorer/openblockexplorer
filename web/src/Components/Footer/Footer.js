@@ -1,6 +1,6 @@
 /**
  * @file Footer
- * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
 
@@ -177,11 +177,11 @@ class Footer extends ResponsiveComponent {
    */
    getCopyrightText() {
     if (window.matchMedia('(max-width: ' + Constants.BREAKPOINT_SM + 'px)').matches)
-      return '© 2018 dfinityexplorer';
+      return '© 2019 dfinityexplorer';
     else if (window.matchMedia('(max-width: ' + Constants.BREAKPOINT_MD + 'px)').matches)
-      return '© 2018 dfinityexplorer contributors';
+      return '© 2019 dfinityexplorer contributors';
     else
-      return '© 2018 dfinityexplorer contributors | All rights reserved';
+      return '© 2019 dfinityexplorer contributors | All rights reserved';
   }
 
   /**
