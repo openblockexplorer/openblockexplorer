@@ -1,10 +1,11 @@
 /**
  * @file TransactionsTable
- * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Query } from "react-apollo";
 import FadeTable from '../FadeTable/FadeTable';
 import queryTransactions from '../../graphql/queryTransactions';
@@ -14,6 +15,17 @@ import subscriptionTransaction from '../../graphql/subscriptionTransaction';
  * This component displays a table of Transaction objects with data retrieved via GraphQL.
  */
 class TransactionsTableWithData extends Component {
+  static propTypes = {
+    /**
+     * The maximum number of rows in the table.
+     */
+    maxRows: PropTypes.number.isRequired,
+    /**
+     * Reference to the <HashRouter> element.
+     */
+    routerRef: PropTypes.object
+  };
+
   /**
    * Return a reference to a React element to render into the DOM.
    * @return {Object} A reference to a React element to render into the DOM.
@@ -85,6 +97,33 @@ class TransactionsTableWithData extends Component {
  * This component displays a table of Transaction objects.
  */
 class TransactionsTable extends FadeTable { 
+  static propTypes = {
+    /**
+     * Object containing GraphQL query error information.
+     */
+    error: PropTypes.object,
+    /**
+     * Boolean indicating whether the GraphQL query is in progress.
+     */
+    loading: PropTypes.bool,
+    /**
+     * The maximum number of rows in the table.
+     */
+    maxRows: PropTypes.number.isRequired,
+    /**
+     * Reference to the <HashRouter> element.
+     */
+    routerRef: PropTypes.object,
+    /**
+     * Function to subscribe to receive new objects of the body of the table.
+     */
+    subscribeToNewObjects: PropTypes.func,
+    /**
+     * Array of transaction objects.
+     */
+    transactions: PropTypes.array.isRequired
+  };
+  
   /**
    * Invoked by React immediately after a component is mounted (inserted into the tree). 
    * @public

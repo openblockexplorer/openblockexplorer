@@ -1,16 +1,16 @@
 /**
  * @file ResponsiveComponent
- * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import { throttle } from 'throttle-debounce';
 
 /**
  * Base class component which re-renders when the window is resized.
  */
-class ResponsiveComponent extends React.Component {
+class ResponsiveComponent extends Component {
   /**
    * Create a ResponsiveComponent object.
    * @constructor

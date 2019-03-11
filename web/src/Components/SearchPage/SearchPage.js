@@ -1,10 +1,11 @@
 /**
  * @file SearchPage
- * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
 
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { Query } from "react-apollo";
 import styled from 'styled-components';
@@ -16,11 +17,11 @@ import Constants from '../../constants';
 
 const StyledTypography = styled(Typography)`
   && {
+    font-family: ${Constants.FONT_PRIMARY};
     font-weight: regular;
     font-size: 1em;
     margin-left: 25px;
-    font-family: '${Constants.FONT_PRIMARY}';
-    color: ${Constants.COLOR_TEXT_LIGHT};
+    color: ${props => props.theme.colorBodyText};
   }
 `;
 
@@ -30,6 +31,7 @@ const ExplorerTypography = styled(StyledTypography)`
     font-size: 2em;
     margin-left: 25px;
     margin-top: 10px;
+    /* Why is letter-spacing set to 0 here?!!! */
     letter-spacing: 0;
     color: ${Constants.COLOR_DFINITY_LIGHT_ORANGE};
   }
@@ -39,6 +41,13 @@ const ExplorerTypography = styled(StyledTypography)`
  * The Search Page shows details about a search.
  */
 class SearchPage extends Component {
+  static propTypes = {
+    /**
+     * Object containing information about how a <Route path> matched the URL.
+     */
+    match: PropTypes.object.isRequired
+  };
+
   /**
    * Return a reference to a React element to render into the DOM.
    * @return {Object} A reference to a React element to render into the DOM.
@@ -47,7 +56,7 @@ class SearchPage extends Component {
   render() {
     const { query } = this.props.match.params;
     return (
-      <div style={{'marginTop': '40px'}}>
+      <div style={{ marginTop: '40px' }}>
         <ExplorerTypography>Search</ExplorerTypography>
         <Query query={querySearchGetType} variables={{ query }}>
           {({ loading, error, data }) => {

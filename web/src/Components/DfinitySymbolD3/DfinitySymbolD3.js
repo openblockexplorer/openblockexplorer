@@ -1,10 +1,11 @@
 /**
  * @file DfinitySymbolD3
- * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import * as PIXI from 'pixi.js';
 import * as filters from 'pixi-filters';
@@ -14,6 +15,22 @@ import getRandomInt from '../../utils/getRandomInt';
  * This class draws the DFINITY logo infinity symbol using a d3 force-directed graph.
  */
 class DfinitySymbolD3 extends Component  {
+  static propTypes = {
+    /**
+     * True is the theme is dark, false if the theme is light.
+     */
+    isThemeDark: PropTypes.bool.isRequired,
+    /**
+     * True for logo mode, where the symbol is shaped more like the DFINITY logo, and various
+     * adjustments are made with the intention of rendering at small sizes (e.g., in an app bar).
+     */
+    logoMode: PropTypes.bool,
+    /**
+     * The width of the component, or 0 for use built-in simulationWidth.
+     */
+    width: PropTypes.number.isRequired
+  };
+
   /**
    * Create a DfinitySymbolD3 object.
    * @constructor
@@ -75,7 +92,8 @@ class DfinitySymbolD3 extends Component  {
     this.nodeStrokeWidth = 1;
     this.nodeRadius = 4.5;
     this.nodeRadiusSelected = this.props.logoMode ? 11 : 5.5;
-    this.nodeFillColorArray = [127, 127, 127];
+    // DCM 01.mar.2019: Always use same node fill color as stroke color.
+    //this.nodeFillColorArray = [127, 127, 127];
     this.nodeSelectedFillColorArray = [255, 255, 255];
     this.nodeSelectedStrokeColorArray = [255, 255, 255];
     this.nodeOpacity = 0.5;
@@ -113,7 +131,7 @@ class DfinitySymbolD3 extends Component  {
    * @public
    */
   componentDidMount() {
-    // Set the value of scaleSimulationToPixi based on the widths prop. We scale the force-directed
+    // Set the value of scaleSimulationToPixi based on the width prop. We scale the force-directed
     // graph by keeping the d3 simulation as is, since it is finely tuned to appear in a certain
     // way, and instead scaling coordinates from simulation space to PixiJS space when rendering.
     // In this way, the graph can be scaled to any width by changing the widths prop. A width prop
@@ -427,7 +445,9 @@ class DfinitySymbolD3 extends Component  {
       nodeFillColor = this.rgbNumberFromArray(
         this.gradientColor(
           this.nodeSelectedFillColorArray,
-          this.props.logoMode ? this.getNodeStrokeColorArray(node) : this.nodeFillColorArray,
+          // DCM 01.mar.2019: Always use same node fill color as stroke color.
+          this.getNodeStrokeColorArray(node),
+          //this.props.logoMode ? this.getNodeStrokeColorArray(node) : this.nodeFillColorArray,
           selectedNodeMagnitude));
       nodeOpacity =
         this.nodeOpacity + (this.nodeOpacitySelected - this.nodeOpacity) * selectedNodeMagnitude;
@@ -436,8 +456,12 @@ class DfinitySymbolD3 extends Component  {
     }
     else {
       nodeStrokeColor = this.rgbNumberFromArray(this.getNodeStrokeColorArray(node));
-      nodeFillColor = this.rgbNumberFromArray(
-        this.props.logoMode ? this.getNodeStrokeColorArray(node) : this.nodeFillColorArray);
+      // DCM 01.mar.2019: Always use same node fill color as stroke color.
+      nodeFillColor = nodeStrokeColor;
+      //nodeFillColor = this.rgbNumberFromArray(
+      //  this.props.logoMode ?
+      //    this.getNodeStrokeColorArray(node) : this.nodeFillColorArray);
+
       nodeOpacity = this.nodeOpacity;
       nodeRadius = this.nodeRadius;
     }

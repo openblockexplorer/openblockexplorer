@@ -1,10 +1,11 @@
 /**
  * @file BlocksTable
- * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Query } from "react-apollo";
 import FadeTable from '../FadeTable/FadeTable';
 import queryBlocks from '../../graphql/queryBlocks';
@@ -14,6 +15,21 @@ import subscriptionBlock from '../../graphql/subscriptionBlock';
  * This component displays a table of Block objects with data retrieved via GraphQL.
  */
 class BlocksTableWithData extends Component {
+  static propTypes = {
+    /**
+     * Reference to the <DfinitySymbolD3> element.
+     */
+    dfinitySymbolD3Ref: PropTypes.element,
+    /**
+     * The maximum number of rows in the table.
+     */
+    maxRows: PropTypes.number.isRequired,
+    /**
+     * Reference to the <HashRouter> element.
+     */
+    routerRef: PropTypes.object
+  };
+
   /**
    * Return a reference to a React element to render into the DOM.
    * @return {Object} A reference to a React element to render into the DOM.
@@ -68,8 +84,6 @@ class BlocksTableWithData extends Component {
           return prev;
 
         // Add a new block to the DFINITY logo infinity symbol.
-        if (this.props.appBarRef)
-          this.props.appBarRef.addNewBlock();
         if (this.props.dfinitySymbolD3Ref)
           this.props.dfinitySymbolD3Ref.addNewBlock();
 
@@ -91,6 +105,33 @@ class BlocksTableWithData extends Component {
  * This component displays a table of Block objects.
  */
 class BlocksTable extends FadeTable {
+  static propTypes = {
+    /**
+     * Array of block objects.
+     */
+    blocks: PropTypes.array.isRequired,
+    /**
+     * Object containing GraphQL query error information.
+     */
+    error: PropTypes.object,
+    /**
+     * Boolean indicating whether the GraphQL query is in progress.
+     */
+    loading: PropTypes.bool,
+    /**
+     * The maximum number of rows in the table.
+     */
+    maxRows: PropTypes.number.isRequired,
+    /**
+     * Reference to the <HashRouter> element.
+     */
+    routerRef: PropTypes.object,
+    /**
+     * Function to subscribe to receive new objects of the body of the table.
+     */
+    subscribeToNewObjects: PropTypes.func
+  };
+  
   /**
    * Invoked by React immediately after a component is mounted (inserted into the tree). 
    * @public

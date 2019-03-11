@@ -1,78 +1,84 @@
 /**
  * @file Footer
- * @copyright Copyright (c) 2019 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { loadCSS } from 'fg-loadcss';
-import { Button, Grid, Icon, IconButton, Toolbar, Typography } from '@material-ui/core';
-import MailIcon from '@material-ui/icons/MailOutline';
-import ResponsiveComponent from '../ResponsiveComponent/ResponsiveComponent'
+import {
+  Button,
+  Checkbox,
+  Grid,
+  Icon,
+  IconButton,
+  SvgIcon,
+  Toolbar,
+  Typography
+} from '@material-ui/core';
+import ResponsiveComponent from '../ResponsiveComponent/ResponsiveComponent';
+import { Breakpoints, getBreakpoint } from '../../utils/breakpoint';
 import Constants from '../../constants';
 
+// BUG: At smaller screen sizes, footer gets wider than parent (horz scroll)!!!
 const FooterToolbar = styled(Toolbar)`
   && {
-    position: fixed;
+    /*!!! position: fixed; */
     left: 0;
     right: 0;
     bottom: 0;
     height: ${Constants.FOOTER_HEIGHT + 'px'};
     text-align: center;
-    background: ${Constants.COLOR_DFINITY_BLACK};
+    background: ${props => props.theme.colorFooterBackground};
     color: ${Constants.COLOR_TEXT_DARKER};
+    /* This doesn't seem to do anything!!!
     padding-left: 8;
-    padding-right: 8;
+    padding-right: 8; */
   }
 `;
 
-const ContentGrid = styled(Grid)`
-  && {
-    max-width: ${Constants.BREAKPOINT_LG_MAX_WIDTH + 'px'};
-`;
+// remove if not used!!!
+// const ContentGrid = styled(Grid)`
+//   && {
+//     /* Possibly remove this!!! We should even try to remove BREAKPOINT_LG_MAX_WIDTH constant!!! */
+//     max-width: ${Constants.BREAKPOINT_LG_MAX_WIDTH + 'px'};
+// `;
 
 const OneThirdGrid = styled(Grid)`
   && {
-    width: 33.33%;
+    /*Doesn't seem needed!!! width: 33.33%; */
+`;
+
+// Need narrower margins for left and right grids for small screens!!!
+const LeftThirdGrid = styled(OneThirdGrid)`
+  && {
+    margin-left: 32px;
+    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
+      margin-left: 8px;
+    }
+`;
+
+const RightThirdGrid = styled(OneThirdGrid)`
+  && {
+    margin-right: 32px;
+    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
+      margin-right: 8px;
+    }
 `;
 
 const FooterTypography = styled(Typography)`
   && {
     font-family: ${Constants.FONT_PRIMARY};
-  }
-`;
-
-const CopyrightTypography = styled(FooterTypography)`
-  && {
     font-size: 12px;
-  }
-`;
-
-const NotifiedTypography = styled(FooterTypography)`
-  && {
-    font-size: 1.0em;
-  }
-`;
-
-const SubscribeButton = styled(Button)`
-  && {
-    margin-top: -54px;
-    background: ${Constants.COLOR_DFINITY_BLUE_TRANSPARENT};
-    color: ${Constants.COLOR_TEXT_DARK};
-    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
-      margin-top: 0px;
-    }
-    &:hover {
-      background: ${Constants.COLOR_DFINITY_BLUE};
-      color: ${Constants.COLOR_TEXT_LIGHT};
-    }
   }
 `;
 
 const AwesomeIconButtonGrid = styled(Grid)`
   && {
-    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+    // Look into why this is needed!!!
+    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
       min-width: 35px;
     }
   }
@@ -92,10 +98,37 @@ const AwesomeIcon = styled(Icon)`
   }
 `;
 
+const ThemeCheckbox = styled(Checkbox)`
+  && {
+    color: ${Constants.COLOR_TEXT_DARKER};
+    &:hover {
+      color: ${Constants.COLOR_TEXT_LIGHT}; // This doesn't work for light mode!!!
+    }
+  }
+`;
+
+const ThemeSvgIcon = styled(SvgIcon)`
+  && {
+    margin-top: -1px;
+    font-size: 17px;
+  }
+`;
+
 /**
  * The Footer provides information related to the current screen.
  */
 class Footer extends ResponsiveComponent {
+  static propTypes = {
+    /**
+     * True is the theme is dark, false if the theme is light.
+     */
+    isThemeDark: PropTypes.bool.isRequired,
+    /**
+     * Callback fired when the value of the theme checkbox changes.
+     */    
+    handleThemeChange: PropTypes.func.isRequired
+  };
+
   /**
    * Invoked by React immediately after a component is mounted (inserted into the tree). 
    * @public
@@ -114,90 +147,97 @@ class Footer extends ResponsiveComponent {
   render() {
     return (
       <FooterToolbar>
-        <Grid container alignItems='center' justify='center'>
-          <ContentGrid container alignItems='center' wrap='nowrap'>
-            <OneThirdGrid container alignItems='flex-start' justify='flex-start'>
+        {/*!!! <Grid container direction='row' justify='center' alignItems='center'> */}
+          {/*!!! <Grid container direction='row' justify='center' alignItems='center' wrap='nowrap'> */}
+            <LeftThirdGrid container direction='row' justify='flex-start' alignItems='center'>
               <Grid item>
-                <CopyrightTypography color='inherit'>
+                <FooterTypography color='inherit'>
                   {this.getCopyrightText()}
-                </CopyrightTypography>
+                </FooterTypography>
+              </Grid>
+            </LeftThirdGrid>
+            <OneThirdGrid container direction='row' justify='center' alignItems='center'>
+              <Grid item>
+                <FooterTypography color='inherit'>
+                  {this.getSimulatedText()}
+                </FooterTypography>
               </Grid>
             </OneThirdGrid>
-            <OneThirdGrid container alignItems='center' justify='center'>
-              {/* Begin MailChimp Signup Form */}
-              <form action='https://dfinityexplorer.us18.list-manage.com/subscribe/post?u=059dc252f5f0cea2fec413c42&amp;id=4ebbd6c248' method='post' id='mc-embedded-subscribe-form' name='mc-embedded-subscribe-form' className='validate' target='_blank' noValidate>
-                {/* real people should not fill this in and expect good things - do not remove this or risk form bot signups  */}
-                <div style={{position: 'absolute', left: '-5000px'}} aria-hidden='true'>
-                  <input type='text' name='b_059dc252f5f0cea2fec413c42_4ebbd6c248' tabIndex='-1' value='' />
-                </div>
-                <Grid item>
-                  <div className='clear'>
-                    <SubscribeButton variant='fab' type='submit'>
-                      <MailIcon />
-                    </SubscribeButton>
-                  </div>
-                </Grid>
-                <Grid item>
-                  <label htmlFor='mce-EMAIL'>
-                    <NotifiedTypography color='inherit'>
-                      {this.getNotifiedText()}
-                    </NotifiedTypography>
-                  </label>
-                </Grid>
-              </form>
-              {/* End MailChimp Signup Form */}
-            </OneThirdGrid>
-            <OneThirdGrid container alignItems='center' justify='flex-end' wrap='nowrap'>
+            <RightThirdGrid container direction='row' justify='flex-end' alignItems='center' wrap='nowrap'>
               <AwesomeIconButtonGrid item>
-                <AwesomeIconButton color='inherit' href={Constants.URI_DFINITY_EXPLORER_TWITTER}>
+                <AwesomeIconButton
+                  color='inherit'
+                  href={Constants.URI_DFINITY_EXPLORER_TWITTER}
+                  target='_blank'
+                >
                   <AwesomeIcon className='fa fa-twitter' />
                 </AwesomeIconButton>
               </AwesomeIconButtonGrid>
               <AwesomeIconButtonGrid item>
-                <AwesomeIconButton color='inherit' href={Constants.URI_DFINITY_EXPLORER_FACEBOOK}>
-                  <AwesomeIcon className='fa fa-facebook-f' />
-                </AwesomeIconButton>
-              </AwesomeIconButtonGrid>
-              <AwesomeIconButtonGrid item>
-                <AwesomeIconButton color='inherit' href={Constants.URI_DFINITY_EXPLORER_GITHUB}>
+                <AwesomeIconButton
+                  color='inherit'
+                  href={Constants.URI_DFINITY_EXPLORER_GITHUB}
+                  target='_blank'
+                >
                   <AwesomeIcon className='fa fa-github' />
                 </AwesomeIconButton>
               </AwesomeIconButtonGrid>
-            </OneThirdGrid>
-          </ContentGrid>
-        </Grid>
+              <AwesomeIconButtonGrid item>
+                <ThemeCheckbox
+                  color='default'
+                  checked={this.props.isThemeDark}
+                  icon={
+                    <ThemeSvgIcon>
+                      <path d={Constants.ICON_SVG_PATH_THEME_LIGHT} />
+                    </ThemeSvgIcon>
+                  }
+                  checkedIcon={
+                    <ThemeSvgIcon>
+                      <path d={Constants.ICON_SVG_PATH_THEME_DARK} />
+                    </ThemeSvgIcon>
+                  }
+                  onChange={this.props.handleThemeChange}
+                />
+              </AwesomeIconButtonGrid>
+            </RightThirdGrid>
+          {/*!!! </Grid> */}
+        {/*!!! </Grid> */}
       </FooterToolbar>
     );
   }
 
   /**
-   * Return the text for the CopyrightTypography element.
-   * @return {Object} the text for the CopyrightTypography element.
+   * Return the copyright text.
+   * @return {Object} the copyright text.
    * @public
    */
    getCopyrightText() {
-    if (window.matchMedia('(max-width: ' + Constants.BREAKPOINT_SM + 'px)').matches)
-      return '© 2019 dfinityexplorer';
-    else if (window.matchMedia('(max-width: ' + Constants.BREAKPOINT_MD + 'px)').matches)
-      return '© 2019 dfinityexplorer contributors';
-    else
-      return '© 2019 dfinityexplorer contributors | All rights reserved';
+    const breakpoint = getBreakpoint();
+    switch (breakpoint) {
+      case Breakpoints.XS:
+        return '© 2019 dfinityexplorer';
+      case Breakpoints.SM:
+        return '© 2019 dfinityexplorer contributors';
+      default:
+        return '© 2019 dfinityexplorer contributors | All rights reserved';
+    }
   }
 
   /**
-   * Return the text for the NotifiedTypography element.
-   * @return {Object} the text for the NotifiedTypography element.
+   * Return the "data is simulated text".
+   * @return {Object} The "data is simulated text".
    * @public
    */
-  getNotifiedText() {
-    if (window.matchMedia('(max-width: ' + Constants.BREAKPOINT_SM + 'px)').matches)
-      return '';
-    else if (window.matchMedia('(max-width: ' + Constants.BREAKPOINT_MD + 'px)').matches)
-      return 'Get notified!';
-    else if (window.matchMedia('(max-width: ' + Constants.BREAKPOINT_LG + 'px)').matches)
-      return 'Get notified when DE goes live!';
-    else
-      return 'Get notified when DFINITY Explorer goes live!';
+  getSimulatedText() {
+    const breakpoint = getBreakpoint();
+    switch (breakpoint) {
+      case Breakpoints.XS:
+        return '(simulated)';
+      case Breakpoints.SM:
+        return '(data is simulated)';
+      default:
+        return '(network and price data is simulated)';
+    }
   }
 };
 

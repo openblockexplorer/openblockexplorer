@@ -1,10 +1,11 @@
 /**
  * @file TransactionDetailsPage
- * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
 
 import React, { Component, Fragment } from "react";
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Query } from "react-apollo";
 import styled from 'styled-components';
@@ -17,10 +18,10 @@ import Constants from '../../constants';
 const StyledTypography = styled(Typography)`
   && {
     margin-left: 25px;
-    color: ${Constants.COLOR_TEXT_LIGHT};
-    font-family: '${Constants.FONT_PRIMARY}';
+    color: ${props => props.theme.colorBodyText};
+    font-family: ${Constants.FONT_PRIMARY};
     font-size: 15px;
-    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
       font-size: 11px;
     }
   }
@@ -46,6 +47,13 @@ const StyledLink = styled(Link)`
  * The Transaction Details Page shows details about a transaction.
  */
 class TransactionDetailsPage extends Component {
+  static propTypes = {
+    /**
+     * Object containing information about how a <Route path> matched the URL.
+     */
+    match: PropTypes.object.isRequired
+  };
+
   /**
    * Return a reference to a React element to render into the DOM.
    * @return {Object} A reference to a React element to render into the DOM.
@@ -54,7 +62,7 @@ class TransactionDetailsPage extends Component {
   render() {
     let { hash } = this.props.match.params;
     return (
-      <div style={{'marginTop': '40px'}}>
+      <div style={{ marginTop: '40px' }}>
         <ExplorerTypography>Transaction Details</ExplorerTypography>
         <Query query={queryTransaction} variables={{ hash }}>
           {({ loading, error, data }) => {

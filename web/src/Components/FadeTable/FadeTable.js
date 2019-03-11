@@ -1,10 +1,11 @@
 /**
  * @file FadeTable
- * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
   Fade,
@@ -27,14 +28,15 @@ const StyledPaper = styled(Paper)`
 
 const TitleTypography = styled(Typography)`
   && {
-    color: ${Constants.COLOR_TEXT_LIGHT};
+    color: ${props => props.theme.colorBodyText};
     padding-left: 9px;
     padding-bottom: 4px;
     text-align: left;
     font-family: ${Constants.FONT_PRIMARY};
     font-size: 32px;
+    // Consider changing letter-spacing now that we've changed font!!!
     letter-spacing: 1px;
-    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
       font-size: 24px;
     }
   }
@@ -61,7 +63,7 @@ const StyledTableRow = styled(TableRow)`
 const StyledTableCell = styled(TableCell)`
   && {
     border-color: ${Constants.COLOR_DFINITY_BLACK_LIGHTER};
-    color: ${Constants.COLOR_TEXT_LIGHT};
+    color: ${props => props.theme.colorBodyText};
     font-size: 15px;
     white-space: nowrap;
     /* Reducing the font size for narrow page widths seems sufficient for resizing the table when
@@ -69,7 +71,7 @@ const StyledTableCell = styled(TableCell)`
        'max-width: 0px', were also helpful in improving the table at narrow page widths, but do
        not seem to be necessary with the current settings. Another useful setting is
        'text-overflow: ellipsis', though we reduce the font size rather than using ellipsis. */
-    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
       font-size: 11px;
     }
   }
@@ -78,6 +80,7 @@ const StyledTableCell = styled(TableCell)`
 const HeaderTableCell = styled(StyledTableCell)`
   && {
     font-weight: bold;
+    // Consider changing letter-spacing now that we've changed font!!!
     letter-spacing: 1px;
   }
 `;
@@ -107,6 +110,13 @@ const FooterTableCell = styled(StyledTableCell)`
  * Base class that implements a table component where new rows fade in.
  */
 class FadeTable extends Component { 
+  static propTypes = {
+    /**
+     * The maximum number of rows in the table.
+     */
+    maxRows: PropTypes.number.isRequired
+  };
+
   /**
    * Return a reference to a React element to render into the DOM.
    * @return {Object} A reference to a React element to render into the DOM.

@@ -1,33 +1,22 @@
 /**
  * @file TransactionsPage
- * @copyright Copyright (c) 2018 Todd Kitchens and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2019 Dylan Miller, Todd Kitchens, and dfinityexplorer contributors
  * @license MIT License
  */
 
 import React, { Component } from "react";
-import Constants from './constants';
+import Constants from '../../constants';
 import styled from 'styled-components';
 import {
-  // AppBar,
-  // Grid,
-  // IconButton,
-  // Input,
-  // Slide,
-  // Tab,
-  // Tabs,
-  // Toolbar,
-  Typography,
-  // Zoom
+  Typography
 } from '@material-ui/core';
-// import FadeTable from './Components/FadeTable/Fade'
 
 const StyledTypography = styled(Typography)`
   && {
+    font-family: ${Constants.FONT_PRIMARY};
     font-weight: regular;
     font-size: 1em;
-    margin-left: 25px;
-    font-family: ${Constants.FONT_PRIMARY};
-    color: ${Constants.COLOR_TEXT_LIGHT};
+    color: ${props => props.theme.colorBodyText};
   }
 `;
 
@@ -35,9 +24,6 @@ const ExplorerTypography = styled(StyledTypography)`
   && {
     font-weight: bold;
     font-size: 2em;
-    margin-left: 25px;
-    margin-top: 10px;
-    letter-spacing: 0;
     color: ${Constants.COLOR_DFINITY_LIGHT_ORANGE};
   }
 `;
@@ -45,7 +31,7 @@ const ExplorerTypography = styled(StyledTypography)`
 class TransactionsPage extends Component {
  render() {
    return (
-     <div style={{'marginTop': '40px'}}>
+     <div style={{ marginTop: '32px', marginLeft: '32px' }}>
        <ExplorerTypography>Transactions</ExplorerTypography>
        <StyledTypography>Transactions page coming soon.</StyledTypography>
      </div>

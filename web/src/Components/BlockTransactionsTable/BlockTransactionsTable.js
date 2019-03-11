@@ -1,15 +1,31 @@
 /**
  * @file BlockTransactionsTable
- * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
 
+import PropTypes from 'prop-types';
 import FadeTable from '../FadeTable/FadeTable';
 
 /**
  * This component displays a table of Transaction objects.
  */
 class BlockTransactionsTable extends FadeTable { 
+  static propTypes = {
+    /**
+     * The maximum number of rows in the table.
+     */
+    maxRows: PropTypes.number.isRequired,
+    /**
+     * Reference to the <HashRouter> element.
+     */
+    routerRef: PropTypes.object,
+    /**
+     * Array of transaction objects.
+     */
+    transactions: PropTypes.array.isRequired
+  };
+
   /**
    * Return the title of the table.
    * @return {String} The title of the table.

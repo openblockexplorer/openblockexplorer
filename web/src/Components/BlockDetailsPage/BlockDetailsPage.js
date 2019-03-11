@@ -1,10 +1,11 @@
 /**
  * @file BlockDetailsPage
- * @copyright Copyright (c) 2018 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
 
 import React, { Component, Fragment } from "react";
+import PropTypes from 'prop-types';
 import { Query } from "react-apollo";
 import styled from 'styled-components';
 import {
@@ -17,10 +18,10 @@ import Constants from '../../constants';
 const StyledTypography = styled(Typography)`
   && {
     margin-left: 25px;
-    color: ${Constants.COLOR_TEXT_LIGHT};
-    font-family: '${Constants.FONT_PRIMARY}';
+    color: ${props => props.theme.colorBodyText};
+    font-family: ${Constants.FONT_PRIMARY};
     font-size: 15px;
-    @media (max-width: ${Constants.BREAKPOINT_SM + 'px'}) {
+    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
       font-size: 11px;
     }
   }
@@ -40,6 +41,17 @@ const ExplorerTypography = styled(StyledTypography)`
  * The Block Details Page shows details about a block.
  */
 class BlockDetailsPage extends Component {
+  static propTypes = {
+    /**
+     * Object containing information about how a <Route path> matched the URL.
+     */
+    match: PropTypes.object.isRequired,
+    /**
+     * Reference to the <HashRouter> element.
+     */
+    routerRef: PropTypes.object
+  };
+
   /**
    * Return a reference to a React element to render into the DOM.
    * @return {Object} A reference to a React element to render into the DOM.
@@ -48,7 +60,7 @@ class BlockDetailsPage extends Component {
   render() {
     const { height } = this.props.match.params;
     return (
-      <div style={{'marginTop': '40px'}}>
+      <div style={{ marginTop: '40px' }}>
         <ExplorerTypography>Block Details</ExplorerTypography>
         <Query query={queryBlock} variables={{ height }}>
           {({ loading, error, data }) => {
@@ -68,7 +80,7 @@ class BlockDetailsPage extends Component {
                   <StyledTypography>Timestamp: {date.toLocaleString()}</StyledTypography>
                   <br />
                   <BlockTransactionsTable
-                    maxRows='100'
+                    maxRows={100}
                     transactions={data.block.transactions}
                     routerRef={this.props.routerRef}
                   />
