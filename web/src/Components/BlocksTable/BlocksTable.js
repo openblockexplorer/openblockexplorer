@@ -148,7 +148,7 @@ class BlocksTable extends FadeTable {
    * @protected
    */
   getTitle() {
-    return 'Recent Blocks';
+    return 'Blocks';
   }
 
   /**

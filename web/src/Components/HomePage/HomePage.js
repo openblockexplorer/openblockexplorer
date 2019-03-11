@@ -4,16 +4,15 @@
  * @license MIT License
  */
 
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
   Grid
 } from '@material-ui/core';
 import { duration, easing } from '@material-ui/core/styles/transitions';
-// remove if not used!!!
-// import BlocksTable from '../BlocksTable/BlocksTable';
-// import TransactionsTable from '../TransactionsTable/TransactionsTable';
+import BlocksTable from '../BlocksTable/BlocksTable';
+import TransactionsTable from '../TransactionsTable/TransactionsTable';
 import DashCard from '../DashCard/DashCard';
 import ResponsiveComponent from '../ResponsiveComponent/ResponsiveComponent'
 import { Breakpoints, getBreakpoint } from '../../utils/breakpoint';
@@ -50,10 +49,39 @@ const ContentGrid = styled(Grid)`
 // The About page padding/margins are not good here. Look at dashboard examples and see how they set margins!!!
 const GridSection = styled(Grid)`
   && {
-    padding-top: 32px;
-    padding-bottom: 32px;
+    padding-top: 16px;
+    padding-bottom: 16px;
     padding-left: 32px;
     padding-right: 32px;
+  /*!!! padding-top: 96px;
+    padding-bottom: 96px;
+    transition: ${'padding ' + duration.standard + 'ms ' + easing.easeInOut};
+    ${({ breakpoint }) =>
+      ((breakpoint === Breakpoints.XL || breakpoint === Breakpoints.LG) && `
+        padding-left: ${Constants.ABOUT_PAGE_MARGIN_LG + 'px'};
+        padding-right: ${Constants.ABOUT_PAGE_MARGIN_LG + 'px'};
+      `) ||
+      (breakpoint === Breakpoints.MD && `
+        padding-left: ${Constants.ABOUT_PAGE_MARGIN_MD + 'px'};
+        padding-right: ${Constants.ABOUT_PAGE_MARGIN_MD + 'px'};
+      `) ||
+      (breakpoint === Breakpoints.SM && `
+        padding-left: ${Constants.ABOUT_PAGE_MARGIN_SM + 'px'};
+        padding-right: ${Constants.ABOUT_PAGE_MARGIN_SM + 'px'};
+      `) ||
+      (breakpoint === Breakpoints.XS && `
+        padding-top: 64px;
+        padding-bottom: 64px;
+        padding-left: ${Constants.ABOUT_PAGE_MARGIN_XS + 'px'};
+        padding-right: ${Constants.ABOUT_PAGE_MARGIN_XS + 'px'};
+      `)
+    } */
+  }
+`;
+
+const GridSectionCards = styled(GridSection)`
+  && {
+    margin-top: 16px;
   /*!!! padding-top: 96px;
     padding-bottom: 96px;
     transition: ${'padding ' + duration.standard + 'ms ' + easing.easeInOut};
@@ -83,6 +111,23 @@ const GridSection = styled(Grid)`
 const GridCard = styled(Grid)`
   && {
     width: calc(25% - 16px);
+    /*!!! ${({ breakpoint }) =>
+      ((breakpoint === Breakpoints.XL || breakpoint === Breakpoints.LG) && `
+        width: calc(25% - ${Constants.ABOUT_PAGE_MARGIN_LG/2 + 'px'});
+      `) ||
+      (breakpoint === Breakpoints.MD && `
+        width: calc(25% - ${Constants.ABOUT_PAGE_MARGIN_MD/2 + 'px'});
+      `) ||
+      ((breakpoint === Breakpoints.SM || breakpoint === Breakpoints.XS) && `
+        width: 100%;
+      `)
+    } */
+  }
+`;
+
+const GridTable = styled(Grid)`
+  && {
+    width: calc(50% - 16px);
     /*!!! ${({ breakpoint }) =>
       ((breakpoint === Breakpoints.XL || breakpoint === Breakpoints.LG) && `
         width: calc(25% - ${Constants.ABOUT_PAGE_MARGIN_LG/2 + 'px'});
@@ -194,6 +239,7 @@ class HomePage extends ResponsiveComponent {
    */
   constructor(props) {
     super(props);
+    // Does a ref need to be in the state, or can it simply be a member?!!!
     this.state = {dfinitySymbolD3Ref: null};// remove if not used!!!
 
     // Bind to make 'this' work in callbacks.
@@ -207,57 +253,11 @@ class HomePage extends ResponsiveComponent {
    */
   render() {
     return (
-      <Fragment>
+      <div>
         {this.getSectionCards()}
         {this.getSectionTables()}
-      </Fragment>
+      </div>
     );
-
-
-      // HomeDiv is not indented, so fix indentation if we're using HomeDiv!!!
-      {/* <HomeDiv>
-      <Grid container alignItems='center' direction='column' justify='flex-start'>
-        <ContentGrid container>
-          <Grid container alignItems='flex-start' justify='center'>*/}
-            {/* These xs and md values are just placeholders, need to figure out correct code!!! */}
-            {/* RENT is red green yellow teal*/}
-            {/*
-            <CardGrid item xs={3} md={3}>
-              <DashCardA cardIndex={0} title='Blocks' value='3,158,151' svgIconPath={Constants.ICON_SVG_PATH_BLOCK} />
-            </CardGrid>
-            <CardGrid item xs={3} md={3}>
-              <DashCardB cardIndex={1} title='Avg Block Time' value='3.5 s' svgIconPath={Constants.ICON_SVG_PATH_BLOCK_TIME} />
-            </CardGrid>
-            <CardGrid item xs={3} md={3}>
-              <DashCardC cardIndex={2} title='Avg Transactions' value='24 tps' svgIconPath={Constants.ICON_SVG_PATH_TPS} />
-            </CardGrid>
-            <CardGrid item xs={3} md={3}>
-              <DashCardD cardIndex={3} title='Price' value='$9.52' svgIconPath={Constants.ICON_SVG_PATH_PRICE} />
-            </CardGrid>
-          </Grid>
-        </ContentGrid>
-      </Grid> */
-        {/* <Grid container alignItems='center' direction='column' justify='center'>
-          <DfinitySymbolD3Grid item>
-            <DfinitySymbolD3 width={this.getDfinitySymbolD3Width()} ref={this.setDfinitySymbolD3Ref} />
-          </DfinitySymbolD3Grid>
-          <ContentGrid container>
-            <Grid container alignItems='flex-start' justify='center'>
-              <BlocksTableGrid item xs={12} md={6}>
-                <BlocksTable
-                  maxRows={8}
-                  dfinitySymbolD3Ref={this.state.dfinitySymbolD3Ref}
-                  routerRef={this.props.routerRef}
-                />
-              </BlocksTableGrid>
-              <TransactionsTableGrid item xs={12} md={6}>
-                <TransactionsTable maxRows={8} routerRef={this.props.routerRef} />
-              </TransactionsTableGrid>
-            </Grid>
-          </ContentGrid>
-        </Grid> */}
-      /* </HomeDiv>
-    ); */}
   }
 
   /**
@@ -271,7 +271,12 @@ class HomePage extends ResponsiveComponent {
 
     // Add fade similar to ImageLinkGrid!!!
     return (
-      <GridSection container direction='row' justify='space-between' alignItems='center' breakpoint={breakpoint}>
+      <GridSectionCards container
+        direction='row'
+        justify='space-between'
+        alignItems='center'
+        breakpoint={breakpoint}
+      >
         <GridCard item breakpoint={breakpoint}>
           <DashCardA cardIndex={0} title='Blocks' value='3,158,151' svgIconPath={Constants.ICON_SVG_PATH_BLOCK} />
         </GridCard>
@@ -284,7 +289,7 @@ class HomePage extends ResponsiveComponent {
         <GridCard item breakpoint={breakpoint}>
           <DashCardD cardIndex={3} title='Price' value='$9.52' svgIconPath={Constants.ICON_SVG_PATH_PRICE} />
         </GridCard>
-      </GridSection>
+      </GridSectionCards>
     );
   }
 
@@ -298,8 +303,25 @@ class HomePage extends ResponsiveComponent {
     const { breakpoint } = this.props;
 
     // Add fade similar to ImageLinkGrid!!!
+    // The use of Paper here is likely redundant if FadeTable uses Paper!!!
     return (
-      null
+      <GridSection container
+        direction='row'
+        justify='space-between'
+        alignItems='center'
+        breakpoint={breakpoint}
+      >
+        <GridTable item breakpoint={breakpoint}>
+          <BlocksTable
+            maxRows={8}
+            dfinitySymbolD3Ref={this.state.dfinitySymbolD3Ref}
+            routerRef={this.props.routerRef}
+          />
+        </GridTable>
+        <GridTable item breakpoint={breakpoint}>
+          <TransactionsTable maxRows={8} routerRef={this.props.routerRef} />
+        </GridTable>
+      </GridSection>
     );
   }
 

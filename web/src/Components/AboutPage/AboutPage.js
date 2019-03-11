@@ -4,7 +4,7 @@
  * @license MIT License
  */
 
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
@@ -362,14 +362,14 @@ class AboutPage extends ResponsiveComponent {
    */
   render() {
     return (
-      <Fragment>
+      <div>
         {this.getHeader()}
         {this.getSectionMission()}
         {this.getSectionOpenSource()}
         {this.getSectionCommunity()}
         {this.getSectionContributors()}
         {this.getSectionThanks()}
-      </Fragment>
+      </div>
     );
   }
 

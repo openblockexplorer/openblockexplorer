@@ -140,7 +140,7 @@ class TransactionsTable extends FadeTable {
    * @protected
    */
   getTitle() {
-    return 'Recent Transactions';
+    return 'Transactions';
   }
 
   /**

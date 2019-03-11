@@ -22,7 +22,7 @@ import Constants from '../../constants';
 
 const StyledPaper = styled(Paper)`
   && {
-    background: ${Constants.COLOR_DFINITY_BLACK_DARKER};
+    background: ${props => props.theme.colorTableBackgroundPrimary};
   }
 `;
 
@@ -34,8 +34,7 @@ const TitleTypography = styled(Typography)`
     text-align: left;
     font-family: ${Constants.FONT_PRIMARY};
     font-size: 32px;
-    // Consider changing letter-spacing now that we've changed font!!!
-    letter-spacing: 1px;
+    font-weight: 300;
     @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
       font-size: 24px;
     }
@@ -50,6 +49,7 @@ const StyledTable = styled(Table)`
 
 const StyledTableBody = styled(TableBody)`
   && {
+    /* Use theme!!! */
     border-top: 2px solid ${Constants.COLOR_DFINITY_BLACK_LIGHTER};
   }
 `;
@@ -62,6 +62,7 @@ const StyledTableRow = styled(TableRow)`
 
 const StyledTableCell = styled(TableCell)`
   && {
+    /* Use theme!!! */
     border-color: ${Constants.COLOR_DFINITY_BLACK_LIGHTER};
     color: ${props => props.theme.colorBodyText};
     font-size: 15px;
@@ -79,16 +80,15 @@ const StyledTableCell = styled(TableCell)`
 
 const HeaderTableCell = styled(StyledTableCell)`
   && {
+    /* Consider making this regular weight!!! */
     font-weight: bold;
-    // Consider changing letter-spacing now that we've changed font!!!
-    letter-spacing: 1px;
   }
 `;
 
 const BodyTableRow = styled(StyledTableRow)`
   && {
-    &:nth-of-type(even) {
-      background: ${Constants.COLOR_DFINITY_BLACK};
+    &:nth-of-type(odd) {
+      background: ${props => props.theme.colorTableBackgroundSecondary};
     }
   }
 `;
@@ -101,6 +101,7 @@ const FooterTableRow = styled(TableRow)`
 
 const FooterTableCell = styled(StyledTableCell)`
   && {
+    /* Use theme!!! */
     color: ${Constants.COLOR_TEXT_DARKEST};
     font-size: 9px;
   }
@@ -124,7 +125,7 @@ class FadeTable extends Component {
    */
   render() {
     return (
-      <StyledPaper>
+      <StyledPaper elevation={1}>
         <TitleTypography>{this.getTitle()}</TitleTypography>
         <StyledTable>
           <colgroup>

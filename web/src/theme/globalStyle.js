@@ -64,8 +64,8 @@ export const themeLight = {
   // anchor.fm is 248, 248, 248
   // tensorflow.org is 241, 243, 244!!!
   /* byrushan background */
-  colorBodyBackground: 'rgb(243, 243, 243)', // use constant!!!
-  colorBodyText: Constants.COLOR_LIGHT_TEXT,
+  colorBodyBackground: '#F8F9FA', // Wikipedia (verified)
+  colorBodyText: '#202124', // Google text (verified)
   // It seems odd to use an array for the icon color, but not the background and text colors!!!
   colorDashCardDBackground: 'white',//'#F07200', //'#D54C1C', //'#E3531F', //'#D54C1C', //'#BB4015', //Constants.COLOR_TWITTER_BLUE,
   colorDashCardCBackground: 'white',//'#C40059', //'#AF0056', //'#C40059', //'#AF0056', //'#89004F', //Constants.COLOR_TWITTER_PURPLE,
@@ -78,8 +78,11 @@ export const themeLight = {
   colorDashCardText: 'black',//'white',
   colorFooterBackground: '#F5F5F5',
   colorSearchText: '#202124', // Google text (verified)
-  colorSearchIcon: '#9E9E9E' //  Material Design icon(verified)
+  colorSearchIcon: '#9E9E9E', //  Material Design icon(verified)
+  colorTableBackgroundPrimary: 'white',
+  colorTableBackgroundSecondary: '#F8F9FA' // Wikipedia (verified)
 }
+// Remove extraneous comments!!!
 // Youtube footer is 33, 33, 33
 
 
@@ -122,8 +125,8 @@ export const themeDark = {
   colorAppBarTabText: Constants.COLOR_DARK_TEXT, // modified by Material-UI Tab opacity 
   colorAppBarDfinityText: Constants.COLOR_DARK_TEXT,
   colorAppBarExplorerText: Constants.COLOR_DFINITY_LIGHT_ORANGE,
-  colorBodyBackground: '#1B1B1B', //!!!Constants.COLOR_DFINITY_BLACK_DARKER,
-  colorBodyText: Constants.COLOR_DARK_TEXT,
+  colorBodyBackground: '#1B1B1B', // MacOS Finder, etc.
+  colorBodyText: '#DCDCDC', // MacOS Calendar, iTunes
   colorDashCardABackground: '#262626', //!!!Constants.COLOR_DFINITY_BLACK,
   colorDashCardBBackground: '#262626', //!!!Constants.COLOR_DFINITY_BLACK,
   colorDashCardCBackground: '#262626', //!!!Constants.COLOR_DFINITY_BLACK,
@@ -134,5 +137,7 @@ export const themeDark = {
   colorDrawerBackground: '#262626', //!!!Constants.COLOR_DFINITY_BLACK,
   colorFooterBackground: '#262626', //!!!Constants.COLOR_DFINITY_BLACK
   colorSearchText: '#202124', // Google text (verified)
-  colorSearchIcon: '#9E9E9E' //  Material Design icon (verified)
+  colorSearchIcon: '#9E9E9E', //  Material Design icon (verified)
+  colorTableBackgroundPrimary: '#262626', // MacOS Finder
+  colorTableBackgroundSecondary: '#1B1B1B' // MacOS Finder, etc.
 }
