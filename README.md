@@ -7,18 +7,23 @@
 This repo is the front end of DFINITY Explorer.
 
 ## Open-Source Libraries Used
-* React
-* Styled-Components
-* Material-UI
-* Downshift
-* D3
-* PixiJS
 * Apollo
-* GraphQL
-* throttle-debounce
-* loadCSS
-* Google Fonts
+* D3
+* Downshift
 * Font Awesome
+* Google Fonts
+* GraphQL
+* loadCSS
+* Material-UI
+* PixiJS
+* prop-types
+* React
+* react-coinbase-commerce
+* react-parallax
+* react-reveal
+* react-twitter-embed
+* Styled-Components
+* throttle-debounce
 
 ## Code of Conduct
 
@@ -26,4 +31,4 @@ Please note that this project is released with a [Contributor Code of Conduct](h
 
 ## Copyright and License
 
-Copyright 2018 the [dfinityexplorer contributors](https://github.com/dfinityexplorer/dfinityexplorer/graphs/contributors). Code released under the [MIT License](https://github.com/dfinityexplorer/dfinityexplorer/blob/master/LICENSE).
+Copyright 2018-2019 the [dfinityexplorer contributors](https://github.com/dfinityexplorer/dfinityexplorer/graphs/contributors). Code released under the [MIT License](https://github.com/dfinityexplorer/dfinityexplorer/blob/master/LICENSE).
