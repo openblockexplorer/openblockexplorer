@@ -14,6 +14,7 @@ import {
   AppBar,
   Divider,
   Drawer,
+  Fade,
   Grid,
   IconButton,
   Input,
@@ -21,7 +22,6 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  Slide,
   SvgIcon,
   SwipeableDrawer,
   Toolbar,
@@ -36,10 +36,12 @@ import InfoIcon from '@material-ui/icons/Info';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import zIndex from '@material-ui/core/styles/zIndex';
+import RevealFade from 'react-reveal/Fade';
+import RevealZoom from 'react-reveal/Zoom';
 import Downshift from 'downshift';
 import ResponsiveComponent from '../ResponsiveComponent/ResponsiveComponent'
 import querySearchAutoComplete from '../../graphql/querySearchAutoComplete';
-import { Breakpoints, getBreakpoint, isBreakpointLessOrEqualTo, isBreakpointGreaterOrEqualTo } from '../../utils/breakpoint';
+import { Breakpoints, isBreakpointLessOrEqualTo, isBreakpointGreaterOrEqualTo } from '../../utils/breakpoint';
 import Constants from '../../constants';
 import dfinityExplorerLogo from './dfinity-explorer-logo.png';
 
@@ -113,10 +115,25 @@ const TypographyDfinity = styled(TypographyAppName)`
     margin-left: 12px;
     letter-spacing: 12px;
     color: ${props => props.theme.colorAppBarDfinityText};
-    border-right: 1px solid ${props => props.theme.colorAppBarDfinityText};
     @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
       margin-left: 8.4px;
       letter-spacing: 8.4px;
+    }
+  }
+`;
+
+/**
+ * A separate div is used for the border between DFINITY and Explorer, so that it can be
+ * animated. The height is based on TypographyAppName font-size, and matches exactly what
+ * "border-right: 1px solid" in TypographyDfinity would look like.
+ */
+const TypographyBorder = styled.div`
+  && {
+    width: 0px;
+    height: 29px;
+    border-right: ${props => '1px solid ' + props.theme.colorAppBarDfinityText};
+    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
+      height: 20.3px;
     }
   }
 `;
@@ -180,7 +197,7 @@ const ListSearch = styled(List)`
  */
 const ListItemSearch = styled(ListItem)`
   && {
-    /* Use them for the highlighted/focused color!!! */
+    /* Use theme for the highlighted/focused color!!! */
     background: ${props => props.highlighted ? Constants.COLOR_GRAY_ON_WHITE : 'initial'};
   }
 `;
@@ -395,16 +412,16 @@ class DEAppBar extends ResponsiveComponent {
         <div ref={this.toolbarDivRef}>
           <Toolbar />
         </div>
-        <Slide direction='down' in={isSearchOn} timeout={200} mountOnEnter unmountOnExit>
+        <Fade in={isSearchOn} timeout={200} mountOnEnter unmountOnExit>
           <SearchAppBar elevation={2}>
             {this.getToolbarSearchContent()}
           </SearchAppBar>
-        </Slide>
-        <Slide direction='down' in={!isSearchOn} timeout={200} mountOnEnter unmountOnExit>
+        </Fade>
+        <Fade in={!isSearchOn} timeout={200} mountOnEnter unmountOnExit>
           <StyledAppBar elevation={2}>
             {this.getToolbarDefaultContent()}
           </StyledAppBar>
-        </Slide>
+        </Fade>
         {this.getDrawer()}
       </Fragment>
     );
@@ -507,11 +524,7 @@ class DEAppBar extends ResponsiveComponent {
             </Downshift>
           </Grid>
           <Grid item>
-            <Zoom
-              in={true}
-              timeout={300}
-              unmountOnExit
-            >
+            <Zoom in={true} timeout={300}>
               <IconButton onClick={this.handleCloseClick}>
                 <StyledCloseIcon />
               </IconButton>
@@ -528,46 +541,42 @@ class DEAppBar extends ResponsiveComponent {
    * @private
    */
   getToolbarDefaultContent() {
-    if (isBreakpointLessOrEqualTo(Breakpoints.SM)) {
-      return (
-        <StyledToolbar>
-          <Grid container direction='column'>
-            <Grid container alignItems='center' wrap='nowrap'>
-              <Grid item>
-                <StyledIconButton onClick={this.props.handleMobileDrawerMenuClick}>
-                  <StyledMenuIcon />
-                </StyledIconButton>
-              </Grid>
-              {this.getAppTitle()}
-              <Grid container alignItems='center' justify='flex-end' wrap='nowrap'>
-                <Grid item>
-                  {this.getSearchButton()}
-                </Grid>
-              </Grid>
-            </Grid>
+    return (
+      <StyledToolbar>
+        <Grid container alignItems='center' wrap='nowrap'>
+          <Grid item>
+            {this.getMenuButton()}
           </Grid>
-        </StyledToolbar>
-      );
-    }
-    else {
-      return (
-        <StyledToolbar>
-          <Grid container alignItems='center' wrap='nowrap'>
+          {this.getAppTitle()}
+          <Grid container alignItems='center' justify='flex-end' wrap='nowrap'>
             <Grid item>
-              <StyledIconButton onClick={this.props.handleDesktopDrawerMenuClick}>
-                <StyledMenuIcon />
-              </StyledIconButton>
-            </Grid>
-            {this.getAppTitle()}
-            <Grid container alignItems='center' justify='flex-end' wrap='nowrap'>
-              <Grid item>
-                {this.getSearchButton()}
-              </Grid>
+              {this.getSearchButton()}
             </Grid>
           </Grid>
-        </StyledToolbar>
-      );
-    }  
+        </Grid>
+      </StyledToolbar>
+    );
+  }
+
+  /**
+   * Return the elements for the menu button on the current breakpoint.
+   * @return {Object} The elements for the menu button based on the current breakpoint.
+   * @private
+   */
+  getMenuButton() {
+    const { handleMobileDrawerMenuClick, handleDesktopDrawerMenuClick } = this.props;
+    return (
+      <Zoom in={true} timeout={300}>
+        <StyledIconButton
+          onClick={
+            isBreakpointLessOrEqualTo(Breakpoints.SM) ?
+              handleMobileDrawerMenuClick: handleDesktopDrawerMenuClick
+          }
+        >
+          <StyledMenuIcon />
+        </StyledIconButton>
+      </Zoom>
+    );
   }
 
   /**
@@ -582,20 +591,27 @@ class DEAppBar extends ResponsiveComponent {
         to='/'
       >
         <Grid container alignItems='center' justify='flex-start' wrap='nowrap'>
-          <Grid item>
-            <ImgProductIcon
-              src={dfinityExplorerLogo}
-              height={this.getProductIconHeight()}
-              alt='logo'
-            >
-            </ImgProductIcon>
-          </Grid>
-          <Grid item>
-            <TypographyDfinity>DFINITY</TypographyDfinity>
-          </Grid>
-          <Grid item>
-            <TypographyExplorer>ExpIorer</TypographyExplorer>
-          </Grid>
+          <RevealFade timeout={500}>
+            <Grid item>
+              <ImgProductIcon
+                src={dfinityExplorerLogo}
+                height={this.getProductIconHeight()}
+                alt='logo'
+              >
+              </ImgProductIcon>
+            </Grid>
+            <Grid item>
+              <TypographyDfinity>DFINITY</TypographyDfinity>
+            </Grid>
+            <RevealZoom timeout={350}>
+              <Grid item>
+                <TypographyBorder />
+              </Grid>
+            </RevealZoom>
+            <Grid item>
+              <TypographyExplorer>ExpIorer</TypographyExplorer>
+            </Grid>
+          </RevealFade>
         </Grid>
       </Link>
     );
@@ -714,11 +730,7 @@ class DEAppBar extends ResponsiveComponent {
    */
   getSearchButton() {
     return (
-      <Zoom
-        in={true}
-        timeout={300}
-        unmountOnExit
-      >
+      <Zoom in={true} timeout={300}>
         <StyledIconButton onClick={this.handleSearchClick}>
           <StyledSearchIcon />
         </StyledIconButton>
