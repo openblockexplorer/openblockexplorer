@@ -58,7 +58,7 @@ class BlockDetailsPage extends Component {
    * @public
    */
   render() {
-    const { height } = this.props.match.params;
+    const height = parseInt(this.props.match.params.height);
     return (
       <div style={{ marginTop: '40px' }}>
         <ExplorerTypography>Block Details</ExplorerTypography>
