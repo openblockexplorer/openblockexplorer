@@ -42,7 +42,7 @@ export const themeLight = {
   colorAppBarButtonHover: 'black',
   colorAppBarTabText: 'black', // modified by Material-UI Tab opacity 
   colorAppBarDfinityText: 'black',
-  colorAppBarExplorerText: '#F98E00', // use constant for "500" version of light orange!!! //'#FA9F00', is 400
+  colorAppBarExplorerText: '#007DBC', //'#F98E00', // use constant for "500" version of light orange!!! //'#FA9F00', is 400
   /* Twitter background */
   // HERE: android.com might have the best 2/3-tone alternating backgrounds
   // Perhaps the text should not be true black, maybe even use darker text for headings. See various google sites
@@ -77,8 +77,10 @@ export const themeLight = {
   colorDashCardIconOpacity: 1.0,
   colorDashCardText: 'black',//'white',
   colorFooterBackground: '#F5F5F5',
+  colorFooterTextIcon: '#909090', // YouTube (verified)
   colorSearchText: '#202124', // Google text (verified)
   colorSearchIcon: '#9E9E9E', //  Material Design icon(verified)
+  colorFooterIconHover: 'white',
   colorTableBackgroundPrimary: 'white',
   colorTableBackgroundSecondary: '#F8F9FA' // Wikipedia (verified)
 }
@@ -124,7 +126,7 @@ export const themeDark = {
   colorAppBarButtonHover: Constants.COLOR_DARK_TEXT,
   colorAppBarTabText: Constants.COLOR_DARK_TEXT, // modified by Material-UI Tab opacity 
   colorAppBarDfinityText: Constants.COLOR_DARK_TEXT,
-  colorAppBarExplorerText: Constants.COLOR_DFINITY_LIGHT_ORANGE,
+  colorAppBarExplorerText: Constants.COLOR_DFINITY_LIGHT_ORANGE, // '#0090CF'!!!
   colorBodyBackground: '#1B1B1B', // MacOS Finder, etc.
   colorBodyText: '#DCDCDC', // MacOS Calendar, iTunes
   colorDashCardABackground: '#262626', //!!!Constants.COLOR_DFINITY_BLACK,
@@ -136,6 +138,8 @@ export const themeDark = {
   colorDashCardText: 'white',
   colorDrawerBackground: '#262626', //!!!Constants.COLOR_DFINITY_BLACK,
   colorFooterBackground: '#262626', //!!!Constants.COLOR_DFINITY_BLACK
+  colorFooterTextIcon: '#808080', // Netflix (verified)
+  colorFooterIconHover: 'white',
   colorSearchText: '#202124', // Google text (verified)
   colorSearchIcon: '#9E9E9E', //  Material Design icon (verified)
   colorTableBackgroundPrimary: '#262626', // MacOS Finder

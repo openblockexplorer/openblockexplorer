@@ -15,7 +15,14 @@ import {
 } from '@material-ui/core';
 import Constants from '../../constants';
 
-const StyledSvgIcon = styled(SvgIcon)`
+const GridNoWrap = styled(Grid)`
+  && {
+    /* Setting min-width to 0px allows the Grid to narrow past the implied width of its children. */
+    min-width: 0px;
+  }
+`;
+
+const SvgIconCard = styled(SvgIcon)`
   && {
     margin: 30px;
     font-size: 42px;
@@ -24,18 +31,15 @@ const StyledSvgIcon = styled(SvgIcon)`
   }
 `;
 
-const StyledTypographyTitle = styled(Typography)`
+const TypographyTitle = styled(Typography)`
   && {
     font-family: ${Constants.FONT_PRIMARY};
     font-weight: 200;
     font-size: 14px;
-    /* Not sure where we're setting color, but we're using white for both light and dark themes. We should set color explicitly and use a theme to do so!!! */
-    /* Actually, I think we're already setting it based on theme in the HomePage!!! */
-    /* color: ${Constants.COLOR_TEXT_LIGHT}; */
   }
 `;
 
-const StyledTypographyValue = styled(Typography)`
+const TypographyValue = styled(Typography)`
   && {
     font-family: ${Constants.FONT_PRIMARY};
     font-weight: 200;
@@ -62,6 +66,10 @@ class DashCard extends Component {
      */
     svgIconPath: PropTypes.string.isRequired,
     /**
+     * Function to subscribe to receive new objects of the card using GraphQL.
+     */
+    subscribeToNewObjects: PropTypes.func,
+    /**
      * The title string of the card.
      */
     title: PropTypes.string.isRequired,
@@ -71,6 +79,16 @@ class DashCard extends Component {
     value: PropTypes.string.isRequired
   };
 
+  /**
+   * Invoked by React immediately after a component is mounted (inserted into the tree). 
+   * @public
+   */
+  componentDidMount() {
+    // Subscribe to receive new objects of the card using GraphQL.
+    if (this.props.subscribeToNewObjects)
+      this.props.subscribeToNewObjects();
+  }
+  
   /**
    * Return a reference to a React element to render into the DOM.
    * @return {Object} A reference to a React element to render into the DOM.
@@ -84,28 +102,32 @@ class DashCard extends Component {
       title,
       value
     } = this.props;
+
     return (
       <Paper className={className} elevation={1}>
-        <Grid container alignItems='center' direction='row' justify='flex-start' wrap='nowrap'>
+        <Grid container direction='row' justify='flex-start' alignItems='center' wrap='nowrap'>
           <Grid item>
-          <StyledSvgIcon cardindex={cardIndex}>
-            <path d={svgIconPath} />
-          </StyledSvgIcon>
+            <SvgIconCard cardindex={cardIndex}>
+              <path d={svgIconPath} />
+            </SvgIconCard>
           </Grid>
-          <Grid item>
-            <Grid container alignItems='flex-start' direction='column' justify='center'>
-              <Grid item>
-              <StyledTypographyTitle className={className}>
-                {title}
-              </StyledTypographyTitle>
-              </Grid>
-              <Grid item>
-              <StyledTypographyValue className={className}>
-                {value}
-              </StyledTypographyValue>
-              </Grid>
+          <GridNoWrap container direction='column' justify='center' alignItems='flex-start'>
+            {/* The usage of Grid elements here is required to get Typography noWrap to work. */}
+            <Grid container direction='row' justify='flex-start' alignItems='center'>
+              <GridNoWrap item>
+                <TypographyTitle className={className} noWrap>
+                  {title}
+                </TypographyTitle>
+              </GridNoWrap>
             </Grid>
-          </Grid>
+            <Grid container direction='row' justify='flex-start' alignItems='center'>
+              <GridNoWrap item>
+                <TypographyValue className={className} noWrap>
+                  {value}
+                </TypographyValue>
+              </GridNoWrap>
+            </Grid>
+          </GridNoWrap>
         </Grid>
       </Paper>
     );

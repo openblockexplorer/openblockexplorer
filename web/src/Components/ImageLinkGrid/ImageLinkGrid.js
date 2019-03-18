@@ -10,7 +10,6 @@ import {
   Grid
 } from '@material-ui/core';
 import Fade from 'react-reveal/Fade';
-import { Breakpoints, isBreakpointGreaterOrEqualTo } from '../../utils/breakpoint';
 
 /**
  * This component displays a grid of images that link to other pages.

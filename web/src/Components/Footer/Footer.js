@@ -18,11 +18,11 @@ import {
   Toolbar,
   Typography
 } from '@material-ui/core';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 import ResponsiveComponent from '../ResponsiveComponent/ResponsiveComponent';
 import { Breakpoints, getBreakpoint } from '../../utils/breakpoint';
 import Constants from '../../constants';
 
-// BUG: At smaller screen sizes, footer gets wider than parent (horz scroll)!!!
 const FooterToolbar = styled(Toolbar)`
   && {
     /*!!! position: fixed; */
@@ -32,19 +32,12 @@ const FooterToolbar = styled(Toolbar)`
     height: ${Constants.FOOTER_HEIGHT + 'px'};
     text-align: center;
     background: ${props => props.theme.colorFooterBackground};
-    color: ${Constants.COLOR_TEXT_DARKER};
+    color: ${props => props.theme.colorFooterTextIcon};
     /* This doesn't seem to do anything!!!
     padding-left: 8;
     padding-right: 8; */
   }
 `;
-
-// remove if not used!!!
-// const ContentGrid = styled(Grid)`
-//   && {
-//     /* Possibly remove this!!! We should even try to remove BREAKPOINT_LG_MAX_WIDTH constant!!! */
-//     max-width: ${Constants.BREAKPOINT_LG_MAX_WIDTH + 'px'};
-// `;
 
 const OneThirdGrid = styled(Grid)`
   && {
@@ -87,7 +80,8 @@ const AwesomeIconButtonGrid = styled(Grid)`
 const AwesomeIconButton = styled(IconButton)`
   && {
     &:hover {
-      color: ${Constants.COLOR_TEXT_LIGHT};
+      background: ${props => fade(props.theme.colorFooterTextIcon, 0.2)};
+      color: ${props => props.theme.colorFooterIconHover};
     }
   }
 `;
@@ -100,9 +94,10 @@ const AwesomeIcon = styled(Icon)`
 
 const ThemeCheckbox = styled(Checkbox)`
   && {
-    color: ${Constants.COLOR_TEXT_DARKER};
+    color: ${props => props.theme.colorFooterTextIcon};
     &:hover {
-      color: ${Constants.COLOR_TEXT_LIGHT}; // This doesn't work for light mode!!!
+      background: ${props => fade(props.theme.colorFooterTextIcon, 0.2)};
+      color: ${props => props.theme.colorFooterIconHover};
     }
   }
 `;

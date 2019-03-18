@@ -41,6 +41,7 @@ class TransactionsTableWithData extends Component {
               <TransactionsTable
                 transactions={[]}
                 subscribeToNewObjects={subscribeToNewObjects}
+                maxRows={this.props.maxRows}
                 loading
               />
             );
@@ -49,6 +50,7 @@ class TransactionsTableWithData extends Component {
               <TransactionsTable
                 transactions={[]}
                 subscribeToNewObjects={subscribeToNewObjects}
+                maxRows={this.props.maxRows}
                 error
               />
             );
@@ -70,6 +72,8 @@ class TransactionsTableWithData extends Component {
   /**
    * Subscribe to receive new objects of the body of the table using subscribeToMore and update the
    * query's store by merging the subscription data with the previous data.
+   * @param {Function} subscribeToMore Function which gets called every time the subscription
+   *  returns.
    * @protected
    */
   subscribeToNewObjects(subscribeToMore) {
@@ -89,7 +93,6 @@ class TransactionsTableWithData extends Component {
         };
       }
     });
-
   }
 }
 

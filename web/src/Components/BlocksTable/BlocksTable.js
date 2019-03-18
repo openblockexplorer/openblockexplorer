@@ -17,9 +17,9 @@ import subscriptionBlock from '../../graphql/subscriptionBlock';
 class BlocksTableWithData extends Component {
   static propTypes = {
     /**
-     * Reference to the <DfinitySymbolD3> element.
+     * Callback fired when a new block is added.
      */
-    dfinitySymbolD3Ref: PropTypes.element,
+    handleAddNewBlock: PropTypes.func,
     /**
      * The maximum number of rows in the table.
      */
@@ -29,6 +29,14 @@ class BlocksTableWithData extends Component {
      */
     routerRef: PropTypes.object
   };
+
+  /**
+   * Invoked by React immediately after a component is mounted (inserted into the tree). 
+   * @public
+   */
+  componentDidMount() { // remove if not needed!!!
+    //!!!this.noBlocksAdded = true;
+  }
 
   /**
    * Return a reference to a React element to render into the DOM.
@@ -45,6 +53,7 @@ class BlocksTableWithData extends Component {
               <BlocksTable
                 blocks={[]}
                 subscribeToNewObjects={subscribeToNewObjects}
+                maxRows={this.props.maxRows}
                 loading
               />
             );
@@ -53,10 +62,18 @@ class BlocksTableWithData extends Component {
               <BlocksTable
                 blocks={[]}
                 subscribeToNewObjects={subscribeToNewObjects}
+                maxRows={this.props.maxRows}
                 error
               />
             );
           else {
+            // Add a new block to the parent.
+            // PROBLEM: Can't do this because it results in HomePage updating state during a render!!!
+            //!!! if (this.noBlocksAdded && data.blocks.length && this.props.handleAddNewBlock) {
+            //   this.noBlocksAdded = false;
+            //   this.props.handleAddNewBlock(data.blocks[0]);
+            // }
+
             return (
               <BlocksTable
                 blocks={data.blocks}
@@ -74,6 +91,8 @@ class BlocksTableWithData extends Component {
   /**
    * Subscribe to receive new objects of the body of the table using subscribeToMore and update the
    * query's store by merging the subscription data with the previous data.
+   * @param {Function} subscribeToMore Function which gets called every time the subscription
+   *  returns.
    * @protected
    */
   subscribeToNewObjects(subscribeToMore) {
@@ -83,9 +102,9 @@ class BlocksTableWithData extends Component {
         if (!subscriptionData.data)
           return prev;
 
-        // Add a new block to the DFINITY logo infinity symbol.
-        if (this.props.dfinitySymbolD3Ref)
-          this.props.dfinitySymbolD3Ref.addNewBlock();
+        // Add a new block to the parent.
+        if (this.props.handleAddNewBlock)
+          this.props.handleAddNewBlock(subscriptionData.data.block.node);
 
         // Add the new block to the front of the blocks[] array, keeping at most this.props.maxRows
         // blocks.
