@@ -209,7 +209,7 @@ class HomePage extends ResponsiveComponent {
       <GridSection container
         direction='row'
         justify='space-between'
-        alignItems='center'
+        alignItems='flex-start'
         breakpoint={breakpoint}
       >
         <GridTable item breakpoint={breakpoint}>
