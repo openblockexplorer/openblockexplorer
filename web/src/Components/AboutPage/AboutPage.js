@@ -211,7 +211,7 @@ const TypographyHeading = styled(Typography)`
     font-family: ${Constants.FONT_PRIMARY};
     font-size: ${Constants.MATERIAL_FONT_SIZE_H4};
     font-weight: 300;
-    color: ${props => props.theme.colorAboutCardText};
+    color: ${props => props.theme.colorBodyText};
     ${({ breakpoint }) =>
       breakpoint === Breakpoints.XS && `
         font-size: ${Constants.MATERIAL_FONT_SIZE_H5};       
@@ -227,13 +227,13 @@ const TypographyBody = styled(Typography)`
     font-family: ${Constants.FONT_PRIMARY};
     font-size: ${Constants.MATERIAL_FONT_SIZE_BODY_1};
     line-height: 1.75rem;
-    color: ${props => props.theme.colorAboutCardTextDim};
+    color: ${props => props.theme.colorBodyTextDim};
   }
 `;
 
 const StyledA = styled.a`
   && {
-    color: ${props => props.theme.colorAboutCardTextLink};
+    color: ${props => props.theme.colorBodyTextLink};
     text-decoration: none;
     &:hover {
       cursor: pointer;
@@ -277,7 +277,7 @@ const MailIconButton = styled(MailIcon)`
 
 const SpanHeart = styled.span`
   && {
-    color: ${props => props.theme.colorAboutCardTextLink};
+    color: ${props => props.theme.colorBodyTextLink};
   }
 `;
 
@@ -427,11 +427,20 @@ class AboutPage extends ResponsiveComponent {
             </TypographyHeading>
             <br />
             <TypographyBody>
-              Our mission is to provide a bridge between you and the <StyledA href={Constants.URI_ABOUT_DFINITY} target='_blank'>DFINITY</StyledA> Internet Computer, allowing you to easily search for and retrieve information which is useful in a format that is understandable, with everything you want to know right at your fingertips.
+              {'Our mission is to provide a bridge between you and the '}
+              <StyledA href={Constants.URI_ABOUT_DFINITY} target='_blank'>DFINITY</StyledA>
+              {' Internet Computer, allowing you to easily search for and retrieve information '}
+              {'which is useful in a format that is understandable, with everything you want to '}
+              {'know right at your fingertips.'}
             </TypographyBody>
             <br />
             <TypographyBody>
-              DFINITY aims to build their organization into a “NASA for decentralization”. There have in fact been <StyledA href={Constants.URI_NASA_EXPLORER} target='_blank'>89 NASA “Explorer” missions</StyledA> since 1958, carrying a wide variety of scientific investigations. We want DFINITY Explorer to be the perfect vehicle to explore the DFINITY universe. &nbsp;🚀
+              {'DFINITY aims to build their organization into a “NASA for decentralization”. '}
+              {'There have in fact been '}
+              <StyledA href={Constants.URI_NASA_EXPLORER} target='_blank'>89 NASA “Explorer” missions</StyledA>
+              {' since 1958, carrying a wide variety of scientific investigations. We want DFINITY '}
+              {'Explorer to be the perfect vehicle to explore the DFINITY universe.'}
+              &nbsp;&nbsp;🚀
             </TypographyBody>
           </Fade>
         </GridTextRight>
@@ -457,11 +466,15 @@ class AboutPage extends ResponsiveComponent {
             </TypographyHeading>
             <br />
             <TypographyBody>
-              DFINITY Explorer is an open-source project under the <StyledA href={Constants.URI_GITHUB_MIT_LICENSE} target='_blank'>MIT license</StyledA>, providing transparency, reliability, and security.
+              {'DFINITY Explorer is an open-source project under the '}
+              <StyledA href={Constants.URI_GITHUB_MIT_LICENSE} target='_blank'>MIT license</StyledA>
+              {', providing transparency, reliability, and security.'}
             </TypographyBody>
             <br />
             <TypographyBody>
-              We believe that all block explorers of public blockchains should be open source. If you’re going to trust a block explorer to provide timely, accurate, and uncensored information, the code should be open for all to see.
+              {'We believe that all block explorers of public blockchains should be open source. '}
+              {'If you’re going to trust a block explorer to provide timely, accurate, and '}
+              {'uncensored information, the code should be open for all to see.'}
             </TypographyBody>
           </Fade>
         </GridTextLeft>
@@ -518,15 +531,23 @@ class AboutPage extends ResponsiveComponent {
             </TypographyHeading>
             <br />
             <TypographyBody>
-              Follow <StyledA href={Constants.URI_TWITTER_DFINITY_EXPLORER} target='_blank'>@dfinityexplorer</StyledA> on Twitter to learn about the latest DFINITY-related news, videos, and events.
+              {'Follow '}
+              <StyledA href={Constants.URI_TWITTER_DFINITY_EXPLORER} target='_blank'>@dfinityexplorer</StyledA>
+              {' on Twitter to learn about the latest DFINITY-related news, videos, and events.'}
             </TypographyBody>
             <br />
             <TypographyBody>
-              Learn more about our project on <StyledA href={Constants.URI_GITHUB_DFINITY_EXPLORER_PROJECT} target='_blank'>GitHub</StyledA> and in our <StyledA href={Constants.URI_GITHUB_DFINITY_EXPLORER_WIKI} target='_blank'>wiki</StyledA>.
+              {'Learn more about our project on '}
+              <StyledA href={Constants.URI_GITHUB_DFINITY_EXPLORER_PROJECT} target='_blank'>GitHub</StyledA>
+              {' and in our '}
+              <StyledA href={Constants.URI_GITHUB_DFINITY_EXPLORER_WIKI} target='_blank'>wiki</StyledA>
+              {'.'}
             </TypographyBody>
             <br />
             <TypographyBody>
-              Join our mailing list today to stay up to date on development of our project. We’ll let you know when DFINITY Explorer goes live along with the DFINITY network later in 2019.
+              {'Join our mailing list today to stay up to date on development of our project. '}
+              {'We’ll let you know when DFINITY Explorer goes live along with the DFINITY network '}
+              {'later in 2019.'}
             </TypographyBody>
             {/* Begin MailChimp Signup Form */}
             <form action='https://dfinityexplorer.us18.list-manage.com/subscribe/post?u=059dc252f5f0cea2fec413c42&amp;id=4ebbd6c248' method='post' id='mc-embedded-subscribe-form' name='mc-embedded-subscribe-form' className='validate' target='_blank' noValidate>
@@ -571,11 +592,21 @@ class AboutPage extends ResponsiveComponent {
             </TypographyHeading>
             <br />
             <TypographyBody>
-              DFINITY Explorer is a cooperative effort, made with <SpanHeart>♥</SpanHeart> by <StyledA href={Constants.URI_GITHUB_DYLAN} target='_blank'>@dylancm4</StyledA>, <StyledA href={Constants.URI_GITHUB_TODD} target='_blank'>@toddkitchens</StyledA>, and a friendly bunch of <StyledA href={Constants.URI_GITHUB_CONTRIBUTORS} target='_blank'>contributors</StyledA> from the DFINITY community. We are passionate about DFINITY and we want to build things to help it to succeed.
+              {'DFINITY Explorer is a cooperative effort, made with '}
+              <SpanHeart>♥</SpanHeart>
+              {' by '}
+              <StyledA href={Constants.URI_GITHUB_DYLAN} target='_blank'>@dylancm4</StyledA>
+              {', '}
+              <StyledA href={Constants.URI_GITHUB_TODD} target='_blank'>@toddkitchens</StyledA>
+              {', and a friendly bunch of '}
+              <StyledA href={Constants.URI_GITHUB_CONTRIBUTORS} target='_blank'>contributors</StyledA>
+              {' from the DFINITY community. We are passionate about DFINITY and we want to build '}
+              {'things to help it to succeed.'}
             </TypographyBody>
             <br />
             <TypographyBody>
-              Make a donation to help support the project! Open-source development is powered by the support of people like you.
+              {'Make a donation to help support the project! Open-source development is powered '}
+              {'by the support of people like you.'}
             </TypographyBody>
             <ButtonDonate checkoutId={Constants.COINBASE_CHECKOUT_ID}>
               <Grid container direction='row' justify='flex-start' alignItems='center'>

@@ -10,6 +10,7 @@ import { Query } from "react-apollo";
 import FadeTable from '../FadeTable/FadeTable';
 import queryTransactions from '../../graphql/queryTransactions';
 import subscriptionTransaction from '../../graphql/subscriptionTransaction';
+import getHashString from '../../utils/getHashString';
 
 /**
  * This component displays a table of Transaction objects with data retrieved via GraphQL.
@@ -183,7 +184,7 @@ class TransactionsTable extends FadeTable {
         return {
           mapKey: transaction.hash,
           cells: [
-            {value: this.getHashString(transaction.hash), isNumeric: false},
+            {value: getHashString(transaction.hash), isNumeric: false},
             {value: transaction.amount.toFixed(8).toString() + ' DFN', isNumeric: true}
           ],
           hash: transaction.hash
@@ -203,24 +204,6 @@ class TransactionsTable extends FadeTable {
       {value: null, isNumeric: false},
       {value: '(simulated data)', isNumeric: true}
     ];
-  }
-
-  /**
-   * Return a string containing the hash which has been modified for display in the table.
-   * @param {String} hash The hash to modify for display.
-   * @return {Array} A string containing the hash which has been modified for display in the table.
-   * @protected
-   */
-  getHashString(hash) {
-    const maxLength = 24;
-    hash = "0x" + hash;
-    if (hash.length > maxLength) {
-      const first = hash.substring(0, maxLength - 4);
-      const last = hash.substr(hash.length - 4);
-      return first + "..." + last;
-    }
-    else
-      return hash;
   }
 
   /**

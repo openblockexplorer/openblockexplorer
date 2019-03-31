@@ -9,31 +9,59 @@ import PropTypes from 'prop-types';
 import { Query } from "react-apollo";
 import styled from 'styled-components';
 import {
+  Grid,
   Typography
 } from '@material-ui/core';
+import { duration, easing } from '@material-ui/core/styles/transitions';
 import BlockTransactionsTable from '../BlockTransactionsTable/BlockTransactionsTable'
 import queryBlock from '../../graphql/queryBlock';
+import { Breakpoints } from '../../utils/breakpoint';
 import Constants from '../../constants';
 
-const StyledTypography = styled(Typography)`
+const GridSection = styled(Grid)`
   && {
-    margin-left: 25px;
-    color: ${props => props.theme.colorBodyText};
-    font-family: ${Constants.FONT_PRIMARY};
-    font-size: 15px;
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      font-size: 11px;
+    padding-top: ${Constants.HOME_PAGE_MARGIN_SM_AND_UP + 'px'};
+    padding-bottom: ${Constants.HOME_PAGE_MARGIN_SM_AND_UP + 'px'};
+    padding-left: ${Constants.HOME_PAGE_MARGIN_SM_AND_UP + 'px'};
+    padding-right: ${Constants.HOME_PAGE_MARGIN_SM_AND_UP + 'px'};
+    transition: ${'padding ' + duration.standard + 'ms ' + easing.easeInOut};
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        padding-top: ${Constants.HOME_PAGE_MARGIN_XS + 'px'};
+        padding-bottom: ${Constants.HOME_PAGE_MARGIN_XS + 'px'};
+        padding-left: ${Constants.HOME_PAGE_MARGIN_XS + 'px'};
+        padding-right: ${Constants.HOME_PAGE_MARGIN_XS + 'px'};
+      `
     }
   }
 `;
 
-const ExplorerTypography = styled(StyledTypography)`
+const GridTable = styled(Grid)`
   && {
-    margin-left: 25px;
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 2em;
-    color: ${Constants.COLOR_DFINITY_LIGHT_ORANGE};
+    width: 100%;
+  }
+`;
+
+const TypographyHeading = styled(Typography)`
+  && {
+    font-family: ${Constants.FONT_PRIMARY};
+    font-size: ${Constants.MATERIAL_FONT_SIZE_H4};
+    font-weight: 400;
+    color: ${props => props.theme.colorBodyText};
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        font-size: ${Constants.MATERIAL_FONT_SIZE_H5};       
+      `
+    }
+  }
+`;
+
+const TypographyBody = styled(Typography)`
+  && {
+    font-family: ${Constants.FONT_PRIMARY};
+    font-size: ${Constants.MATERIAL_FONT_SIZE_BODY_1};
+    line-height: 1.75rem;
+    color: ${props => props.theme.colorBodyTextDim};
   }
 `;
 
@@ -42,6 +70,10 @@ const ExplorerTypography = styled(StyledTypography)`
  */
 class BlockDetailsPage extends Component {
   static propTypes = {
+    /**
+     * The current Breakpoint, taking the desktop drawer (large screens) width into account.
+     */    
+    breakpoint: PropTypes.number.isRequired,
     /**
      * Object containing information about how a <Route path> matched the URL.
      */
@@ -58,42 +90,65 @@ class BlockDetailsPage extends Component {
    * @public
    */
   render() {
+    const { breakpoint } = this.props;
+
     const height = parseInt(this.props.match.params.height);
     return (
-      <div style={{ marginTop: '40px' }}>
-        <ExplorerTypography>Block Details</ExplorerTypography>
+      <GridSection container
+        direction='column'
+        justify='flex-start'
+        alignItems='flex-start'
+        breakpoint={breakpoint}
+      >
+        <Grid item>
+          <TypographyHeading breakpoint={breakpoint}>Block Details</TypographyHeading>
+        </Grid>
         <Query query={queryBlock} variables={{ height }}>
           {({ loading, error, data }) => {
             if (loading)
               return (
-                <StyledTypography>Searching...</StyledTypography>
+                <Grid item>
+                  <TypographyBody>Searching...</TypographyBody>
+                </Grid>
               );
             else if (error)
               return (
-                <StyledTypography>Network error</StyledTypography>
+                <Grid item>
+                  <TypographyBody>Network error</TypographyBody>
+                </Grid>
               );
             else if (data.block) {
               const date = new Date(data.block.timestamp);
               return (
                 <Fragment>
-                  <StyledTypography>Height: {data.block.height.toLocaleString()}</StyledTypography>
-                  <StyledTypography>Timestamp: {date.toLocaleString()}</StyledTypography>
+                  <Grid item>
+                    <TypographyBody>
+                      Height: {data.block.height.toLocaleString()}
+                    </TypographyBody>
+                    <TypographyBody>
+                      Timestamp: {date.toLocaleString()}
+                    </TypographyBody>
+                  </Grid>
                   <br />
-                  <BlockTransactionsTable
-                    maxRows={100}
-                    transactions={data.block.transactions}
-                    routerRef={this.props.routerRef}
-                  />
+                  <GridTable item>
+                    <BlockTransactionsTable
+                      maxRows={100}
+                      transactions={data.block.transactions}
+                      routerRef={this.props.routerRef}
+                    />
+                  </GridTable>
                 </Fragment>
               );
             }
             else
               return (
-                <StyledTypography>Block not found.</StyledTypography>
+                <Grid item>
+                  <TypographyBody>Block not found.</TypographyBody>
+                </Grid>
               );
           }}
         </Query>
-      </div>
+      </GridSection>
     );
   }
 }

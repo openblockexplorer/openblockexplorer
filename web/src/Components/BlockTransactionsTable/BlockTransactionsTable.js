@@ -6,6 +6,7 @@
 
 import PropTypes from 'prop-types';
 import FadeTable from '../FadeTable/FadeTable';
+import getHashString from '../../utils/getHashString';
 
 /**
  * This component displays a table of Transaction objects.
@@ -68,7 +69,7 @@ class BlockTransactionsTable extends FadeTable {
         return {
           mapKey: transaction.hash,
           cells: [
-            {value: '0x' + transaction.hash, isNumeric: false},
+            {value: getHashString(transaction.hash), isNumeric: false},
             {value: transaction.amount.toFixed(8).toString() + ' DFN', isNumeric: true}
           ],
           hash: transaction.hash

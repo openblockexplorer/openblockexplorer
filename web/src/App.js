@@ -202,13 +202,19 @@ class App extends Component {
                     render={(props) => 
                       <BlockDetailsPage
                         {...props}
+                        breakpoint={breakpoint}
                         routerRef={routerRef}
                       />
                     }
                   />
                   <Route
                     exact path="/tx/:hash"
-                    component={TransactionDetailsPage}
+                    render={(props) => 
+                      <TransactionDetailsPage
+                        {...props}
+                        breakpoint={breakpoint}
+                      />
+                    }
                   />
                   <Route exact path="/search/:query" component={SearchPage} />
                   <Footer                  
