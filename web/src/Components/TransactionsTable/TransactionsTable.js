@@ -75,7 +75,7 @@ class TransactionsTableWithData extends Component {
    * query's store by merging the subscription data with the previous data.
    * @param {Function} subscribeToMore Function which gets called every time the subscription
    *  returns.
-   * @protected
+   * @private
    */
   subscribeToNewObjects(subscribeToMore) {
     subscribeToMore({

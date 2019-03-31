@@ -31,11 +31,16 @@ class BlocksTableWithData extends Component {
   };
 
   /**
-   * Invoked by React immediately after a component is mounted (inserted into the tree). 
-   * @public
+   * Create a BlocksTableWithData object.
+   * @constructor
    */
-  componentDidMount() { // remove if not needed!!!
-    //!!!this.noBlocksAdded = true;
+  constructor() {
+    super();
+
+    this.firstBlockAdded = false;
+
+    // Bind to make 'this' work in callbacks.
+    this.handleQueryCompleted = this.handleQueryCompleted.bind(this);
   }
 
   /**
@@ -45,7 +50,11 @@ class BlocksTableWithData extends Component {
    */
   render() {
     return (
-      <Query query={queryBlocks} variables={{ first: this.props.maxRows }}>
+      <Query
+        query={queryBlocks}
+        variables={{ first: this.props.maxRows }}
+        onCompleted={this.handleQueryCompleted}
+      >
         {({ loading, error, data, subscribeToMore }) => {
           const subscribeToNewObjects = () => this.subscribeToNewObjects(subscribeToMore);
           if (loading)
@@ -67,13 +76,6 @@ class BlocksTableWithData extends Component {
               />
             );
           else {
-            // Add a new block to the parent.
-            // PROBLEM: Can't do this because it results in HomePage updating state during a render!!!
-            //!!! if (this.noBlocksAdded && data.blocks.length && this.props.handleAddNewBlock) {
-            //   this.noBlocksAdded = false;
-            //   this.props.handleAddNewBlock(data.blocks[0]);
-            // }
-
             return (
               <BlocksTable
                 blocks={data.blocks}
@@ -89,11 +91,26 @@ class BlocksTableWithData extends Component {
   }
 
   /**
+   * Callback fired when the Query is completed.
+   * @param {Object} data The query data.
+   * @private
+   */
+  handleQueryCompleted(data) {
+    if (!this.firstBlockAdded && data.blocks.length) {
+      this.firstBlockAdded = true;
+
+      // Add a new block to the parent.
+      if (this.props.handleAddNewBlock)
+        this.props.handleAddNewBlock(data.blocks[0]);
+    }
+  }
+
+  /**
    * Subscribe to receive new objects of the body of the table using subscribeToMore and update the
    * query's store by merging the subscription data with the previous data.
    * @param {Function} subscribeToMore Function which gets called every time the subscription
    *  returns.
-   * @protected
+   * @private
    */
   subscribeToNewObjects(subscribeToMore) {
     subscribeToMore({

@@ -15,6 +15,8 @@ import Fade from 'react-reveal/Fade';
 import BlocksTable from '../BlocksTable/BlocksTable';
 import TransactionsTable from '../TransactionsTable/TransactionsTable';
 import DashCard from '../DashCard/DashCard';
+import BlockTimeCard from '../BlockTimeCard/BlockTimeCard';
+import TransactionsCard from '../TransactionsCard/TransactionsCard';
 import PriceCard from '../PriceCard/PriceCard';
 import ResponsiveComponent from '../ResponsiveComponent/ResponsiveComponent'
 import { Breakpoints } from '../../utils/breakpoint';
@@ -73,14 +75,14 @@ const DashCardA = styled(DashCard)`
   }
 `;
 
-const DashCardB = styled(DashCard)`
+const BlockTimeCardB = styled(BlockTimeCard)`
   && {
     background: ${props => props.theme.colorDashCardBBackground};
     color: ${props => props.theme.colorDashCardText};
   }
 `;
 
-const DashCardC = styled(DashCard)`
+const TransactionsCardC = styled(TransactionsCard)`
   && {
     background: ${props => props.theme.colorDashCardCBackground};
     color: ${props => props.theme.colorDashCardText};
@@ -116,9 +118,7 @@ class HomePage extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
-      firstBlock: null,
-      lastBlock: null,
-      numTransactions: 0
+      blockHeight: 0
     };
 
     // Bind to make 'this' work in callbacks.
@@ -147,22 +147,7 @@ class HomePage extends ResponsiveComponent {
   getSectionCards()
   {
     const { breakpoint } = this.props;
-    const { firstBlock, lastBlock, numTransactions } = this.state;
-
-    // Calculate average block time and transactions per second. In the future, these should be
-    // retrieved from the server as averages over the past 24 hours.
-    let secondsPerBlock = 0;
-    let transactionsPerSecond = 0;
-    if (firstBlock) {
-      const numBlocks = lastBlock.height - firstBlock.height;
-      if (numBlocks) {
-        const firstBlockDate = new Date(firstBlock.timestamp);
-        const lastBlockDate = new Date(lastBlock.timestamp);
-        const seconds = (lastBlockDate - firstBlockDate) / 1000;
-        secondsPerBlock = seconds / numBlocks;
-        transactionsPerSecond = numTransactions / seconds;
-      }
-    }
+    const { blockHeight } = this.state;
 
     return (
       <GridSection container
@@ -178,7 +163,7 @@ class HomePage extends ResponsiveComponent {
             <DashCardA
               cardIndex={0}
               title='Blocks'
-              value={lastBlock ? lastBlock.height.toLocaleString() : 'Loading...'}
+              value={blockHeight ? blockHeight.toLocaleString() : 'Loading...'}
               svgIconPath={Constants.ICON_SVG_PATH_BLOCK}
             />
           </Fade>
@@ -188,12 +173,7 @@ class HomePage extends ResponsiveComponent {
             delay={50}
             timeout={500}
           >
-            <DashCardB
-              cardIndex={1}
-              title='Avg Block Time'
-              value={secondsPerBlock ? secondsPerBlock.toFixed(1) + ' s' : 'Loading...'}
-              svgIconPath={Constants.ICON_SVG_PATH_BLOCK_TIME}
-            />
+            <BlockTimeCardB cardIndex={1} />
           </Fade>
         </GridCard>
         <GridCard item breakpoint={breakpoint}>
@@ -201,12 +181,7 @@ class HomePage extends ResponsiveComponent {
             delay={100}
             timeout={500}
           >
-            <DashCardC
-              cardIndex={2}
-              title='Avg Transactions'
-              value={transactionsPerSecond ? transactionsPerSecond.toFixed(0) + ' tps' : 'Loading...'}
-              svgIconPath={Constants.ICON_SVG_PATH_TPS}
-            />
+            <TransactionsCardC cardIndex={2} />
           </Fade>
         </GridCard>
         <GridCard item breakpoint={breakpoint}>
@@ -266,11 +241,9 @@ class HomePage extends ResponsiveComponent {
    * @private
    */
   handleAddNewBlock(block) {
-    this.setState(prevState => ({
-      firstBlock: prevState.firstBlock ? prevState.firstBlock : block,
-      lastBlock: block,
-      numTransactions: prevState.numTransactions + block.numTransactions
-    }));
+    this.setState({
+      blockHeight: block.height
+    });
   }
 }
 

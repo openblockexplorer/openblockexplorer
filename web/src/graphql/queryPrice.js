@@ -7,8 +7,8 @@
 import gql from 'graphql-tag'
 
 /**
- * GraphQL query to get the current DFN price.
- * @return {Number} The current DFN price.
+ * GraphQL query to get the the current price.
+ * @return {Object} The current Price object.
  */
 const queryPrice = gql`
   {
