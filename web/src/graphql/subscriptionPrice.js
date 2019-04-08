@@ -7,14 +7,13 @@
 import gql from 'graphql-tag'
 
 /**
- * GraphQL subscription to receive a new price.
- * @return {Object} The new Price object.
+ * GraphQL subscription to receive price updates.
+ * @return {Object} The updated Price object.
  */
 const subscriptionPrice = gql`
   subscription {
     price {
       node {
-        timestamp
         price
       }
     }

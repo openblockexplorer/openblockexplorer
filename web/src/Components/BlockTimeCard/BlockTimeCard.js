@@ -8,8 +8,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from "react-apollo";
 import DashCard from '../DashCard/DashCard';
-import queryNetworkStatistics from '../../graphql/queryNetworkStatistics';
-import subscriptionNetworkStatistics from '../../graphql/subscriptionNetworkStatistics';
+import queryNetworkStats from '../../graphql/queryNetworkStats';
+import subscriptionNetworkStats from '../../graphql/subscriptionNetworkStats';
 import Constants from '../../constants';
 
 /**
@@ -37,7 +37,7 @@ class BlockTimeCard extends Component {
     let { cardIndex, className } = this.props;
     
     return (
-      <Query query={queryNetworkStatistics}>
+      <Query query={queryNetworkStats}>
       {({ loading, error, data, subscribeToMore }) => {
         const subscribeToNewObjects = () => this.subscribeToNewObjects(subscribeToMore);
         let secondsPerBlock;
@@ -46,7 +46,7 @@ class BlockTimeCard extends Component {
         else if (error)
           secondsPerBlock = 'Network error';
         else
-          secondsPerBlock = data.networkStatistics.secondsPerBlock.toFixed(1) + ' s';
+          secondsPerBlock = data.networkStats.secondsPerBlock.toFixed(1) + ' s';
         return (
           <DashCard
             className={className}
@@ -63,20 +63,19 @@ class BlockTimeCard extends Component {
   }
 
   /**
-   * Subscribe to receive new NetworkStatistics objects using subscribeToMore, and update the
-   * query's store by replacing the previous NetworkStatistics Object with the new NetworkStatistics
-   * object.
+   * Subscribe to receive new NetworkStats objects using subscribeToMore, and update the query's
+   * store by replacing the previous NetworkStats Object with the new NetworkStats object.
    * @param {Function} subscribeToMore Function which gets called every time the subscription
    *  returns.
    * @private
    */
   subscribeToNewObjects(subscribeToMore) {
     subscribeToMore({
-      document: subscriptionNetworkStatistics,
+      document: subscriptionNetworkStats,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data)
           return prev;
-        return {networkStatistics: subscriptionData.data.networkStatistics.node};
+        return {networkStats: subscriptionData.data.networkStats.node};
       }
     });
   }
