@@ -4,7 +4,7 @@
  * @license MIT License
  */
 
-import React, { Component, Fragment } from "react";
+import React, { Fragment } from "react";
 import PropTypes from 'prop-types';
 import { Query } from "react-apollo";
 import styled from 'styled-components';
@@ -13,6 +13,7 @@ import {
   Typography
 } from '@material-ui/core';
 import { duration, easing } from '@material-ui/core/styles/transitions';
+import TrackablePage from '../TrackablePage/TrackablePage';
 import BlockTransactionsTable from '../BlockTransactionsTable/BlockTransactionsTable'
 import queryBlock from '../../graphql/queryBlock';
 import { Breakpoints } from '../../utils/breakpoint';
@@ -68,7 +69,7 @@ const TypographyBody = styled(Typography)`
 /**
  * The Block Details Page shows details about a block.
  */
-class BlockDetailsPage extends Component {
+class BlockDetailsPage extends TrackablePage {
   static propTypes = {
     /**
      * The current Breakpoint, taking the desktop drawer (large screens) width into account.

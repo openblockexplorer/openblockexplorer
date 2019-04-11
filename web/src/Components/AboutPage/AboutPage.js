@@ -23,8 +23,8 @@ import LightSpeed from 'react-reveal/LightSpeed';
 import { TwitterTimelineEmbed } from 'react-twitter-embed';
 import CoinbaseCommerceButton from 'react-coinbase-commerce';
 import 'react-coinbase-commerce/dist/coinbase-commerce-button.css';
+import TrackablePage from '../TrackablePage/TrackablePage';
 import DfinitySymbolD3 from '../DfinitySymbolD3/DfinitySymbolD3';
-import ResponsiveComponent from '../ResponsiveComponent/ResponsiveComponent';
 import ImageLinkGrid from '../ImageLinkGrid/ImageLinkGrid';
 import { Breakpoints } from '../../utils/breakpoint';
 import Constants from '../../constants';
@@ -331,7 +331,7 @@ const ImageLinkGridThanks = styled(ImageLinkGrid)`
 /**
  * Component for the about page.
  */
-class AboutPage extends ResponsiveComponent {
+class AboutPage extends TrackablePage {
   static propTypes = {
     /**
      * The current Breakpoint, taking the desktop drawer (large screens) width into account.

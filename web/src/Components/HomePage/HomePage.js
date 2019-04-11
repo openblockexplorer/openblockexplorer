@@ -12,13 +12,13 @@ import {
 } from '@material-ui/core';
 import { duration, easing } from '@material-ui/core/styles/transitions';
 import Fade from 'react-reveal/Fade';
+import TrackablePage from '../TrackablePage/TrackablePage'
 import BlocksTable from '../BlocksTable/BlocksTable';
 import TransactionsTable from '../TransactionsTable/TransactionsTable';
 import DashCard from '../DashCard/DashCard';
 import BlockTimeCard from '../BlockTimeCard/BlockTimeCard';
 import TransactionsCard from '../TransactionsCard/TransactionsCard';
 import PriceCard from '../PriceCard/PriceCard';
-import ResponsiveComponent from '../ResponsiveComponent/ResponsiveComponent'
 import { Breakpoints } from '../../utils/breakpoint';
 import Constants from '../../constants';
 
@@ -99,7 +99,7 @@ const PriceCardD = styled(PriceCard)`
 /**
  * Component for the home page.
  */
-class HomePage extends ResponsiveComponent {
+class HomePage extends TrackablePage {
   static propTypes = {
     /**
      * The current Breakpoint, taking the desktop drawer (large screens) width into account.

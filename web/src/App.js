@@ -9,6 +9,7 @@ import {
   Route,
   HashRouter
 } from 'react-router-dom';
+import ReactGA from 'react-ga';
 import styled, { ThemeProvider } from 'styled-components';
 import { loadCSS } from 'fg-loadcss';
 import {
@@ -74,6 +75,9 @@ const apolloClient = new ApolloClient({
   })
 });
 
+// Initialize the react-ga library.
+ReactGA.initialize(Constants.GOOGLE_ANALYTICS_TRACKING_ID);
+
 const ContentDiv = styled.div`
   && {
     margin-left: ${props => props.isDesktopDrawerOpen ? Constants.DRAWER_WIDTH + 'px' : '0px'};
@@ -129,6 +133,11 @@ class App extends Component {
     );
   }
 
+  /**
+   * Return a reference to a React element to render into the DOM.
+   * @return {Object} A reference to a React element to render into the DOM.
+   * @public
+   */
   render() {
     const {
       appBarHeight,

@@ -4,7 +4,7 @@
  * @license MIT License
  */
 
-import React, { Component, Fragment } from "react";
+import React from "react";
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Query } from "react-apollo";
@@ -14,6 +14,7 @@ import {
   Typography
 } from '@material-ui/core';
 import { duration, easing } from '@material-ui/core/styles/transitions';
+import TrackablePage from '../TrackablePage/TrackablePage';
 import queryTransaction from '../../graphql/queryTransaction';
 import { Breakpoints } from '../../utils/breakpoint';
 import getHashString from '../../utils/getHashString';
@@ -69,7 +70,7 @@ const StyledLink = styled(Link)`
 /**
  * The Transaction Details Page shows details about a transaction.
  */
-class TransactionDetailsPage extends Component {
+class TransactionDetailsPage extends TrackablePage {
   static propTypes = {
     /**
      * The current Breakpoint, taking the desktop drawer (large screens) width into account.

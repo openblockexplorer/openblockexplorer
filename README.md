@@ -19,6 +19,7 @@ This repo is the front end of DFINITY Explorer.
 * prop-types
 * React
 * react-coinbase-commerce
+* react-ga
 * react-parallax
 * react-reveal
 * react-twitter-embed
