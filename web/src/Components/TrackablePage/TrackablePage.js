@@ -42,8 +42,11 @@ class TrackablePage extends ResponsiveComponent {
    * @private
    */
   trackPage(pathName) {
-    ReactGA.set({ page: pathName });
-    ReactGA.pageview(pathName);
+    // Track production build, but not development build.
+    if (process.env.NODE_ENV === 'production') {
+      ReactGA.set({ page: pathName });
+      ReactGA.pageview(pathName);
+    }
   }
 }
 

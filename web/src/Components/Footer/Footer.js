@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { loadCSS } from 'fg-loadcss';
 import {
-  Button,
   Checkbox,
   Grid,
   Icon,

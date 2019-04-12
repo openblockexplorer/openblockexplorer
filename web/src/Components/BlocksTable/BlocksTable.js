@@ -147,9 +147,9 @@ class BlocksTable extends FadeTable {
      */
     blocks: PropTypes.array.isRequired,
     /**
-     * Object containing GraphQL query error information.
+     * Boolean indicating whether an error occurred with the GraphQL query.
      */
-    error: PropTypes.object,
+    error: PropTypes.bool,
     /**
      * Boolean indicating whether the GraphQL query is in progress.
      */

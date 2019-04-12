@@ -348,14 +348,6 @@ class AboutPage extends TrackablePage {
   };
 
   /**
-   * Create an AboutPage object.
-   * @constructor
-   */
-  constructor(props) {
-    super(props);
-  }
-
-  /**
    * Return a reference to a React element to render into the DOM.
    * @return {Object} A reference to a React element to render into the DOM.
    * @public

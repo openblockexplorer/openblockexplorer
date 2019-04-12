@@ -93,7 +93,7 @@ class BlockDetailsPage extends TrackablePage {
   render() {
     const { breakpoint } = this.props;
 
-    const height = parseInt(this.props.match.params.height);
+    const height = parseInt(this.props.match.params.height, 10);
     return (
       <GridSection container
         direction='column'

@@ -4,7 +4,7 @@
  * @license MIT License
  */
 
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { throttle } from 'throttle-debounce';
 
 /**
