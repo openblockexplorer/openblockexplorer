@@ -18,6 +18,9 @@ class TrackablePage extends ResponsiveComponent {
   componentDidMount() {
     super.componentDidMount();
 
+    // Scroll to the top on every page change.
+    window.scrollTo(0, 0);
+
     const pathName = this.props.location.pathname + this.props.location.search;
     this.trackPage(pathName);
 }

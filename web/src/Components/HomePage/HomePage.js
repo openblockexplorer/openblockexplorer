@@ -19,6 +19,8 @@ import DashCard from '../DashCard/DashCard';
 import BlockTimeCard from '../BlockTimeCard/BlockTimeCard';
 import TransactionsCard from '../TransactionsCard/TransactionsCard';
 import PriceCard from '../PriceCard/PriceCard';
+import TransactionsChart from '../TransactionsChart/TransactionsChart';
+import PriceChart from '../PriceChart/PriceChart';
 import { Breakpoints } from '../../utils/breakpoint';
 import Constants from '../../constants';
 
@@ -36,6 +38,12 @@ const GridSection = styled(Grid)`
   }
 `;
 
+const GridSectionTables = styled(GridSection)`
+  && {
+    padding-bottom: ${Constants.HOME_PAGE_MARGIN_SM_AND_UP + 'px'};
+  }
+`;
+
 const GridCard = styled(Grid)`
   && {
     padding-top: ${Constants.HOME_PAGE_MARGIN_SM_AND_UP + 'px'};
@@ -48,6 +56,20 @@ const GridCard = styled(Grid)`
       `) ||
       (breakpoint === Breakpoints.XS && `
         padding-top: ${Constants.HOME_PAGE_MARGIN_XS + 'px'};
+        width: 100%;
+      `)
+    }
+  }
+`;
+
+const GridChart = styled(Grid)`
+  && {
+    padding-top: ${Constants.HOME_PAGE_MARGIN_SM_AND_UP + 'px'};
+    ${({ breakpoint }) =>
+      ((breakpoint === Breakpoints.XL || breakpoint === Breakpoints.LG || breakpoint === Breakpoints.MD) && `
+        width: calc(50% - ${Constants.HOME_PAGE_MARGIN_SM_AND_UP/2 + 'px'});
+      `) ||
+      ((breakpoint === Breakpoints.SM || breakpoint === Breakpoints.XS) && `
         width: 100%;
       `)
     }
@@ -134,6 +156,7 @@ class HomePage extends TrackablePage {
     return (
       <div>
         {this.getSectionCards()}
+        {this.getSectionCharts()}
         {this.getSectionTables()}
       </div>
     );
@@ -153,7 +176,7 @@ class HomePage extends TrackablePage {
       <GridSection container
         direction='row'
         justify='space-between'
-        alignItems='center'
+        alignItems='flex-start'
         breakpoint={breakpoint}
       >
         <GridCard item breakpoint={breakpoint}>
@@ -197,6 +220,42 @@ class HomePage extends TrackablePage {
   }
 
   /**
+   * Return the elements for the Charts section based on the current breakpoint.
+   * @return {Object} The elements for the Charts section based on the current breakpoint.
+   * @private
+   */
+  getSectionCharts()
+  {
+    const { breakpoint } = this.props;
+
+    const chartHeight = 352;
+    return (
+      <GridSection container
+        direction='row'
+        justify='space-between'
+        alignItems='flex-start'
+        breakpoint={breakpoint}
+      >
+        <GridChart item breakpoint={breakpoint}>
+          <Fade
+            timeout={500}
+          >
+            <TransactionsChart chartHeight={chartHeight} />
+          </Fade>
+        </GridChart>
+        <GridChart item breakpoint={breakpoint}>
+          <Fade
+            delay={50}
+            timeout={500}
+          >
+            <PriceChart chartHeight={chartHeight} />
+          </Fade>
+        </GridChart>
+      </GridSection>
+    );
+  }
+
+  /**
    * Return the elements for the Tables section based on the current breakpoint.
    * @return {Object} The elements for the Tables section based on the current breakpoint.
    * @private
@@ -206,7 +265,7 @@ class HomePage extends TrackablePage {
     const { breakpoint, routerRef } = this.props;
 
     return (
-      <GridSection container
+      <GridSectionTables container
         direction='row'
         justify='space-between'
         alignItems='flex-start'
@@ -231,7 +290,7 @@ class HomePage extends TrackablePage {
             <TransactionsTable maxRows={8} routerRef={routerRef} />
           </Fade>
         </GridTable>
-      </GridSection>
+      </GridSectionTables>
     );
   }
 

@@ -29,14 +29,15 @@ const StyledPaper = styled(Paper)`
 const TitleTypography = styled(Typography)`
   && {
     color: ${props => props.theme.colorBodyText};
-    padding-left: 9px;
+    padding-top: 8px;
     padding-bottom: 4px;
+    padding-left: 11px;
     text-align: left;
     font-family: ${Constants.FONT_PRIMARY};
-    font-size: 32px;
+    font-size: ${Constants.MATERIAL_FONT_SIZE_H5};
     font-weight: 300;
     @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      font-size: 24px;
+      font-size: ${Constants.MATERIAL_FONT_SIZE_H5};
     }
   }
 `;
@@ -49,8 +50,7 @@ const StyledTable = styled(Table)`
 
 const StyledTableBody = styled(TableBody)`
   && {
-    /* Use theme!!! */
-    border-top: 2px solid ${Constants.COLOR_DFINITY_BLACK_LIGHTER};
+    border-top: ${props => '2px solid' + props.theme.colorTableRowBorder};
   }
 `;
 
@@ -62,8 +62,7 @@ const StyledTableRow = styled(TableRow)`
 
 const StyledTableCell = styled(TableCell)`
   && {
-    /* Use theme!!! */
-    border-color: ${Constants.COLOR_DFINITY_BLACK_LIGHTER};
+    border-color: ${props => props.theme.colorTableRowBorder};
     color: ${props => props.theme.colorBodyText};
     font-size: 15px;
     white-space: nowrap;
@@ -75,13 +74,6 @@ const StyledTableCell = styled(TableCell)`
     @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
       font-size: 11px;
     }
-  }
-`;
-
-const HeaderTableCell = styled(StyledTableCell)`
-  && {
-    /* Consider making this regular weight!!! */
-    font-weight: bold;
   }
 `;
 
@@ -101,8 +93,7 @@ const FooterTableRow = styled(TableRow)`
 
 const FooterTableCell = styled(StyledTableCell)`
   && {
-    /* Use theme!!! */
-    color: ${Constants.COLOR_TEXT_DARKEST};
+    color: ${props => props.theme.colorTableTextDim};
     font-size: 9px;
   }
 `;
@@ -143,9 +134,9 @@ class FadeTable extends Component {
                 return (
                   // Using index as the key is fine here and for cells in other rows, since we never
                   // add, remove, reorder, or filter items in the cell arrays.
-                  <HeaderTableCell key={index} numeric={cell.isNumeric} padding={'checkbox'}>
+                  <StyledTableCell key={index} numeric={cell.isNumeric} padding={'checkbox'}>
                     {cell.value}
-                  </HeaderTableCell>
+                  </StyledTableCell>
                 );
               })}
             </StyledTableRow>

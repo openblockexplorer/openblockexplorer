@@ -24,17 +24,21 @@ const GridNoWrap = styled(Grid)`
 
 const SvgIconCard = styled(SvgIcon)`
   && {
-    margin: 30px;
-    font-size: 42px;
-    opacity: ${props => props.theme.colorDashCardIconOpacity};
-    color: ${props => props.theme.colorDashCardIcon[props.cardindex]};
+    /* The combination of margin, padding, and font-size explicitly set the height of the card. */
+    margin: ${props => props.theme.isDark ? '30px' : '19px'};
+    font-size: ${props => props.theme.isDark ? '42px' : '32px'};
+    opacity: ${props => props.theme.isDark ? props.theme.colorDashCardIconOpacity : null};
+    color: ${props => props.theme.isDark ? props.theme.colorDashCardIcon[props.cardindex] : 'white'};
+    background: ${props => props.theme.isDark ? null : props.theme.colorDashCardIcon[props.cardindex]};
+    border-radius: ${props => props.theme.isDark ? null : '50%'};
+    padding: ${props => props.theme.isDark ? null : '16px'};
   }
 `;
 
 const TypographyTitle = styled(Typography)`
   && {
     font-family: ${Constants.FONT_PRIMARY};
-    font-weight: 200;
+    font-weight: 300;
     font-size: 14px;
   }
 `;

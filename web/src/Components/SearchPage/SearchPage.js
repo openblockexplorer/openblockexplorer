@@ -4,7 +4,7 @@
  * @license MIT License
  */
 
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { Query } from "react-apollo";
@@ -13,24 +13,21 @@ import {
   Typography
 } from '@material-ui/core';
 import querySearchGetType from '../../graphql/querySearchGetType';
+import TrackablePage from '../TrackablePage/TrackablePage'
 import Constants from '../../constants';
 
 const StyledTypography = styled(Typography)`
   && {
     font-family: ${Constants.FONT_PRIMARY};
-    font-weight: regular;
     font-size: 1em;
-    margin-left: 25px;
     color: ${props => props.theme.colorBodyText};
   }
 `;
 
 const ExplorerTypography = styled(StyledTypography)`
   && {
-    font-weight: bold;
+    font-weight: 400;
     font-size: 2em;
-    margin-left: 25px;
-    margin-top: 10px;
     /* Why is letter-spacing set to 0 here?!!! */
     letter-spacing: 0;
     color: ${Constants.COLOR_DFINITY_LIGHT_ORANGE};
@@ -40,7 +37,7 @@ const ExplorerTypography = styled(StyledTypography)`
 /**
  * The Search Page shows details about a search.
  */
-class SearchPage extends Component {
+class SearchPage extends TrackablePage {
   static propTypes = {
     /**
      * Object containing information about how a <Route path> matched the URL.
@@ -56,7 +53,7 @@ class SearchPage extends Component {
   render() {
     const { query } = this.props.match.params;
     return (
-      <div style={{ marginTop: '40px' }}>
+      <div style={{ marginTop: '32px', marginLeft: '32px' }}>
         <ExplorerTypography>Search</ExplorerTypography>
         <Query query={querySearchGetType} variables={{ query }}>
           {({ loading, error, data }) => {

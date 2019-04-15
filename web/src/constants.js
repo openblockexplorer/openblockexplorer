@@ -15,10 +15,11 @@ const Constants = Object.freeze({
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
   // Remove any fonts that aren't used!!!
   URI_CDN_GOOGLE_FONTS:
-    'https://fonts.googleapis.com/css?family=Istok+Web:400|Muli:200,300,400,600,700',
+    'https://fonts.googleapis.com/css?family=Istok+Web:400|Muli:200,300,400',
   URI_DFINITY_EXPLORER_TWITTER: 'https://twitter.com/dfinityexplorer',
   URI_DFINITY_EXPLORER_GITHUB: 'https://github.com/dfinityexplorer/dfinityexplorer',
   URI_ABOUT_APOLLO: 'https://www.apollographql.com/',
+  URI_ABOUT_NOMICS: 'https://p.nomics.com/cryptocurrency-bitcoin-api',
   URI_ABOUT_DFINITY: 'https://dfinity.org/',
   URI_ABOUT_GRAPHQL: 'https://graphql.org/',
   URI_ABOUT_GRAPHQL_YOGA: 'https://github.com/prisma/graphql-yoga',
@@ -79,7 +80,7 @@ const Constants = Object.freeze({
   BREAKPOINT_MIN_XL: 1920,
   BREAKPOINT_LG_MAX_WIDTH: 1140, // from Bootstrap
   DRAWER_WIDTH: 256,
-  FOOTER_HEIGHT: 72,
+  FOOTER_HEIGHT: 96,
   ICON_SVG_PATH_TPS: 'M16 8V4l8 8-8 8v-4h-5V8h5zM9 8H7v8h2V8zM4.986 8H3v8h1.986V8zM1 8H0v8h1V8z',
   ICON_SVG_PATH_VOLUME: 'M24 14.182h-6.545v7.636H24zm-8.727-12H8.727v19.636h6.546zM6.545 21.818H0v-12h6.545z',
   ICON_SVG_PATH_MARKET_CAP: 'M24 3.621l-7.21 1.467 2.062 2.053-6.43 6.438-3.606-3.607L0 18.675l1.694 1.703 7.117-7.01 3.594 3.597 8.149-8.126 2.003 1.995z',

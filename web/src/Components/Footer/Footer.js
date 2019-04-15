@@ -6,6 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 import styled from 'styled-components';
 import { loadCSS } from 'fg-loadcss';
 import {
@@ -40,7 +41,7 @@ const FooterToolbar = styled(Toolbar)`
 
 const OneThirdGrid = styled(Grid)`
   && {
-    /*Doesn't seem needed!!! width: 33.33%; */
+    width: 33.33%;
 `;
 
 // Need narrower margins for left and right grids for small screens!!!
@@ -64,6 +65,16 @@ const FooterTypography = styled(Typography)`
   && {
     font-family: ${Constants.FONT_PRIMARY};
     font-size: 12px;
+  }
+`;
+
+const FooterA = styled.a`
+  && {
+    color: ${props => props.theme.colorFooterTextIcon};
+    text-decoration: underline;
+    &:hover {
+      cursor: pointer;
+    }
   }
 `;
 
@@ -120,7 +131,11 @@ class Footer extends ResponsiveComponent {
     /**
      * Callback fired when the value of the theme checkbox changes.
      */    
-    handleThemeChange: PropTypes.func.isRequired
+    handleThemeChange: PropTypes.func.isRequired,
+    /**
+     * Object containing information about the current react-router location.
+     */
+    location: PropTypes.object.isRequired
   };
 
   /**
@@ -150,12 +165,24 @@ class Footer extends ResponsiveComponent {
                 </FooterTypography>
               </Grid>
             </LeftThirdGrid>
-            <OneThirdGrid container direction='row' justify='center' alignItems='center'>
+            <OneThirdGrid container direction='column' justify='center' alignItems='center'>
               <Grid item>
                 <FooterTypography color='inherit'>
                   {this.getSimulatedText()}
                 </FooterTypography>
               </Grid>
+              { this.props.location.pathname === '/' &&
+                <Grid item>
+                  <FooterTypography color='inherit'>
+                    {'('}
+                    {this.getNomicsTextDescription()}
+                    <FooterA href={Constants.URI_ABOUT_NOMICS} target='_blank'>
+                      {this.getNomicsTextLink()}
+                    </FooterA>
+                    {')'}
+                  </FooterTypography>
+                </Grid>
+              }
             </OneThirdGrid>
             <RightThirdGrid container direction='row' justify='flex-end' alignItems='center' wrap='nowrap'>
               <AwesomeIconButtonGrid item>
@@ -202,8 +229,8 @@ class Footer extends ResponsiveComponent {
 
   /**
    * Return the copyright text.
-   * @return {Object} the copyright text.
-   * @public
+   * @return {String} the copyright text.
+   * @private
    */
    getCopyrightText() {
     const breakpoint = getBreakpoint();
@@ -218,21 +245,51 @@ class Footer extends ResponsiveComponent {
   }
 
   /**
-   * Return the "data is simulated text".
-   * @return {Object} The "data is simulated text".
-   * @public
+   * Return the "data is simulated" text.
+   * @return {String} The "data is simulated" text.
+   * @private
    */
   getSimulatedText() {
     const breakpoint = getBreakpoint();
     switch (breakpoint) {
       case Breakpoints.XS:
-        return '(simulated)';
+        return '(Simulated data)';
       case Breakpoints.SM:
-        return '(data is simulated)';
+        return '(Data is simulated)';
       default:
-        return '(network and price data is simulated)';
+        return '(Network and price data is simulated)';
+    }
+  }
+
+  /**
+   * Return the Nomics attribution description text.
+   * @return {String} The Nomics attribution description text.
+   * @private
+   */
+  getNomicsTextDescription() {
+    const breakpoint = getBreakpoint();
+    switch (breakpoint) {
+      case Breakpoints.XS:
+        return 'Price data by ';
+      default:
+        return 'Price data provided by Nomics.com ';
+    }
+  }
+
+  /**
+   * Return the Nomics attribution link text.
+   * @return {String} The Nomics attribution link text.
+   * @private
+   */
+  getNomicsTextLink() {
+    const breakpoint = getBreakpoint();
+    switch (breakpoint) {
+      case Breakpoints.XS:
+        return 'Nomics.com';
+      default:
+        return 'Cryptocurrency Market Data API';
     }
   }
 };
 
-export default Footer;
+export default withRouter(Footer);

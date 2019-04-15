@@ -23,8 +23,12 @@ This repo is the front end of DFINITY Explorer.
 * react-parallax
 * react-reveal
 * react-twitter-embed
+* recharts
 * Styled-Components
 * throttle-debounce
+
+# APIs Used
+* Nomics
 
 ## Code of Conduct
 

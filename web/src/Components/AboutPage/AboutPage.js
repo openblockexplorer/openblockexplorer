@@ -37,6 +37,8 @@ import dfinityLogoLight from './dfinity-logo-light-mode.png';
 import githubOctocat from './github-octocat.png';
 import graphqlLogo from './graphql-logo.png';
 import materialUiLogo from './material-ui-logo.png';
+import nomicsLogoDark from './nomics-logo-dark-mode.png';
+import nomicsLogoLight from './nomics-logo-light-mode.png';
 import postgresLogoDark from './postgresql-logo.png';
 import postgresLogoLight from './postgresql-logo-text.png';
 import prismaLogoDark from './prisma-logo-dark-mode.png';
@@ -634,19 +636,20 @@ class AboutPage extends TrackablePage {
    * @private
    */
   getSectionThanks() {
-    // Add GraphQL Yoga and Nomics!!!
+    // Possibly add: GraphQL Yoga, Recharts!!!
     const { breakpoint, isThemeDark } = this.props;
     
     // Adjust heights based on the perceived size of images (i.e., some images contain smaller logos
     // to make room for the text, so those images need to be enlarged).
     const reactHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 1.3;
-    const graphqlHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 1.4;
     const styledComponentsHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 1.4;
-    const prismaHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 1.0;
     const materialUiHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT;
+    const nomicsHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 0.9;
+    const apolloHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT;
+    const graphqlHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 1.4;
+    const prismaHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 1.0;
     const postgresHeight =
       Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * (isThemeDark ? 1.0 : 1.4);
-    const apolloHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT;
     const dfinityHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 1.2;
 
     // Define the image link objects for the ImageLinkGrid.
@@ -670,9 +673,15 @@ class AboutPage extends TrackablePage {
         href: Constants.URI_ABOUT_MATERIAL_UI
       },
       {
+        src: isThemeDark ? nomicsLogoDark : nomicsLogoLight,
+        height: nomicsHeight,
+        alt: 'Nomics logo',
+        href: Constants.URI_ABOUT_NOMICS
+      },
+      {
         src: isThemeDark ? apolloLogoDark : apolloLogoLight,
         height: apolloHeight,
-        alt: 'GraphQL logo',
+        alt: 'Apollo logo',
         href: Constants.URI_ABOUT_APOLLO
       },
       {
@@ -705,13 +714,11 @@ class AboutPage extends TrackablePage {
     let imagesPerRow;
     switch (breakpoint) {
       case Breakpoints.XS:
+      case Breakpoints.SM:
         imagesPerRow = 1;
         break;
-      case Breakpoints.SM:
-        imagesPerRow = 3;
-        break;
       default:
-        imagesPerRow = 4;
+        imagesPerRow = 3;
         break;
     }
 
@@ -733,7 +740,10 @@ class AboutPage extends TrackablePage {
           <ImageLinkGridThanks
             imageLinks={imageLinks}
             perRow={imagesPerRow}
-            justifyRow={breakpoint === Breakpoints.XS ? 'center' : 'space-between'}
+            justifyRow={
+              breakpoint === Breakpoints.XS || breakpoint === Breakpoints.SM ? 
+                'center' : 'space-between'
+            }
             marginBetweenRows={Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT / 2}
           />
         </Grid>

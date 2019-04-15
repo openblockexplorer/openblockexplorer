@@ -16,17 +16,17 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     background: ${props => props.theme.colorBodyBackground};
    }
-`
+`;
+
 /**
  * The styled-components ThemeProvider light theme.
  */
 export const themeLight = {
   // Should use constants for all!!!
+  isDark: false,
   colorAboutBackgroundPrimary: 'white',
   colorAboutBackgroundSecondary: '#F8F9FA', // Wikipedia (verified)
   //!!!colorAboutBackgroundSecondary: '#FAFAFA', // YouTube (verified), Google Translate (verified), DFINITY
-  //!!! colorAboutCardSymbolBackground: Constants.COLOR_DFINITY_BLACK_DARKER,
-  //!!! colorAboutCardBackground: 'rgb(243, 243, 243)', // use constant!!!
   colorAboutButtonBackground: '#007DBC',
   colorAboutButtonText: Constants.COLOR_TEXT_LIGHT,
   colorAboutButtonHoverBackground: '#009DDD',
@@ -52,26 +52,33 @@ export const themeLight = {
   // Actual DFINITY symbol colors.
   // colorDashCardIcon: ['rgb(41, 171, 226)', 'rgb(99, 38, 132)', 'rgb(237, 30, 121)', 'rgb(251, 176, 59)'],
   colorDashCardIconOpacity: 1.0,
-  colorDashCardText: 'black',//'white',
+  colorDashCardText: 'black',
+  colorChartBackground: 'white',
+  colorChartAxes: '#5F6368',
+  colorChartGrid: '#D9D9D9', // Google Maps drawer divider (verified)
+  colorChartText: '#202124',
+  colorChartLine: '#007DBC',
+  colorChartActiveDotStroke: 'white',
+  colorTableBackgroundPrimary: 'white',
+  colorTableBackgroundSecondary: '#F8F9FA', // Wikipedia (verified)
+  colorTableRowBorder: '#D9D9D9', // Google Maps drawer divider (verified)
+  colorTableTextDim: '#909090', // YouTube, footer text dim (verified)
   colorFooterBackground: '#F5F5F5',
   colorFooterTextIcon: '#909090', // YouTube (verified)
-  colorSearchText: '#202124', // Google text (verified)
-  colorSearchIcon: '#9E9E9E', //  Material Design icon(verified)
   colorFooterIconHover: 'white',
-  colorTableBackgroundPrimary: 'white',
-  colorTableBackgroundSecondary: '#F8F9FA' // Wikipedia (verified)
+  colorSearchText: '#202124', // Google text (verified)
+  colorSearchIcon: '#9E9E9E' //  Material Design icon(verified)
 }
 
 /**
  * The styled-components ThemeProvider dark theme.
  */
 export const themeDark = {
+  isDark: true,
   // Remove any of these colorAbout's that aren't used!!!
   // These two colors are actually pretty close to DFINITY darker and dark!!!
   colorAboutBackgroundPrimary: '#1B1B1B', // MacOS Finder, etc.
   colorAboutBackgroundSecondary: '#262626', // MacOS Finder
-  //!!! colorAboutCardSymbolBackground: Constants.COLOR_DFINITY_BLACK_DARKER,
-  //!!! colorAboutCardBackground: Constants.COLOR_DFINITY_BLACK_DARKER,
   colorAboutButtonBackground: '#007DBC',
   colorAboutButtonText: '#DCDCDC',
   colorAboutButtonHoverBackground: '#009DDD',
@@ -95,12 +102,21 @@ export const themeDark = {
   colorDashCardIcon: ['white', 'white', 'white', 'white'],
   colorDashCardIconOpacity: 0.5,
   colorDashCardText: 'white',
+  // Fix all colorChart for themeDark!!!
+  colorChartBackground: '#262626',
+  colorChartAxes: '#808080',
+  colorChartGrid: '#4B4B4B', // MacOS Messages, Calendar drawer divider
+  colorChartText: '#DCDCDC',
+  colorChartLine: '#0090CF',
+  colorChartActiveDotStroke: '#262626',
+  colorTableBackgroundPrimary: '#262626', // MacOS Finder
+  colorTableBackgroundSecondary: '#1B1B1B', // MacOS Finder, etc.
+  colorTableRowBorder: '#4B4B4B', // MacOS Messages, Calendar drawer divider
+  colorTableTextDim: '#717171', // YouTube (Dark), footer text dim (verified)
   colorDrawerBackground: '#262626', //!!!Constants.COLOR_DFINITY_BLACK,
   colorFooterBackground: '#262626', //!!!Constants.COLOR_DFINITY_BLACK
   colorFooterTextIcon: '#808080', // Netflix (verified)
   colorFooterIconHover: 'white',
   colorSearchText: '#202124', // Google text (verified)
-  colorSearchIcon: '#9E9E9E', //  Material Design icon (verified)
-  colorTableBackgroundPrimary: '#262626', // MacOS Finder
-  colorTableBackgroundSecondary: '#1B1B1B' // MacOS Finder, etc.
+  colorSearchIcon: '#9E9E9E' //  Material Design icon (verified)
 }

@@ -38,27 +38,27 @@ class PriceCard extends Component {
     
     return (
       <Query query={queryPrice}>
-      {({ loading, error, data, subscribeToMore }) => {
-        const subscribeToNewObjects = () => this.subscribeToNewObjects(subscribeToMore);
-        let price;
-        if (loading)
-          price = 'Loading...';
-        else if (error)
-          price = 'Network error';
-        else
-          price = '$' + data.price.price.toFixed(2);
-        return (
-          <DashCard
-            className={className}
-            cardIndex={cardIndex}
-            title='Price'
-            value={price}
-            svgIconPath={Constants.ICON_SVG_PATH_PRICE}
-            subscribeToNewObjects={subscribeToNewObjects}
-          />
-        );
-      }}
-    </Query>
+        {({ loading, error, data, subscribeToMore }) => {
+          const subscribeToNewObjects = () => this.subscribeToNewObjects(subscribeToMore);
+          let price;
+          if (loading)
+            price = 'Loading...';
+          else if (error)
+            price = 'Network error';
+          else
+            price = '$' + data.price.price.toFixed(2);
+          return (
+            <DashCard
+              className={className}
+              cardIndex={cardIndex}
+              title='Price'
+              value={price}
+              svgIconPath={Constants.ICON_SVG_PATH_PRICE}
+              subscribeToNewObjects={subscribeToNewObjects}
+            />
+          );
+        }}
+      </Query>
     );
   }
 
