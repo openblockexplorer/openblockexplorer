@@ -1,5 +1,5 @@
 /**
- * @file ContractsPage
+ * @file CanistersPage
  * @copyright Copyright (c) 2018-2019 Dylan Miller, Todd Kitchens, and dfinityexplorer contributors
  * @license MIT License
  */
@@ -28,15 +28,15 @@ const ExplorerTypography = styled(StyledTypography)`
   }
 `;
 
-class ContractsPage extends TrackablePage {
+class CanistersPage extends TrackablePage {
   render() {
     return (
       <div style={{ marginTop: '32px', marginLeft: '32px' }}>
-        <ExplorerTypography>Contracts</ExplorerTypography>
-        <StyledTypography>Contracts page coming soon.</StyledTypography>
+        <ExplorerTypography>Canisters</ExplorerTypography>
+        <StyledTypography>Canisters page coming soon.</StyledTypography>
       </div>
     );
   }
 }
 
-export default ContractsPage;
+export default CanistersPage;

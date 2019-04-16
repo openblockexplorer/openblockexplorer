@@ -1,5 +1,5 @@
 /**
- * @file TransactionsPage
+ * @file CanistersPage
  * @copyright Copyright (c) 2018-2019 Dylan Miller, Todd Kitchens, and dfinityexplorer contributors
  * @license MIT License
  */
@@ -36,15 +36,15 @@ const TypographyBody = styled(Typography)`
   }
 `;
 
-class TransactionsPage extends TrackablePage {
- render() {
-   return (
-     <div style={{ marginTop: '32px', marginLeft: '32px' }}>
-       <TypographyHeading>Transactions</TypographyHeading>
-       <TypographyBody>Transactions page coming soon.</TypographyBody>
-     </div>
-   );
- }
+class CanistersPage extends TrackablePage {
+  render() {
+    return (
+      <div style={{ marginTop: '32px', marginLeft: '32px' }}>
+        <TypographyHeading>Canisters</TypographyHeading>
+        <TypographyBody>Canisters page coming soon.</TypographyBody>
+      </div>
+    );
+  }
 }
 
-export default TransactionsPage;
+export default CanistersPage;

@@ -11,20 +11,28 @@ import {
   Typography
 } from '@material-ui/core';
 import TrackablePage from '../TrackablePage/TrackablePage'
+import { Breakpoints } from '../../utils/breakpoint';
 
-const StyledTypography = styled(Typography)`
+const TypographyHeading = styled(Typography)`
   && {
     font-family: ${Constants.FONT_PRIMARY};
-    font-size: 1em;
+    font-size: ${Constants.MATERIAL_FONT_SIZE_H4};
+    font-weight: 400;
     color: ${props => props.theme.colorBodyText};
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        font-size: ${Constants.MATERIAL_FONT_SIZE_H5};       
+      `
+    }
   }
 `;
 
-const ExplorerTypography = styled(StyledTypography)`
+const TypographyBody = styled(Typography)`
   && {
-    font-weight: 400;
-    font-size: 2em;
-    color: ${Constants.COLOR_DFINITY_LIGHT_ORANGE};
+    font-family: ${Constants.FONT_PRIMARY};
+    font-size: ${Constants.MATERIAL_FONT_SIZE_BODY_1};
+    line-height: 1.75rem;
+    color: ${props => props.theme.colorBodyTextDim};
   }
 `;
 
@@ -32,8 +40,8 @@ class BlocksPage extends TrackablePage {
   render() {
     return (
       <div style={{ marginTop: '32px', marginLeft: '32px' }}>
-        <ExplorerTypography>Blocks</ExplorerTypography>
-        <StyledTypography>Blocks page coming soon.</StyledTypography>
+        <TypographyHeading>Blocks</TypographyHeading>
+        <TypographyBody>Blocks page coming soon.</TypographyBody>
       </div>
     );
   }
