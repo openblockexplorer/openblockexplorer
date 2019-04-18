@@ -75,8 +75,13 @@ const apolloClient = new ApolloClient({
   })
 });
 
-// Initialize the react-ga library.
+// Initialize the react-ga library. We do not need user consent to be GDPR compliant. According to
+// Google: "When using Google Analytics Advertising Features, you must also comply with the European
+// Union User Consent Policy." Advertising Features are not enabled for DFINITY Explorer. Under the
+// GDPR, an IP address is considered Personally Identifiable Information (PII), so we anonymize the
+// IP addresses sent to Google Analytics
 ReactGA.initialize(Constants.GOOGLE_ANALYTICS_TRACKING_ID);
+ReactGA.set({ anonymizeIp: true });
 
 const ContentDiv = styled.div`
   && {

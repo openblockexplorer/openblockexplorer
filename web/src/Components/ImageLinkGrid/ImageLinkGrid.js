@@ -110,13 +110,14 @@ class ImageLinkGrid extends Component {
 
     // The image grid is an array of rows, where each row is an array of image objects. Creating
     // a two-dimensional array like this is an extra step, but makes the code below more readable.
-    // There is a problem with the logic here, since if the last row has fewer images, it will not line up with the columns of previous rows. Fix this!!!
     let imageLinkGrid = [];
     let maxWidthColumn = Array(perRow).fill(0);
     for (let i = 0; i < imageLinks.length;) {
       let row = [];
+      const isShortRow = imageLinks.length - i < perRow;
       for (var j = 0; j < perRow && i < imageLinks.length; j++) {
-        if (widths[i])
+        // Do not update maxWidthColumn[j] if this is a short row (last row with fewer columns).
+        if (!isShortRow && widths[i])
           maxWidthColumn[j] = Math.max(widths[i], maxWidthColumn[j]);
         row.push(imageLinks[i++]);
       }
@@ -125,29 +126,37 @@ class ImageLinkGrid extends Component {
     
     return (
       <div className={className}>
-        {imageLinkGrid.map((row, columnIndex) => {
+        {imageLinkGrid.map((row, rowIndex) => {
+          const isShortRow = row.length < perRow;
           return (
             <Grid container
               direction='row'
-              justify={justifyRow || 'space-between'}
+              // Always set justify='space-around' for a short row (last row with fewer columns).
+              justify={isShortRow ? 'space-around' : (justifyRow || 'space-between')}
               alignItems='center'
-              key={columnIndex}
-              style={{ marginTop: (columnIndex && marginBetweenRows) ? marginBetweenRows : 0 }}
+              key={rowIndex}
+              style={{ marginTop: (rowIndex && marginBetweenRows) ? marginBetweenRows : 0 }}
             >
-              {row.map((imageLink, rowIndex) => {
+              {row.map((imageLink, columnIndex) => {
+                const index = rowIndex * perRow + columnIndex;
                 return (
                   <Grid container
                     direction='column'
                     justify='center'
                     alignItems='center'
-                    key={rowIndex}
-                    style={{ width: maxWidthColumn[rowIndex], height: containerHeight }}
+                    key={columnIndex}
+                    // Do not use maxWidthColumn[j] if this is a short row (last row with fewer
+                    // columns).
+                    style={{
+                      width: isShortRow ? widths[index] : maxWidthColumn[columnIndex],
+                      height: containerHeight
+                    }}
                   >
                     <Grid item>
                       <a href={imageLink.href} target='_blank'>
                         <Fade
                           bottom
-                          delay={(columnIndex * perRow + rowIndex) * 50}
+                          delay={index * 50}
                           timeout={500}
                         >
                           <img
@@ -175,13 +184,13 @@ class ImageLinkGrid extends Component {
    * @private
    */
   calculateMaxImageDimensions() {
+    const { imageLinks } = this.props;
     this.setState({
-      widths: [],
+      widths: Array(imageLinks.length).fill(0),
       maxHeight: 0
     });
 
     // Calculate the widths[] and maxHeight of the images by loading them.
-    const { imageLinks } = this.props;
     imageLinks.forEach((imageLink, index) => {
       const img = new Image();
       img.onload = event => {

@@ -50,6 +50,10 @@ const Constants = Object.freeze({
   COLOR_TEXT_DARKEST: 'rgb(106, 106, 109)', // rgb(255, 255, 255, 0.3) on COLOR_DFINITY_BLACK
   COLOR_LIGHT_TEXT: 'black',
   COLOR_LIGHT_TEXT_FADED: 'rgb(77, 77, 77)', // rgb(0, 0, 0, 0.7) on white, matches Material-UI Tab opacity
+  COLOR_DARK_DRAWER_DIVIDER_YOUTUBE: '#333333',
+  COLOR_LIGHT_DRAWER_DIVIDER_GOOGLE: '#E3E3E3', // Docs, Sheets
+  COLOR_LIGHT_DRAWER_ICON_GOOGLE: '#5F6368', // Account, Docs, Drive, Calendar, Keep, Photos, Sheets
+  COLOR_LIGHT_DRAWER_TEXT_GOOGLE: '#3C4043', // Account, Docs, Calendar, News, Photos, Sheets
   COLOR_TWITTER_BLUE: 'rgb(100, 164, 224)',
   COLOR_TWITTER_GREEN: 'rgb(131, 175, 97)',
   COLOR_TWITTER_ORANGE: 'rgb(244, 174, 78)',

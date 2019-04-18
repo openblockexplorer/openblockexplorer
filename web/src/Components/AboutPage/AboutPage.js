@@ -322,7 +322,6 @@ const PaperTwitter = styled(Paper)`
   }
 `;
 
-// BUG: Apollo and DFINITY sometimes shift right!!!
 const ImageLinkGridThanks = styled(ImageLinkGrid)`
   && {
     margin-top: ${Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT/2 + 'px'};
@@ -714,8 +713,10 @@ class AboutPage extends TrackablePage {
     let imagesPerRow;
     switch (breakpoint) {
       case Breakpoints.XS:
-      case Breakpoints.SM:
         imagesPerRow = 1;
+        break;
+      case Breakpoints.SM:
+        imagesPerRow = 2;
         break;
       default:
         imagesPerRow = 3;
@@ -740,10 +741,7 @@ class AboutPage extends TrackablePage {
           <ImageLinkGridThanks
             imageLinks={imageLinks}
             perRow={imagesPerRow}
-            justifyRow={
-              breakpoint === Breakpoints.XS || breakpoint === Breakpoints.SM ? 
-                'center' : 'space-between'
-            }
+            justifyRow={breakpoint === Breakpoints.XS ? 'center' : 'space-between'}
             marginBetweenRows={Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT / 2}
           />
         </Grid>

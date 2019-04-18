@@ -279,6 +279,14 @@ const StyledDrawer = styled(({ ...other }) => (
   & .paper {
     width: ${Constants.DRAWER_WIDTH + 'px'};
     background: ${props => props.theme.colorDrawerBackground};
+    border-right:
+      ${props => props.theme.isDark ? `1px solid ${props.theme.colorBodyBackground}` : '0px'};
+  }
+`;
+
+const StyledDivider = styled(Divider)`
+  && {
+    background: ${props => props.theme.colorDrawerDivider};
   }
 `;
 
@@ -293,8 +301,8 @@ const DrawerListItem = styled(ListItem)`
     ${DrawerListItemIcon} {
       color: ${
         props => props.selected ?
-          props.theme.colorAppBarMenuIconSelected :
-          props.theme.colorAppBarTextButton
+          props.theme.colorDrawerIconTextSelected :
+          props.theme.colorDrawerIcon
       };
     }
     ${DrawerListItemText} {
@@ -305,8 +313,8 @@ const DrawerListItem = styled(ListItem)`
         font-weight: ${props => props.selected ? 600 : 400};
         color: ${
           props => props.selected ?
-            props.theme.colorAppBarMenuIconSelected :
-            props.theme.colorAppBarTextButton
+            props.theme.colorDrawerIconTextSelected :
+            props.theme.colorDrawerText
         };
       }
     }
@@ -682,7 +690,7 @@ class DEAppBar extends ResponsiveComponent {
             </DrawerListItemIcon>
             <DrawerListItemText primary='Home' selected={this.isActiveRoute('/')} />
           </DrawerListItem>
-          <Divider />
+          <StyledDivider />
           <DrawerListItem button component={Link} to='/blocks' selected={this.isActiveRoute('/blocks')}>
             <DrawerListItemIcon>
               <SvgIcon>
@@ -711,7 +719,7 @@ class DEAppBar extends ResponsiveComponent {
             </DrawerListItemIcon>
             <DrawerListItemText primary='Canisters' />
           </DrawerListItem>
-          <Divider />
+          <StyledDivider />
           <DrawerListItem button component={Link} to='/about' selected={this.isActiveRoute('/about')}>
             <DrawerListItemIcon>
               <InfoIcon />

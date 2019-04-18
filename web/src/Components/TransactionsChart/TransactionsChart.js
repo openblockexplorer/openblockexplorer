@@ -209,4 +209,5 @@ class TransactionsChart extends AreaChart {
   }
 }
 
+// Use the withTheme HOC so that we can use the current theme outside styled components.
 export default withTheme(TransactionsChartWithData);

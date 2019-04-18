@@ -93,28 +93,28 @@ const GridTable = styled(Grid)`
 const DashCardA = styled(DashCard)`
   && {
     background: ${props => props.theme.colorDashCardABackground};
-    color: ${props => props.theme.colorDashCardText};
+    color: ${props => props.theme.colorBodyText};
   }
 `;
 
 const BlockTimeCardB = styled(BlockTimeCard)`
   && {
     background: ${props => props.theme.colorDashCardBBackground};
-    color: ${props => props.theme.colorDashCardText};
+    color: ${props => props.theme.colorBodyText};
   }
 `;
 
 const TransactionsCardC = styled(TransactionsCard)`
   && {
     background: ${props => props.theme.colorDashCardCBackground};
-    color: ${props => props.theme.colorDashCardText};
+    color: ${props => props.theme.colorBodyText};
   }
 `;
 
 const PriceCardD = styled(PriceCard)`
   && {
     background: ${props => props.theme.colorDashCardDBackground};
-    color: ${props => props.theme.colorDashCardText};
+    color: ${props => props.theme.colorBodyText};
   }
 `;
 
