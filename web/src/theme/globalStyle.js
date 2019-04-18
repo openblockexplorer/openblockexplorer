@@ -61,8 +61,8 @@ export const themeLight = {
   colorDrawerText: Constants.COLOR_LIGHT_DRAWER_TEXT_GOOGLE,
   colorChartBackground: 'white',
   colorChartAxes: '#5F6368',
-  colorChartGrid: '#D9D9D9', // Google Maps drawer divider (verified)
-  colorChartText: '#202124',
+  colorChartGrid: Constants.COLOR_LIGHT_DRAWER_DIVIDER_GOOGLE,
+  colorChartText: '#5F6368', // use same Constant as colorBodyTextDim!!!
   colorChartLine: '#007DBC',
   colorChartActiveDotStroke: 'white',
   colorTableBackgroundPrimary: 'white',
