@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   Fade,
@@ -77,6 +78,16 @@ const StyledTableCell = styled(TableCell)`
   }
 `;
 
+const StyledLink = styled(Link)`
+  && {
+    color: ${props => props.theme.colorBodyTextLink};
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
 const BodyTableRow = styled(StyledTableRow)`
   && {
     &:nth-of-type(odd) {
@@ -135,7 +146,10 @@ class FadeTable extends Component {
                   // Using index as the key is fine here and for cells in other rows, since we never
                   // add, remove, reorder, or filter items in the cell arrays.
                   <StyledTableCell key={index} numeric={cell.isNumeric} padding={'checkbox'}>
-                    {cell.value}
+                  {cell.link != null ?
+                    <StyledLink to={cell.link}>{cell.value}</StyledLink> :
+                    cell.value
+                  }
                   </StyledTableCell>
                 );
               })}
@@ -149,11 +163,14 @@ class FadeTable extends Component {
                   in={true}
                   timeout={500}
                 >
-                  <BodyTableRow onClick={() => this.handleBodyRowClick(bodyRow)}>
+                  <BodyTableRow>
                     {bodyRow.cells.map((cell, index) => {
                       return (
                         <StyledTableCell key={index} numeric={cell.isNumeric} padding={'checkbox'}>
-                          {cell.value}
+                        {cell.link != null ?
+                          <StyledLink to={cell.link}>{cell.value}</StyledLink> :
+                          cell.value
+                        }
                         </StyledTableCell>
                       );
                     })}
@@ -167,7 +184,10 @@ class FadeTable extends Component {
               {this.getFooterRow().map((cell, index) => {
                 return (
                   <FooterTableCell key={index} numeric={cell.isNumeric} padding={'checkbox'}>
-                    {cell.value}
+                  {cell.link != null ?
+                    <StyledLink to={cell.link}>{cell.value}</StyledLink> :
+                    cell.value
+                  }
                   </FooterTableCell>
                 );
               })}
@@ -221,15 +241,6 @@ class FadeTable extends Component {
    */
   getFooterRow() {
     throw new Error('FadeTable.getFooterRow() not implemented.');
-  }
-
-  /**
-   * Callback fired when a body row is clicked.
-   * @param {Object} bodyRow A body row object returned by getBodyRows().
-   * @private
-   */
-  handleBodyRowClick(bodyRow) {
-    // Derived classes can optionally implement this.
   }
 }
 

@@ -126,11 +126,7 @@ class HomePage extends TrackablePage {
     /**
      * The current Breakpoint, taking the desktop drawer (large screens) width into account.
      */    
-    breakpoint: PropTypes.number.isRequired,
-    /**
-     * Reference to the <HashRouter> element.
-     */
-    routerRef: PropTypes.object
+    breakpoint: PropTypes.number.isRequired
   };
 
   /**
@@ -262,7 +258,7 @@ class HomePage extends TrackablePage {
    */
   getSectionTables()
   {
-    const { breakpoint, routerRef } = this.props;
+    const { breakpoint } = this.props;
 
     return (
       <GridSectionTables container
@@ -278,7 +274,6 @@ class HomePage extends TrackablePage {
             <BlocksTable
               maxRows={8}
               handleAddNewBlock={this.handleAddNewBlock}
-              routerRef={routerRef}
             />
           </Fade>
         </GridTable>
@@ -287,7 +282,7 @@ class HomePage extends TrackablePage {
             delay={50}
             timeout={500}
           >
-            <TransactionsTable maxRows={8} routerRef={routerRef} />
+            <TransactionsTable maxRows={8} />
           </Fade>
         </GridTable>
       </GridSectionTables>

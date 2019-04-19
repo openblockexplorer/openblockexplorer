@@ -78,11 +78,7 @@ class BlockDetailsPage extends TrackablePage {
     /**
      * Object containing information about how a <Route path> matched the URL.
      */
-    match: PropTypes.object.isRequired,
-    /**
-     * Reference to the <HashRouter> element.
-     */
-    routerRef: PropTypes.object
+    match: PropTypes.object.isRequired
   };
 
   /**
@@ -135,7 +131,6 @@ class BlockDetailsPage extends TrackablePage {
                     <BlockTransactionsTable
                       maxRows={100}
                       transactions={data.block.transactions}
-                      routerRef={this.props.routerRef}
                     />
                   </GridTable>
                 </Fragment>

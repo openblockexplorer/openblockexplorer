@@ -50,7 +50,7 @@ export const themeLight = {
   // Remove extraneous colorDashCardIcon settings once finalized!!!
   //!!!colorDashCardIcon: ['#007DBC', '#722B8D', '#C40059', '#F07200'],
   //!!!colorDashCardIcon: ['rgb(0, 125, 188, 1)', 'rgb(114, 43, 141, 0.8)', 'rgb(196, 0, 89, 0.8)', 'rgb(240, 114, 0, 0.8)'],
-  colorDashCardIcon: ['#007DBC', '#007DBC', '#007DBC', '#007DBC'],
+  colorDashCardIcon: ['#007DBC', '#843196', '#DA005E', '#F68200'],
   // Actual DFINITY symbol colors.
   //!!!colorDashCardIcon: ['rgb(41, 171, 226)', 'rgb(99, 38, 132)', 'rgb(237, 30, 121)', 'rgb(251, 176, 59)'],
   colorDashCardIconOpacity: 1.0,

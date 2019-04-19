@@ -18,10 +18,6 @@ class BlockTransactionsTable extends FadeTable {
      */
     maxRows: PropTypes.number.isRequired,
     /**
-     * Reference to the <HashRouter> element.
-     */
-    routerRef: PropTypes.object,
-    /**
      * Array of transaction objects.
      */
     transactions: PropTypes.array.isRequired
@@ -52,8 +48,8 @@ class BlockTransactionsTable extends FadeTable {
    */
   getHeaderRow() {
     return [
-      {value: 'Hash', isNumeric: false},
-      {value: 'Amount', isNumeric: true}
+      {value: 'Hash', isNumeric: false, link: null},
+      {value: 'Amount', isNumeric: true, link: null}
     ];
   }
 
@@ -69,10 +65,13 @@ class BlockTransactionsTable extends FadeTable {
         return {
           mapKey: transaction.hash,
           cells: [
-            {value: getHashString(transaction.hash), isNumeric: false},
-            {value: transaction.amount.toFixed(8).toString() + ' DFN', isNumeric: true}
-          ],
-          hash: transaction.hash
+            {
+              value: getHashString(transaction.hash),
+              isNumeric: false,
+              link: `/tx/0x${transaction.hash}`
+            },
+            {value: transaction.amount.toFixed(8).toString() + ' DFN', isNumeric: true, link: null}
+          ]
         };
       });
       return bodyRows;
@@ -88,20 +87,9 @@ class BlockTransactionsTable extends FadeTable {
    */
   getFooterRow() {
     return [
-      {value: null, isNumeric: false},
-      {value: '(simulated data)', isNumeric: true}
+      {value: null, isNumeric: false, link: null},
+      {value: '(simulated data)', isNumeric: true, link: null}
     ];
-  }
-
-  /**
-   * Callback fired when a body row is clicked.
-   * @param {Object} bodyRow A body row object returned by getBodyRows().
-   * @private
-   */
-  handleBodyRowClick(bodyRow) {
-    const hash = '0x' + bodyRow.hash;
-    if (this.props.routerRef)
-      this.props.routerRef.history.push(`/tx/${hash}`);
   }
 }
 

@@ -20,11 +20,7 @@ class TransactionsTableWithData extends Component {
     /**
      * The maximum number of rows in the table.
      */
-    maxRows: PropTypes.number.isRequired,
-    /**
-     * Reference to the <HashRouter> element.
-     */
-    routerRef: PropTypes.object
+    maxRows: PropTypes.number.isRequired
   };
 
   /**
@@ -61,7 +57,6 @@ class TransactionsTableWithData extends Component {
                 transactions={data.transactions}
                 subscribeToNewObjects={subscribeToNewObjects}
                 maxRows={this.props.maxRows}
-                routerRef={this.props.routerRef}
               />
             );
           }
@@ -115,10 +110,6 @@ class TransactionsTable extends FadeTable {
      */
     maxRows: PropTypes.number.isRequired,
     /**
-     * Reference to the <HashRouter> element.
-     */
-    routerRef: PropTypes.object,
-    /**
      * Function to subscribe to receive new objects of the body of the table.
      */
     subscribeToNewObjects: PropTypes.func,
@@ -163,8 +154,8 @@ class TransactionsTable extends FadeTable {
    */
   getHeaderRow() {
     return [
-      {value: 'Hash', isNumeric: false},
-      {value: 'Amount', isNumeric: true}
+      {value: 'Hash', isNumeric: false, link: null},
+      {value: 'Amount', isNumeric: true, link: null}
     ];
   }
 
@@ -176,18 +167,21 @@ class TransactionsTable extends FadeTable {
   getBodyRows() {
     const { transactions, loading, error } = this.props;
     if (loading)
-      return [{mapKey: 'LOADING', cells: [{value: 'Loading...', isNumeric: false}]}];
+      return [{mapKey: 'LOADING', cells: [{value: 'Loading...', isNumeric: false, link: null}]}];
     else if (error)
-      return [{mapKey: 'ERROR', cells: [{value: 'Network error', isNumeric: false}]}];
+      return [{mapKey: 'ERROR', cells: [{value: 'Network error', isNumeric: false, link: null}]}];
     else {
       let bodyRows = transactions.map((transaction) => {
         return {
           mapKey: transaction.hash,
           cells: [
-            {value: getHashString(transaction.hash), isNumeric: false},
-            {value: transaction.amount.toFixed(8).toString() + ' DFN', isNumeric: true}
-          ],
-          hash: transaction.hash
+            {
+              value: getHashString(transaction.hash),
+              isNumeric: false,
+              link: `/tx/0x${transaction.hash}`
+            },
+            {value: transaction.amount.toFixed(8).toString() + ' DFN', isNumeric: true, link: null}
+          ]
         };
       });
       return bodyRows;
@@ -201,20 +195,9 @@ class TransactionsTable extends FadeTable {
    */
   getFooterRow() {
     return [
-      {value: null, isNumeric: false},
-      {value: '(simulated data)', isNumeric: true}
+      {value: null, isNumeric: false, link: null},
+      {value: '(simulated data)', isNumeric: true, link: null}
     ];
-  }
-
-  /**
-   * Callback fired when a body row is clicked.
-   * @param {Object} bodyRow A body row object returned by getBodyRows().
-   * @private
-   */
-  handleBodyRowClick(bodyRow) {
-    const hash = '0x' + bodyRow.hash;
-    if (this.props.routerRef)
-      this.props.routerRef.history.push(`/tx/${hash}`);
   }
 }
 

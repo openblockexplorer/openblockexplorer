@@ -192,7 +192,6 @@ class App extends Component {
                       <HomePage
                         {...props}
                         breakpoint={breakpoint}
-                        routerRef={routerRef}
                       />
                     }
                   />
@@ -217,7 +216,6 @@ class App extends Component {
                       <BlockDetailsPage
                         {...props}
                         breakpoint={breakpoint}
-                        routerRef={routerRef}
                       />
                     }
                   />

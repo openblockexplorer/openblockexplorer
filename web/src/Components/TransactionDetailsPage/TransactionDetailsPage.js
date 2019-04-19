@@ -64,6 +64,10 @@ const TypographyBody = styled(Typography)`
 const StyledLink = styled(Link)`
   && {
     color: ${props => props.theme.colorBodyTextLink};
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `;
 

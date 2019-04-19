@@ -23,11 +23,7 @@ class BlocksTableWithData extends Component {
     /**
      * The maximum number of rows in the table.
      */
-    maxRows: PropTypes.number.isRequired,
-    /**
-     * Reference to the <HashRouter> element.
-     */
-    routerRef: PropTypes.object
+    maxRows: PropTypes.number.isRequired
   };
 
   /**
@@ -81,7 +77,6 @@ class BlocksTableWithData extends Component {
                 blocks={data.blocks}
                 subscribeToNewObjects={subscribeToNewObjects}
                 maxRows={this.props.maxRows}
-                routerRef={this.props.routerRef}
               />
             );
           }
@@ -159,10 +154,6 @@ class BlocksTable extends FadeTable {
      */
     maxRows: PropTypes.number.isRequired,
     /**
-     * Reference to the <HashRouter> element.
-     */
-    routerRef: PropTypes.object,
-    /**
      * Function to subscribe to receive new objects of the body of the table.
      */
     subscribeToNewObjects: PropTypes.func
@@ -203,9 +194,9 @@ class BlocksTable extends FadeTable {
    */
   getHeaderRow() {
     return [
-      {value: 'Height', isNumeric: false},
-      {value: 'Timestamp', isNumeric: false},
-      {value: 'Transactions', isNumeric: true}
+      {value: 'Height', isNumeric: false, link: null},
+      {value: 'Timestamp', isNumeric: false, link: null},
+      {value: 'Transactions', isNumeric: true, link: null}
     ];
   }
 
@@ -217,20 +208,23 @@ class BlocksTable extends FadeTable {
   getBodyRows() {
     const { blocks, loading, error } = this.props;
     if (loading)
-      return [{mapKey: 'LOADING', cells: [{value: 'Loading...', isNumeric: false}]}];
+      return [{mapKey: 'LOADING', cells: [{value: 'Loading...', isNumeric: false, link: null}]}];
     else if (error)
-      return [{mapKey: 'ERROR', cells: [{value: 'Network error', isNumeric: false}]}];
+      return [{mapKey: 'ERROR', cells: [{value: 'Network error', isNumeric: false, link: null}]}];
     else {
       let bodyRows = blocks.map((block) => {
         const date = new Date(block.timestamp);
         return {
           mapKey: block.height,
           cells: [
-            {value: block.height.toLocaleString(), isNumeric: false},
-            {value: date.toLocaleString(), isNumeric: false},
-            {value: block.numTransactions.toLocaleString(), isNumeric: true}
-          ],
-          height: block.height
+            {
+              value: block.height.toLocaleString(),
+              isNumeric: false,
+              link: `/block/${block.height}`
+            },
+            {value: date.toLocaleString(), isNumeric: false, link: null},
+            {value: block.numTransactions.toLocaleString(), isNumeric: true, link: null}
+          ]
         };
       });
       return bodyRows;
@@ -244,20 +238,10 @@ class BlocksTable extends FadeTable {
    */
   getFooterRow() {
     return [
-      {value: null, isNumeric: false},
-      {value: null, isNumeric: false},
-      {value: '(simulated data)', isNumeric: true}
+      {value: null, isNumeric: false, link: null},
+      {value: null, isNumeric: false, link: null},
+      {value: '(simulated data)', isNumeric: true, link: null}
     ];
-  }
-
-  /**
-   * Callback fired when a body row is clicked.
-   * @param {Object} bodyRow A body row object returned by getBodyRows().
-   * @private
-   */
-  handleBodyRowClick(bodyRow) {
-    if (this.props.routerRef)
-      this.props.routerRef.history.push(`/block/${bodyRow.height}`);
   }
 }
 
