@@ -35,10 +35,10 @@ const TitleTypography = styled(Typography)`
     padding-left: 11px;
     text-align: left;
     font-family: ${Constants.FONT_PRIMARY};
-    font-size: ${Constants.MATERIAL_FONT_SIZE_H5};
+    font-size: ${Constants.MATERIAL_FONT_SIZE_H6};
     font-weight: 300;
     @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      font-size: ${Constants.MATERIAL_FONT_SIZE_H5};
+      font-size: ${Constants.MATERIAL_FONT_SIZE_H6};
     }
   }
 `;

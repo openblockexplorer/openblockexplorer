@@ -50,6 +50,8 @@ import styledComponentsLogoLight from './styled-components-logo-light-mode.png';
 const PaperParallax = styled(Paper)`
   && {
     background: ${props => props.theme.colorBodyBackground};
+    /* Allows shadow to overlap the element below it. */
+    position: relative;
   }
 `;
 
@@ -499,6 +501,7 @@ class AboutPage extends TrackablePage {
       <GridSectionPrimary container direction='row' justify='space-between' alignItems='center' breakpoint={breakpoint}>
         <GridImageLeft item breakpoint={breakpoint}>
           <Fade timeout={2000}>
+            {/* Twitter card looks better at elevation 2 than 1, since card/body are same color. */}
             <PaperTwitter elevation={2} breakpoint={breakpoint}>
               <TwitterTimelineEmbed
                 sourceType='profile'

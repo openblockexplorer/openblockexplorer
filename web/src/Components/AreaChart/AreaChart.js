@@ -11,6 +11,7 @@ import {
   Paper,
   Typography
 } from '@material-ui/core';
+import shadows from '@material-ui/core/styles/shadows';
 import {
   Area,
   AreaChart as RechartsAreaChart,
@@ -38,10 +39,10 @@ const TitleTypography = styled(Typography)`
     padding-left: 11px;
     text-align: left;
     font-family: ${Constants.FONT_PRIMARY};
-    font-size: ${Constants.MATERIAL_FONT_SIZE_H5};
+    font-size: ${Constants.MATERIAL_FONT_SIZE_H6};
     font-weight: 300;
     @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      font-size: ${Constants.MATERIAL_FONT_SIZE_H5};
+      font-size: ${Constants.MATERIAL_FONT_SIZE_H6};
     }
   }
 `;
@@ -49,7 +50,8 @@ const TitleTypography = styled(Typography)`
 const StyledAreaChart = styled(RechartsAreaChart)`
   && {
     font-family: ${Constants.FONT_PRIMARY};
-    font-size: ${Constants.MATERIAL_FONT_SIZE_BODY_2};
+    font-size: ${Constants.MATERIAL_FONT_SIZE_CAPTION};
+    font-weight: 400;
   }
 `;
 
@@ -76,6 +78,7 @@ class AreaChart extends Component {
   render() {
     const { chartHeight, theme } = this.props;
     const data = this.getData();
+    const tooltipElevation = 2;
     return (
       <StyledPaper elevation={1}>
         <TitleTypography>{this.getTitle()}</TitleTypography>
@@ -83,7 +86,7 @@ class AreaChart extends Component {
           <ResponsiveContainer width='100%' height={chartHeight}>
             <StyledAreaChart
               data={data}
-              margin={{ top: 0, right: 0, left: 8, bottom: 0 }}
+              margin={{ top: 0, right: 0, left: 4, bottom: 0 }}
               // Setting width to 0 here is a workaround for a problem where ResponsiveContainer
               // does not resize correctly from large to small.
               // https://github.com/recharts/recharts/issues/172
@@ -120,13 +123,15 @@ class AreaChart extends Component {
               <Tooltip
                 labelFormatter={(value) => this.getGetTooltipX(value)}
                 formatter={(value) => [this.getGetTooltipY(value)]}
-                itemStyle={{ color: theme.colorChartLine }}
                 contentStyle={{
-                  background: theme.colorChartBackground,
-                  border: `1px solid ${theme.colorChartGrid}`,
-                  borderRadius: 4
+                  background: theme.colorChartTooltipBackground,
+                  border: null,
+                  borderRadius: 4,
+                  fontSize: Constants.MATERIAL_FONT_SIZE_BODY_2,
+                  boxShadow: shadows[tooltipElevation]
                 }}
-                labelStyle={{ color: theme.colorChartText }}
+                itemStyle={{ color: theme.colorChartLine }}
+                labelStyle={{ color: theme.colorBodyText }}
                 cursor={{ stroke: theme.colorChartGrid }}
                 animationDuration={300}
               />

@@ -42,15 +42,18 @@ const Constants = Object.freeze({
   COLOR_DFINITY_LIGHT_ORANGE: 'rgb(251, 176, 59)', // from dfinity.org style guide
   COLOR_DFINITY_DARK_ORANGE: 'rgb(241, 90, 36)', // from dfinity.org style guide
   COLOR_DFINITY_BLUE: 'rgb(0, 129, 255)', // from dfinity.org/press
-  COLOR_DFINITY_BLUE_TRANSPARENT: 'rgb(0, 129, 255, 0.75)',
+  COLOR_DFINITY_BLUE_TRANSPARENT: 'rgba(0, 129, 255, 0.75)',
   COLOR_TEXT_LIGHT: 'white', // This should be removed, replaced with COLOR_DARK_TEXT!!!
   COLOR_DARK_TEXT: 'white',
-  COLOR_DARK_TEXT_FADED: 'rgb(190, 191, 192)', // rgb(255, 255, 255, 0.7) on COLOR_DFINITY_BLACK, matches Material-UI Tab opacity
-  COLOR_TEXT_DARKER: 'rgb(148, 149, 151)', // rgb(255, 255, 255, 0.5) on COLOR_DFINITY_BLACK
-  COLOR_TEXT_DARKEST: 'rgb(106, 106, 109)', // rgb(255, 255, 255, 0.3) on COLOR_DFINITY_BLACK
+  COLOR_DARK_TEXT_FADED: 'rgb(190, 191, 192)', // rgba(255, 255, 255, 0.7) on COLOR_DFINITY_BLACK, matches Material-UI Tab opacity
+  COLOR_TEXT_DARKER: 'rgb(148, 149, 151)', // rgba(255, 255, 255, 0.5) on COLOR_DFINITY_BLACK
+  COLOR_TEXT_DARKEST: 'rgb(106, 106, 109)', // rgba(255, 255, 255, 0.3) on COLOR_DFINITY_BLACK
   COLOR_LIGHT_TEXT: 'black',
-  COLOR_LIGHT_TEXT_FADED: 'rgb(77, 77, 77)', // rgb(0, 0, 0, 0.7) on white, matches Material-UI Tab opacity
+  COLOR_LIGHT_TEXT_FADED: 'rgb(77, 77, 77)', // rgba(0, 0, 0, 0.7) on white, matches Material-UI Tab opacity
+  COLOR_DARK_DRAWER_DIVIDER_MAC_OS: '#4B4B4B', // Calendar, Messages
   COLOR_DARK_DRAWER_DIVIDER_YOUTUBE: '#333333',
+  COLOR_LIGHT_BODY_TEXT_DIM_GOOGLE: '#5F6368', // About, Account, Contacts, Docs, Drive, Gmail, Material
+  COLOR_LIGHT_CHART_GOOGLE: '#9E9E9E', // Analytics, Firebase
   COLOR_LIGHT_DRAWER_DIVIDER_GOOGLE: '#E3E3E3', // Docs, Sheets
   COLOR_LIGHT_DRAWER_ICON_GOOGLE: '#5F6368', // Account, Docs, Drive, Calendar, Keep, Photos, Sheets
   COLOR_LIGHT_DRAWER_TEXT_GOOGLE: '#3C4043', // Account, Docs, Calendar, News, Photos, Sheets

@@ -611,16 +611,6 @@ class DfinitySymbolD3 extends Component  {
   }
 
 /**
-   * Return the RGB color string corresponding to the specified RGB color array.
-   * @param {Object} array The RGB array.
-   * @return {String} The RGB color string.
-   * @private
-   */
-  rgbStringFromArray(array) {
-    return 'rgb(' + array.join() + ')';
-  }
-
-/**
    * Return the stroke color of the specified node.
    * @param {Object} node The node to return the stroke color of.
    * @return {Array} The stroke color array of the specified node.

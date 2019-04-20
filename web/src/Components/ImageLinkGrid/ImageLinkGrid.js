@@ -110,6 +110,14 @@ class ImageLinkGrid extends Component {
 
     // The image grid is an array of rows, where each row is an array of image objects. Creating
     // a two-dimensional array like this is an extra step, but makes the code below more readable.
+    // TODO: Consider an alternate approach to solve the problem of the center column of 3-item rows
+    // not being centered. Use the same maxWidth for all cells. For cells on left, left align. For
+    // cells on right, right align. For all other cells, center. To do this, we'd likely need a cell
+    // within a cell, so that columns could first be centered relative to the column, then placed
+    // in a second wrapper cell (Grid) aligned either left, right, or center. Would need to test
+    // with different row lengths and numbers of images to see what effect it has on spacing for all
+    // conditions. It seems possible this would look wrong for rows longer than 3, since the spacing
+    // at the edges could be greater because the cell within the cell at the edges is not centered.!!!
     let imageLinkGrid = [];
     let maxWidthColumn = Array(perRow).fill(0);
     for (let i = 0; i < imageLinks.length;) {

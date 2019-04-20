@@ -40,7 +40,7 @@ export const themeLight = {
   colorAppBarExplorerText: '#007DBC', //'#F98E00', // use constant for "500" version of light orange!!! //'#FA9F00', is 400
   colorBodyBackground: '#F8F9FA', // Wikipedia (verified)
   colorBodyText: '#202124', // Google text (verified)
-  colorBodyTextDim: '#5F6368', // Material Design (verified), and several Google websites
+  colorBodyTextDim: Constants.COLOR_LIGHT_BODY_TEXT_DIM_GOOGLE,
   colorBodyTextLink: '#007DBC',
   // It seems odd to use an array for the icon color, but not the background color. Could remove array completely if not needed!!!
   colorDashCardDBackground: 'white',//'#F07200', //'#D54C1C', //'#E3531F', //'#D54C1C', //'#BB4015', //Constants.COLOR_TWITTER_BLUE,
@@ -49,8 +49,9 @@ export const themeLight = {
   colorDashCardABackground: 'white',//'#007DBC', //'#006DA8', //'#004E88', //Constants.COLOR_TWITTER_ORANGE,
   // Remove extraneous colorDashCardIcon settings once finalized!!!
   //!!!colorDashCardIcon: ['#007DBC', '#722B8D', '#C40059', '#F07200'],
-  //!!!colorDashCardIcon: ['rgb(0, 125, 188, 1)', 'rgb(114, 43, 141, 0.8)', 'rgb(196, 0, 89, 0.8)', 'rgb(240, 114, 0, 0.8)'],
-  colorDashCardIcon: ['#007DBC', '#843196', '#DA005E', '#F68200'],
+  //!!!colorDashCardIcon: ['rgba(0, 125, 188, 1)', 'rgba(114, 43, 141, 0.8)', 'rgba(196, 0, 89, 0.8)', 'rgba(240, 114, 0, 0.8)'],
+  //!!!colorDashCardIcon: ['#007DBC', '#843196', '#DA005E', '#F68200'],
+  colorDashCardIcon: ['#007DBC', '#9440A6', '#DA005E', '#F79308'], // Ori's purple and orange
   // Actual DFINITY symbol colors.
   //!!!colorDashCardIcon: ['rgb(41, 171, 226)', 'rgb(99, 38, 132)', 'rgb(237, 30, 121)', 'rgb(251, 176, 59)'],
   colorDashCardIconOpacity: 1.0,
@@ -60,14 +61,15 @@ export const themeLight = {
   colorDrawerIconTextSelected: '#007DBC',//!!!Constants.COLOR_DFINITY_BLUE,
   colorDrawerText: Constants.COLOR_LIGHT_DRAWER_TEXT_GOOGLE,
   colorChartBackground: 'white',
-  colorChartAxes: '#5F6368',
+  colorChartTooltipBackground: 'rgba(255, 255, 255, 0.96)',
+  colorChartAxes: Constants.COLOR_LIGHT_BODY_TEXT_DIM_GOOGLE,
   colorChartGrid: Constants.COLOR_LIGHT_DRAWER_DIVIDER_GOOGLE,
-  colorChartText: '#5F6368', // use same Constant as colorBodyTextDim!!!
+  colorChartText: Constants.COLOR_LIGHT_BODY_TEXT_DIM_GOOGLE,
   colorChartLine: '#007DBC',
   colorChartActiveDotStroke: 'white',
   colorTableBackgroundPrimary: 'white',
   colorTableBackgroundSecondary: '#F8F9FA', // Wikipedia (verified)
-  colorTableRowBorder: '#D9D9D9', // Google Maps drawer divider (verified)
+  colorTableRowBorder: Constants.COLOR_LIGHT_DRAWER_DIVIDER_GOOGLE, // Google Maps drawer divider (verified)
   colorTableTextDim: '#909090', // YouTube, footer text dim (verified)
   colorFooterBackground: '#F5F5F5',
   colorFooterTextIcon: '#909090', // YouTube (verified)
@@ -112,14 +114,15 @@ export const themeDark = {
   colorDrawerIconTextSelected: 'white',
   colorDrawerText: Constants.COLOR_DARK_TEXT_FADED,
   colorChartBackground: '#262626',
+  colorChartTooltipBackground: 'rgba(38, 38, 38, 0.96)',
   colorChartAxes: '#808080',
-  colorChartGrid: '#4B4B4B', // MacOS Messages, Calendar drawer divider
-  colorChartText: '#DCDCDC',
+  colorChartGrid: Constants.COLOR_DARK_DRAWER_DIVIDER_MAC_OS,
+  colorChartText: Constants.COLOR_DARK_TEXT_FADED,
   colorChartLine: '#0090CF',
   colorChartActiveDotStroke: '#262626',
   colorTableBackgroundPrimary: '#262626', // MacOS Finder
   colorTableBackgroundSecondary: '#1B1B1B', // MacOS Finder, etc.
-  colorTableRowBorder: '#4B4B4B', // MacOS Messages, Calendar drawer divider
+  colorTableRowBorder: Constants.COLOR_DARK_DRAWER_DIVIDER_YOUTUBE,
   colorTableTextDim: '#717171', // YouTube (Dark), footer text dim (verified)
   colorFooterBackground: '#262626', //!!!Constants.COLOR_DFINITY_BLACK
   colorFooterTextIcon: '#808080', // Netflix (verified)
