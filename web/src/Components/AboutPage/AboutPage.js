@@ -423,7 +423,7 @@ class AboutPage extends TrackablePage {
             <br />
             <TypographyBody>
               {'Our mission is to provide a bridge between you and the '}
-              <StyledA href={Constants.URI_ABOUT_DFINITY} target='_blank'>DFINITY</StyledA>
+              <StyledA href={Constants.URI_ABOUT_DFINITY} target='_blank' rel='noopener noreferrer'>DFINITY</StyledA>
               {' Internet Computer, allowing you to easily search for and retrieve information '}
               {'which is useful in a format that is understandable, with everything you want to '}
               {'know right at your fingertips.'}
@@ -432,7 +432,7 @@ class AboutPage extends TrackablePage {
             <TypographyBody>
               {'DFINITY aims to build their organization into a “NASA for decentralization”. '}
               {'There have in fact been '}
-              <StyledA href={Constants.URI_NASA_EXPLORER} target='_blank'>89 NASA “Explorer” missions</StyledA>
+              <StyledA href={Constants.URI_NASA_EXPLORER} target='_blank' rel='noopener noreferrer'>89 NASA “Explorer” missions</StyledA>
               {' since 1958, carrying a wide variety of scientific investigations. We want DFINITY '}
               {'Explorer to be the perfect vehicle to explore the DFINITY universe.'}
               &nbsp;&nbsp;🚀
@@ -462,7 +462,7 @@ class AboutPage extends TrackablePage {
             <br />
             <TypographyBody>
               {'DFINITY Explorer is an open-source project under the '}
-              <StyledA href={Constants.URI_GITHUB_MIT_LICENSE} target='_blank'>MIT license</StyledA>
+              <StyledA href={Constants.URI_GITHUB_MIT_LICENSE} target='_blank' rel='noopener noreferrer'>MIT license</StyledA>
               {', providing transparency, reliability, and security.'}
             </TypographyBody>
             <br />
@@ -528,15 +528,15 @@ class AboutPage extends TrackablePage {
             <br />
             <TypographyBody>
               {'Follow '}
-              <StyledA href={Constants.URI_TWITTER_DFINITY_EXPLORER} target='_blank'>@dfinityexplorer</StyledA>
+              <StyledA href={Constants.URI_TWITTER_DFINITY_EXPLORER} target='_blank' rel='noopener noreferrer'>@dfinityexplorer</StyledA>
               {' on Twitter to learn about the latest DFINITY-related news, videos, and events.'}
             </TypographyBody>
             <br />
             <TypographyBody>
               {'Learn more about our project on '}
-              <StyledA href={Constants.URI_GITHUB_DFINITY_EXPLORER_PROJECT} target='_blank'>GitHub</StyledA>
+              <StyledA href={Constants.URI_GITHUB_DFINITY_EXPLORER_PROJECT} target='_blank' rel='noopener noreferrer'>GitHub</StyledA>
               {' and in our '}
-              <StyledA href={Constants.URI_GITHUB_DFINITY_EXPLORER_WIKI} target='_blank'>wiki</StyledA>
+              <StyledA href={Constants.URI_GITHUB_DFINITY_EXPLORER_WIKI} target='_blank' rel='noopener noreferrer'>wiki</StyledA>
               {'.'}
             </TypographyBody>
             <br />
@@ -546,10 +546,10 @@ class AboutPage extends TrackablePage {
               {'later in 2019.'}
             </TypographyBody>
             {/* Begin MailChimp Signup Form */}
-            <form action='https://dfinityexplorer.us18.list-manage.com/subscribe/post?u=059dc252f5f0cea2fec413c42&amp;id=4ebbd6c248' method='post' id='mc-embedded-subscribe-form' name='mc-embedded-subscribe-form' className='validate' target='_blank' noValidate>
+            <form action='https://dfinityexplorer.us18.list-manage.com/subscribe/post?u=059dc252f5f0cea2fec413c42&amp;id=4ebbd6c248' method='post' id='mc-embedded-subscribe-form' name='mc-embedded-subscribe-form' className='validate' target='_blank' rel='noopener noreferrer' noValidate>
               {/* real people should not fill this in and expect good things - do not remove this or risk form bot signups  */}
               <div style={{ position: 'absolute', left: '-5000px' }} aria-hidden='true'>
-                <input type='text' name='b_059dc252f5f0cea2fec413c42_4ebbd6c248' tabIndex='-1' value='' />
+                <input type='text' name='b_059dc252f5f0cea2fec413c42_4ebbd6c248' tabIndex='-1' defaultValue='' />
               </div>
               <div className='clear'>
                 <ButtonSubscribe type='submit'>
@@ -591,11 +591,11 @@ class AboutPage extends TrackablePage {
               {'DFINITY Explorer is a cooperative effort, made with '}
               <SpanHeart>♥</SpanHeart>
               {' by '}
-              <StyledA href={Constants.URI_GITHUB_DYLAN} target='_blank'>@dylancm4</StyledA>
+              <StyledA href={Constants.URI_GITHUB_DYLAN} target='_blank' rel='noopener noreferrer'>@dylancm4</StyledA>
               {', '}
-              <StyledA href={Constants.URI_GITHUB_TODD} target='_blank'>@toddkitchens</StyledA>
+              <StyledA href={Constants.URI_GITHUB_TODD} target='_blank' rel='noopener noreferrer'>@toddkitchens</StyledA>
               {', and a friendly bunch of '}
-              <StyledA href={Constants.URI_GITHUB_CONTRIBUTORS} target='_blank'>contributors</StyledA>
+              <StyledA href={Constants.URI_GITHUB_CONTRIBUTORS} target='_blank' rel='noopener noreferrer'>contributors</StyledA>
               {' from the DFINITY community. We are passionate about DFINITY and we want to build '}
               {'things to help it to succeed.'}
             </TypographyBody>

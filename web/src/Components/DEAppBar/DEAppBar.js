@@ -510,7 +510,9 @@ class DEAppBar extends ResponsiveComponent {
                           {data.searchAutoComplete.items.map((item, index) => (
                             <ListItemSearch
                               disableGutters
-                              highlighted={highlightedIndex === index}
+                              // Use number for highlighted prop instead of boolean to prevent
+                              // "non-boolean attribute" warning.
+                              highlighted={highlightedIndex === index ? 1 : 0}
                               {...getItemProps({
                                 key: item,
                                 index,

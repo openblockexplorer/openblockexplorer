@@ -145,7 +145,11 @@ class FadeTable extends Component {
                 return (
                   // Using index as the key is fine here and for cells in other rows, since we never
                   // add, remove, reorder, or filter items in the cell arrays.
-                  <StyledTableCell key={index} numeric={cell.isNumeric} padding={'checkbox'}>
+                  <StyledTableCell
+                    key={index}
+                    align={cell.isNumeric ? 'right' : 'inherit'}
+                    padding={'checkbox'}
+                  >
                   {cell.link != null ?
                     <StyledLink to={cell.link}>{cell.value}</StyledLink> :
                     cell.value
@@ -166,7 +170,11 @@ class FadeTable extends Component {
                   <BodyTableRow>
                     {bodyRow.cells.map((cell, index) => {
                       return (
-                        <StyledTableCell key={index} numeric={cell.isNumeric} padding={'checkbox'}>
+                        <StyledTableCell
+                          key={index}
+                          align={cell.isNumeric ? 'right' : 'inherit'}
+                          padding={'checkbox'}
+                        >
                         {cell.link != null ?
                           <StyledLink to={cell.link}>{cell.value}</StyledLink> :
                           cell.value
@@ -183,7 +191,11 @@ class FadeTable extends Component {
             <FooterTableRow>
               {this.getFooterRow().map((cell, index) => {
                 return (
-                  <FooterTableCell key={index} numeric={cell.isNumeric} padding={'checkbox'}>
+                  <FooterTableCell
+                    key={index}
+                    align={cell.isNumeric ? 'right' : 'inherit'}
+                    padding={'checkbox'}
+                  >
                   {cell.link != null ?
                     <StyledLink to={cell.link}>{cell.value}</StyledLink> :
                     cell.value

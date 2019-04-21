@@ -176,7 +176,7 @@ class Footer extends ResponsiveComponent {
                   <FooterTypography color='inherit'>
                     {'('}
                     {this.getNomicsTextDescription()}
-                    <FooterA href={Constants.URI_ABOUT_NOMICS} target='_blank'>
+                    <FooterA href={Constants.URI_ABOUT_NOMICS} target='_blank' rel='noopener noreferrer'>
                       {this.getNomicsTextLink()}
                     </FooterA>
                     {')'}
@@ -190,6 +190,7 @@ class Footer extends ResponsiveComponent {
                   color='inherit'
                   href={Constants.URI_DFINITY_EXPLORER_TWITTER}
                   target='_blank'
+                  rel='noopener noreferrer'
                 >
                   <AwesomeIcon className='fa fa-twitter' />
                 </AwesomeIconButton>
@@ -199,6 +200,7 @@ class Footer extends ResponsiveComponent {
                   color='inherit'
                   href={Constants.URI_DFINITY_EXPLORER_GITHUB}
                   target='_blank'
+                  rel='noopener noreferrer'
                 >
                   <AwesomeIcon className='fa fa-github' />
                 </AwesomeIconButton>

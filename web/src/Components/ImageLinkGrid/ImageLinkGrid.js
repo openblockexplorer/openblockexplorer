@@ -161,7 +161,7 @@ class ImageLinkGrid extends Component {
                     }}
                   >
                     <Grid item>
-                      <a href={imageLink.href} target='_blank'>
+                      <a href={imageLink.href} target='_blank' rel='noopener noreferrer'>
                         <Fade
                           bottom
                           delay={index * 50}
