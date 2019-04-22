@@ -22,6 +22,7 @@ This repo is the front end of DFINITY Explorer.
 * react-ga
 * react-parallax
 * react-reveal
+* react-spring
 * react-twitter-embed
 * recharts
 * Styled-Components
