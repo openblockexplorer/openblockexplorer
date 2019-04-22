@@ -4,8 +4,8 @@ self.__precacheManifest = [
     "url": "/static/media/material-ui-logo.1d6a085f.png"
   },
   {
-    "revision": "f863b9bb94dc0159bc16",
-    "url": "/static/js/main.5aea1ecc.chunk.js"
+    "revision": "cdf6a8daf6355a46bab2",
+    "url": "/static/js/main.27361d20.chunk.js"
   },
   {
     "revision": "52c54b15d957fbdb4db9a047225557ec",
@@ -92,7 +92,7 @@ self.__precacheManifest = [
     "url": "/static/css/2.56646467.chunk.css"
   },
   {
-    "revision": "fa46bbdad4705ead9aef7d3315d5d6bd",
+    "revision": "cd4b2b54e00a0404bf05cd2f22db2219",
     "url": "/index.html"
   }
 ];
