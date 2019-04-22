@@ -68,7 +68,6 @@ export const themeLight = {
   colorChartLine: '#007DBC',
   colorChartActiveDotStroke: 'white',
   colorTableBackgroundPrimary: 'white',
-  colorTableBackgroundSecondary: '#F8F9FA', // Wikipedia (verified)
   colorTableRowBorder: Constants.COLOR_LIGHT_DRAWER_DIVIDER_GOOGLE, // Google Maps drawer divider (verified)
   colorTableTextDim: '#909090', // YouTube, footer text dim (verified)
   colorFooterBackground: '#F5F5F5',
@@ -121,7 +120,6 @@ export const themeDark = {
   colorChartLine: '#0090CF',
   colorChartActiveDotStroke: '#262626',
   colorTableBackgroundPrimary: '#262626', // MacOS Finder
-  colorTableBackgroundSecondary: '#1B1B1B', // MacOS Finder, etc.
   colorTableRowBorder: Constants.COLOR_DARK_DRAWER_DIVIDER_YOUTUBE,
   colorTableTextDim: '#717171', // YouTube (Dark), footer text dim (verified)
   colorFooterBackground: '#262626', //!!!Constants.COLOR_DFINITY_BLACK

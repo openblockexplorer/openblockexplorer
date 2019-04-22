@@ -77,6 +77,7 @@ class BlocksTableWithData extends Component {
                 blocks={data.blocks}
                 subscribeToNewObjects={subscribeToNewObjects}
                 maxRows={this.props.maxRows}
+                expandRows
               />
             );
           }
@@ -145,6 +146,11 @@ class BlocksTable extends FadeTable {
      * Boolean indicating whether an error occurred with the GraphQL query.
      */
     error: PropTypes.bool,
+    /**
+     * Indicates whether rows should expand when they are created and collapse when they are
+     * destroyed.
+     */
+    expandRows: PropTypes.bool,
     /**
      * Boolean indicating whether the GraphQL query is in progress.
      */

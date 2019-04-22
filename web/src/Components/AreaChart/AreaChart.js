@@ -31,7 +31,7 @@ const StyledPaper = styled(Paper)`
   }
 `;
 
-const TitleTypography = styled(Typography)`
+const TypographyTitle = styled(Typography)`
   && {
     color: ${props => props.theme.colorBodyText};
     padding-top: 8px;
@@ -81,7 +81,7 @@ class AreaChart extends Component {
     const tooltipElevation = 2;
     return (
       <StyledPaper elevation={1}>
-        <TitleTypography>{this.getTitle()}</TitleTypography>
+        <TypographyTitle>{this.getTitle()}</TypographyTitle>
         { data.length > 0 &&
           <ResponsiveContainer width='100%' height={chartHeight}>
             <StyledAreaChart

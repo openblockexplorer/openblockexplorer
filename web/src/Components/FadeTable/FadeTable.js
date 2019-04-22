@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   Fade,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -19,6 +20,7 @@ import {
   TableRow,
   Typography
 } from '@material-ui/core';
+import { Transition } from 'react-spring/renderprops';
 import Constants from '../../constants';
 
 const StyledPaper = styled(Paper)`
@@ -27,7 +29,7 @@ const StyledPaper = styled(Paper)`
   }
 `;
 
-const TitleTypography = styled(Typography)`
+const TypographyTitle = styled(Typography)`
   && {
     color: ${props => props.theme.colorBodyText};
     padding-top: 8px;
@@ -55,9 +57,18 @@ const StyledTableBody = styled(TableBody)`
   }
 `;
 
-const StyledTableRow = styled(TableRow)`
+const tableRowHeight = 38;
+const TableRowHeader = styled(TableRow)`
   && {
-    height: 39px;
+    height: ${tableRowHeight + 'px'};
+  }
+`;
+
+// The height for the table body rows is set dynamically, so that we can perform expand/collapse
+// animations.
+const TableRowBody = styled(TableRow)`
+  && {
+    height: auto;
   }
 `;
 
@@ -88,21 +99,13 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const BodyTableRow = styled(StyledTableRow)`
-  && {
-    &:nth-of-type(odd) {
-      background: ${props => props.theme.colorTableBackgroundSecondary};
-    }
-  }
-`;
-
-const FooterTableRow = styled(TableRow)`
+const TableRowFooter = styled(TableRow)`
   && {
     height: 20px;
   }
 `;
 
-const FooterTableCell = styled(StyledTableCell)`
+const TableCellFooter = styled(StyledTableCell)`
   && {
     color: ${props => props.theme.colorTableTextDim};
     font-size: 9px;
@@ -114,6 +117,11 @@ const FooterTableCell = styled(StyledTableCell)`
  */
 class FadeTable extends Component { 
   static propTypes = {
+    /**
+     * Indicates whether rows should expand when they are created and collapse when they are
+     * destroyed.
+     */
+    expandRows: PropTypes.bool,
     /**
      * The maximum number of rows in the table.
      */
@@ -128,7 +136,7 @@ class FadeTable extends Component {
   render() {
     return (
       <StyledPaper elevation={1}>
-        <TitleTypography>{this.getTitle()}</TitleTypography>
+        <TypographyTitle>{this.getTitle()}</TypographyTitle>
         <StyledTable>
           <colgroup>
             {this.getColumnWidths().map((width, index) => {
@@ -140,7 +148,7 @@ class FadeTable extends Component {
             })}
           </colgroup>
           <TableHead>
-            <StyledTableRow>
+            <TableRowHeader>
               {this.getHeaderRow().map((cell, index) => {
                 return (
                   // Using index as the key is fine here and for cells in other rows, since we never
@@ -157,41 +165,16 @@ class FadeTable extends Component {
                   </StyledTableCell>
                 );
               })}
-            </StyledTableRow>
+            </TableRowHeader>
           </TableHead>
           <StyledTableBody>
-            {this.getBodyRows().slice(0, this.props.maxRows).map((bodyRow, index) => {
-              return (
-                <Fade
-                  key={bodyRow.mapKey}
-                  in={true}
-                  timeout={500}
-                >
-                  <BodyTableRow>
-                    {bodyRow.cells.map((cell, index) => {
-                      return (
-                        <StyledTableCell
-                          key={index}
-                          align={cell.isNumeric ? 'right' : 'inherit'}
-                          padding={'checkbox'}
-                        >
-                        {cell.link != null ?
-                          <StyledLink to={cell.link}>{cell.value}</StyledLink> :
-                          cell.value
-                        }
-                        </StyledTableCell>
-                      );
-                    })}
-                  </BodyTableRow>
-                </Fade>
-              );
-            })}
+            {this.getBodyRowElements()}
           </StyledTableBody>
           <TableFooter>
-            <FooterTableRow>
+            <TableRowFooter>
               {this.getFooterRow().map((cell, index) => {
                 return (
-                  <FooterTableCell
+                  <TableCellFooter
                     key={index}
                     align={cell.isNumeric ? 'right' : 'inherit'}
                     padding={'checkbox'}
@@ -200,13 +183,86 @@ class FadeTable extends Component {
                     <StyledLink to={cell.link}>{cell.value}</StyledLink> :
                     cell.value
                   }
-                  </FooterTableCell>
+                  </TableCellFooter>
                 );
               })}
-            </FooterTableRow>
+            </TableRowFooter>
           </TableFooter>
         </StyledTable>
       </StyledPaper>
+    );
+  }
+
+  /**
+   * Return the elements for all of the body rows.
+   * @return {Object} The elements for all of the body rows.
+   * @private
+   */
+  getBodyRowElements() {
+    const { expandRows, maxRows } = this.props;
+    let rows = this.getBodyRows().slice(0, maxRows);
+    if (expandRows) {
+      // Use a Transition element to expand (and fade in) entering rows and collapse (and fade out)
+      // leaving rows.
+      return (
+        <Transition
+          items={rows}
+          keys={bodyRow => bodyRow.mapKey}
+          from={{ height: 0, opacity: 0 }}
+          enter={{ height: tableRowHeight, opacity: 1 }}
+          leave={{ height: 0, opacity: 0 }}
+        >
+          {bodyRow => style => this.getBodyRowElement(bodyRow, style)}
+        </Transition>
+      );
+    }
+    else {
+      return rows.map((bodyRow) => {
+        // When not expanding/collapsing rows, use a Fade element to fade in and fade out.
+        return (
+          <Fade
+            key={bodyRow.mapKey}
+            in={true}
+            timeout={500}
+          >
+            {this.getBodyRowElement(bodyRow, { height: tableRowHeight })}
+          </Fade>
+        );
+      });  
+    }
+  }
+
+  /**
+   * Return the element for the specified body row.
+   * @param {Object} bodyRow Object that describes the body row.
+   * @param {Object} style The style to apply to the table cell Grid, specifying the height.
+   * @return {Object} The element for the specified body row.
+   * @private
+   */
+  getBodyRowElement(bodyRow, style) {
+    return (
+      <TableRowBody>
+        {bodyRow.cells.map((cell, index) => {
+          return (
+            <StyledTableCell
+              key={index}
+              padding={'checkbox'}
+            >
+              <Grid container
+                direction='row'
+                justify={cell.isNumeric ? 'flex-end' : 'flex-start'}
+                alignItems='center'
+                style={style}
+              >
+                {cell.link != null ?
+                  <StyledLink to={cell.link}>{cell.value}</StyledLink> :
+                  cell.value
+                }
+              </Grid>
+            </StyledTableCell>
+          );
+        })}
+      </TableRowBody>
     );
   }
 
