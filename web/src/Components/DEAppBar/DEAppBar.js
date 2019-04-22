@@ -74,8 +74,8 @@ const StyledToolbar = styled(Toolbar)`
 
 const SearchToolbar = styled(Toolbar)`
   && {
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     padding-left: 16px;
     padding-right: 12px;
     @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
@@ -153,15 +153,22 @@ const TypographyExplorer = styled(TypographyAppName)`
 // Need to use new breakpoint method here and elsewhere, but probably call GetBreakpoint without drawer from render()!!!
 const InputSearch = styled(Input)`
   && {
-    /* margin-top is used to center the Input vertically, and depends on font-size. */
-    margin-top: 0.375rem;
+    /*
+     * margin-top is used to center the Input vertically, and depends on font-size.
+     * DCM 21.apr.2018: After updating Material-UI, margin-top had to be adjusted for all
+     * breakpoints based on trial and error.
+     */
+    margin-top: 0.65rem;
     color: ${props => props.theme.colorSearchText};
     font-family: ${Constants.FONT_PRIMARY};
     font-size: ${Constants.MATERIAL_FONT_SIZE_H6};
     @media (max-width: ${Constants.BREAKPOINT_MAX_SM + 'px'}) {
-      margin-top: 0.625rem;
+      margin-top: 0.875rem;
       /* font-size "Body 2" is not small enough to fit a hash, but this is smallest we should go. */
       font-size: ${Constants.MATERIAL_FONT_SIZE_BODY_2};
+    }
+    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
+      margin-top: 0.625rem;
     }
   }
 `;
@@ -211,17 +218,20 @@ const SearchIconListSearch = styled(SearchIcon)`
     /* Sizes here are based on ListSearch font-sizes. */
     width: ${Constants.MATERIAL_FONT_SIZE_BODY_1};
     height: ${Constants.MATERIAL_FONT_SIZE_BODY_1};
-    margin-right: calc(${Constants.MATERIAL_FONT_SIZE_BODY_1} / 2);
+    /*
+     * DCM 21.apr.2018: After updating Material-UI, margin-right had to be adjusted for all
+     * breakpoints based on trial and error.
+     */
+    margin-right: 0px;
     @media (max-width: ${Constants.BREAKPOINT_MAX_SM + 'px'}) {
       width: ${Constants.MATERIAL_FONT_SIZE_BODY_2};
       height: ${Constants.MATERIAL_FONT_SIZE_BODY_2};
-      margin-right: calc(${Constants.MATERIAL_FONT_SIZE_BODY_2} / 2);
     }
     @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
       /* BUG: 0.5625rem is the size we would like (see above)!!! */
       width: 7px;
       height: 7px;
-      margin-right: calc(7px / 2);
+      margin-right: -7px;
     }
   }
 `;
@@ -298,7 +308,10 @@ const DrawerListItemText = styled(({ ...other }) => (
 
 const DrawerListItem = styled(ListItem)`
   && {
+    padding-top: 12px;
+    padding-bottom: 12px;
     ${DrawerListItemIcon} {
+      margin-left: 8px;
       color: ${
         props => props.selected ?
           props.theme.colorDrawerIconTextSelected :
