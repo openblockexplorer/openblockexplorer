@@ -14,6 +14,10 @@ import getHashString from '../../utils/getHashString';
 class BlockTransactionsTable extends FadeTable { 
   static propTypes = {
     /**
+     * The current Breakpoint, taking the desktop drawer (large screens) width into account.
+     */    
+    breakpoint: PropTypes.number.isRequired,
+    /**
      * The maximum number of rows in the table.
      */
     maxRows: PropTypes.number.isRequired,

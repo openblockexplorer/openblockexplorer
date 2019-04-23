@@ -21,6 +21,7 @@ import {
   Typography
 } from '@material-ui/core';
 import { Transition } from 'react-spring/renderprops';
+import { Breakpoints } from '../../utils/breakpoint';
 import Constants from '../../constants';
 
 const StyledPaper = styled(Paper)`
@@ -39,8 +40,10 @@ const TypographyTitle = styled(Typography)`
     font-family: ${Constants.FONT_PRIMARY};
     font-size: ${Constants.MATERIAL_FONT_SIZE_H6};
     font-weight: 300;
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      font-size: ${Constants.MATERIAL_FONT_SIZE_H6};
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        font-size: ${Constants.MATERIAL_FONT_SIZE_H6};
+      `
     }
   }
 `;
@@ -53,12 +56,14 @@ const StyledTable = styled(Table)`
   }
 `;
 
-// For some reason, tableRowHeight needs to be an odd number for expanding to work correctly on the
-// first row. If it's set to an even number, the slide in has a 1px stutter following the animation.
-const tableRowHeight = 39;
 const TableRowHeader = styled(TableRow)`
   && {
-    height: ${tableRowHeight + 'px'};
+    height: ${Constants.TABLE_ROW_HEIGHT_SM_AND_UP + 'px'};
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        height: ${Constants.TABLE_ROW_HEIGHT_XS + 'px'};
+      `
+    }
   }
 `;
 
@@ -74,15 +79,17 @@ const StyledTableCell = styled(TableCell)`
   && {
     border-color: ${props => props.theme.colorTableRowBorder};
     color: ${props => props.theme.colorBodyText};
-    font-size: 15px;
+    font-size: ${Constants.MATERIAL_FONT_SIZE_BODY_2};
     white-space: nowrap;
     /* Reducing the font size for narrow page widths seems sufficient for resizing the table when
        Grid spacing is 0 and padding={'checkbox'}. Other settings, such as 'overflow: hidden' and
        'max-width: 0px', were also helpful in improving the table at narrow page widths, but do
        not seem to be necessary with the current settings. Another useful setting is
        'text-overflow: ellipsis', though we reduce the font size rather than using ellipsis. */
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      font-size: 11px;
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        font-size: ${Constants.FONT_SIZE_TABLE_XS};
+      `
     }
   }
 `;
@@ -91,6 +98,8 @@ const TableCellHeader = styled(StyledTableCell)`
   && {
     border-bottom-style: solid;
     border-bottom-width: 2px;
+    color: ${props => props.theme.colorBodyTextDim};
+    font-weight: 500;
   }
 `;
 
@@ -125,10 +134,14 @@ const TableCellFooter = styled(StyledTableCell)`
 class FadeTable extends Component { // rename to DynamicTable?!!!
   static propTypes = {
     /**
-     * Indicates whether rows should expand when they are created and collapse when they are
-     * destroyed.
+     * The current Breakpoint, taking the desktop drawer (large screens) width into account.
+     */    
+    breakpoint: PropTypes.number.isRequired,
+    /**
+     * Indicates whether new rows should slide in, expanding when they are created and collapsing
+     * when they are destroyed.
      */
-    expandRows: PropTypes.bool, // rename to slide!!!
+    slide: PropTypes.bool,
     /**
      * The maximum number of rows in the table.
      */
@@ -141,12 +154,11 @@ class FadeTable extends Component { // rename to DynamicTable?!!!
    * @public
    */
   render() {
-    // BUG: Screen scrolls due to expanding collapsing. Possibly try to set the paper height or min-height to avoid this!!!
-    // Happens when collapsing row is on screen but expanding row is off screen, common with mobile!!!
+    // BUG: On Chrome, screen scrolls when collapsing row is on screen but expanding row is off screen!!!
+    const { breakpoint } = this.props;
     return (
       <StyledPaper elevation={1}>
-      {/*!!! <StyledPaper elevation={1} style={{ height: 500 }}> */}
-        <TypographyTitle>{this.getTitle()}</TypographyTitle>
+        <TypographyTitle breakpoint={breakpoint}>{this.getTitle()}</TypographyTitle>
         <StyledTable>
           <colgroup>
             {this.getColumnWidths().map((width, index) => {
@@ -158,12 +170,13 @@ class FadeTable extends Component { // rename to DynamicTable?!!!
             })}
           </colgroup>
           <TableHead>
-            <TableRowHeader>
+            <TableRowHeader  breakpoint={breakpoint}>
               {this.getHeaderRow().map((cell, index) => {
                 return (
                   // Using index as the key is fine here and for cells in other rows, since we never
                   // add, remove, reorder, or filter items in the cell arrays.
                   <TableCellHeader
+                    breakpoint={breakpoint}
                     key={index}
                     align={cell.isNumeric ? 'right' : 'inherit'}
                     padding={'checkbox'}
@@ -185,6 +198,7 @@ class FadeTable extends Component { // rename to DynamicTable?!!!
               {this.getFooterRow().map((cell, index) => {
                 return (
                   <TableCellFooter
+                    breakpoint={breakpoint}
                     key={index}
                     align={cell.isNumeric ? 'right' : 'inherit'}
                     padding={'checkbox'}
@@ -209,17 +223,20 @@ class FadeTable extends Component { // rename to DynamicTable?!!!
    * @private
    */
   getBodyRowElements() {
-    const { expandRows, maxRows } = this.props;
+    const { breakpoint, maxRows, slide } = this.props;
+    const rowHeight = breakpoint === Breakpoints.XS ?
+      Constants.TABLE_ROW_HEIGHT_XS : Constants.TABLE_ROW_HEIGHT_SM_AND_UP;
     let rows = this.getBodyRows().slice(0, maxRows);
-    if (expandRows) {
+    if (slide) {
       // Use a Transition element to expand (and fade in) entering rows and collapse (and fade out)
       // leaving rows.
+      // BUG: On windows resize to/from XS, row heights are not changed on existing rows!!!
       return (
         <Transition
           items={rows}
           keys={bodyRow => bodyRow.mapKey}
           from={{ height: 0, opacity: 0 }}
-          enter={{ height: tableRowHeight, opacity: 1 }}
+          enter={{ height: rowHeight, opacity: 1 }}
           leave={{ height: 0, opacity: 0 }}
         >
           {/* Function signature: (item, state, index) => props => ReactNode */}
@@ -236,7 +253,7 @@ class FadeTable extends Component { // rename to DynamicTable?!!!
             in={true}
             timeout={500}
           >
-            {this.getBodyRowElement(bodyRow, 'update', index, { height: tableRowHeight })}
+            {this.getBodyRowElement(bodyRow, 'update', index, { height: rowHeight })}
           </Fade>
         );
       });  
@@ -253,11 +270,13 @@ class FadeTable extends Component { // rename to DynamicTable?!!!
    * @private
    */
   getBodyRowElement(bodyRow, state, rowIndex, style) {
+    const { breakpoint } = this.props;
     return (
       <TableRowBody>
         {bodyRow.cells.map((cell, index) => {
           return (
             <StyledTableCell
+              breakpoint={breakpoint}
               key={index}
               padding={'checkbox'}
               // Hide the border on rows that are leaving, so that table height remains consistent.

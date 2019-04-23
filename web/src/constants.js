@@ -15,7 +15,7 @@ const Constants = Object.freeze({
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
   // Remove any fonts that aren't used!!!
   URI_CDN_GOOGLE_FONTS:
-    'https://fonts.googleapis.com/css?family=Istok+Web:400|Muli:200,300,400',
+    'https://fonts.googleapis.com/css?family=Istok+Web:400|Muli:200,300,400,500',
   URI_DFINITY_EXPLORER_TWITTER: 'https://twitter.com/dfinityexplorer',
   URI_DFINITY_EXPLORER_GITHUB: 'https://github.com/dfinityexplorer/dfinityexplorer',
   URI_ABOUT_APOLLO: 'https://www.apollographql.com/',
@@ -76,6 +76,7 @@ const Constants = Object.freeze({
   MATERIAL_FONT_SIZE_BUTTON: '0.875rem', // 14px
   MATERIAL_FONT_SIZE_CAPTION: '0.75rem', // 12px
   MATERIAL_FONT_SIZE_OVERLINE: '0.625rem', // 10px
+  FONT_SIZE_TABLE_XS: '0.6875rem', // 11px
   BREAKPOINT_MIN_XS: 0,
   BREAKPOINT_MAX_XS: 599,
   BREAKPOINT_MIN_SM: 600,
@@ -103,6 +104,10 @@ const Constants = Object.freeze({
   ABOUT_PAGE_MARGIN_LG: 128,
   HOME_PAGE_MARGIN_XS: 8,
   HOME_PAGE_MARGIN_SM_AND_UP: 32,
+  // Care must be taken if these table heights are changed, to avoid a glitch that occurs with
+  // certain heights where the row slide in has a 1px stutter following the animation.
+  TABLE_ROW_HEIGHT_XS: 38,
+  TABLE_ROW_HEIGHT_SM_AND_UP: 48,
   ABOUT_PAGE_PROJECT_ICONS_HEIGHT: 55,
   COINBASE_CHECKOUT_ID: '0d82d9e4-06c8-44b5-8f81-ef296be643e6',
   GOOGLE_ANALYTICS_TRACKING_ID: 'UA-138212575-1'

@@ -18,6 +18,10 @@ import getHashString from '../../utils/getHashString';
 class TransactionsTableWithData extends Component {
   static propTypes = {
     /**
+     * The current Breakpoint, taking the desktop drawer (large screens) width into account.
+     */    
+    breakpoint: PropTypes.number.isRequired,
+    /**
      * The maximum number of rows in the table.
      */
     maxRows: PropTypes.number.isRequired
@@ -29,8 +33,9 @@ class TransactionsTableWithData extends Component {
    * @public
    */
   render() {
+    const {breakpoint, maxRows} = this.props;
     return (
-      <Query query={queryTransactions} variables={{ first: this.props.maxRows }}>
+      <Query query={queryTransactions} variables={{ first: maxRows }}>
         {({ loading, error, data, subscribeToMore }) => {
           const subscribeToNewObjects = () => this.subscribeToNewObjects(subscribeToMore);
           if (loading)
@@ -38,7 +43,8 @@ class TransactionsTableWithData extends Component {
               <TransactionsTable
                 transactions={[]}
                 subscribeToNewObjects={subscribeToNewObjects}
-                maxRows={this.props.maxRows}
+                breakpoint={breakpoint}
+                maxRows={maxRows}
                 loading
               />
             );
@@ -47,7 +53,8 @@ class TransactionsTableWithData extends Component {
               <TransactionsTable
                 transactions={[]}
                 subscribeToNewObjects={subscribeToNewObjects}
-                maxRows={this.props.maxRows}
+                breakpoint={breakpoint}
+                maxRows={maxRows}
                 error
               />
             );
@@ -56,7 +63,8 @@ class TransactionsTableWithData extends Component {
               <TransactionsTable
                 transactions={data.transactions}
                 subscribeToNewObjects={subscribeToNewObjects}
-                maxRows={this.props.maxRows}
+                breakpoint={breakpoint}
+                maxRows={maxRows}
               />
             );
           }
@@ -97,6 +105,10 @@ class TransactionsTableWithData extends Component {
  */
 class TransactionsTable extends FadeTable { 
   static propTypes = {
+    /**
+     * The current Breakpoint, taking the desktop drawer (large screens) width into account.
+     */    
+    breakpoint: PropTypes.number.isRequired,
     /**
      * Boolean indicating whether an error occurred with the GraphQL query.
      */

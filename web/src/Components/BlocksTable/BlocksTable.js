@@ -17,6 +17,10 @@ import subscriptionBlock from '../../graphql/subscriptionBlock';
 class BlocksTableWithData extends Component {
   static propTypes = {
     /**
+     * The current Breakpoint, taking the desktop drawer (large screens) width into account.
+     */    
+    breakpoint: PropTypes.number.isRequired,
+    /**
      * Callback fired when a new block is added.
      */
     handleAddNewBlock: PropTypes.func,
@@ -45,10 +49,11 @@ class BlocksTableWithData extends Component {
    * @public
    */
   render() {
+    const {breakpoint, maxRows} = this.props;
     return (
       <Query
         query={queryBlocks}
-        variables={{ first: this.props.maxRows }}
+        variables={{ first: maxRows }}
         onCompleted={this.handleQueryCompleted}
       >
         {({ loading, error, data, subscribeToMore }) => {
@@ -58,7 +63,8 @@ class BlocksTableWithData extends Component {
               <BlocksTable
                 blocks={[]}
                 subscribeToNewObjects={subscribeToNewObjects}
-                maxRows={this.props.maxRows}
+                breakpoint={breakpoint}
+                maxRows={maxRows}
                 loading
               />
             );
@@ -67,7 +73,8 @@ class BlocksTableWithData extends Component {
               <BlocksTable
                 blocks={[]}
                 subscribeToNewObjects={subscribeToNewObjects}
-                maxRows={this.props.maxRows}
+                breakpoint={breakpoint}
+                maxRows={maxRows}
                 error
               />
             );
@@ -76,8 +83,9 @@ class BlocksTableWithData extends Component {
               <BlocksTable
                 blocks={data.blocks}
                 subscribeToNewObjects={subscribeToNewObjects}
-                maxRows={this.props.maxRows}
-                expandRows
+                breakpoint={breakpoint}
+                maxRows={maxRows}
+                slide
               />
             );
           }
@@ -143,14 +151,18 @@ class BlocksTable extends FadeTable {
      */
     blocks: PropTypes.array.isRequired,
     /**
+     * The current Breakpoint, taking the desktop drawer (large screens) width into account.
+     */    
+    breakpoint: PropTypes.number.isRequired,
+    /**
      * Boolean indicating whether an error occurred with the GraphQL query.
      */
     error: PropTypes.bool,
     /**
-     * Indicates whether rows should expand when they are created and collapse when they are
-     * destroyed.
+     * Indicates whether new rows should slide in, expanding when they are created and collapsing
+     * when they are destroyed.
      */
-    expandRows: PropTypes.bool,
+    slide: PropTypes.bool,
     /**
      * Boolean indicating whether the GraphQL query is in progress.
      */

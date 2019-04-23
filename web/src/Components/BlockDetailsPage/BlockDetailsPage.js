@@ -129,6 +129,7 @@ class BlockDetailsPage extends TrackablePage {
                   <br />
                   <GridTable item>
                     <BlockTransactionsTable
+                      breakpoint={breakpoint}
                       maxRows={100}
                       transactions={data.block.transactions}
                     />

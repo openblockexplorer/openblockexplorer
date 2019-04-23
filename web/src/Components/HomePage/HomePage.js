@@ -272,6 +272,7 @@ class HomePage extends TrackablePage {
             timeout={500}
           >
             <BlocksTable
+              breakpoint={breakpoint}
               maxRows={8}
               handleAddNewBlock={this.handleAddNewBlock}
             />
@@ -282,7 +283,7 @@ class HomePage extends TrackablePage {
             delay={50}
             timeout={500}
           >
-            <TransactionsTable maxRows={8} />
+            <TransactionsTable breakpoint={breakpoint} maxRows={8} />
           </Fade>
         </GridTable>
       </GridSectionTables>
