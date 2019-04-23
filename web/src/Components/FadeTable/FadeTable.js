@@ -48,16 +48,14 @@ const TypographyTitle = styled(Typography)`
 const StyledTable = styled(Table)`
   && {
     font-family: ${Constants.FONT_PRIMARY};
+    /* Needed for footer border-top to work. */
+    border-collapse: separate;
   }
 `;
 
-const StyledTableBody = styled(TableBody)`
-  && {
-    border-top: ${props => '2px solid' + props.theme.colorTableRowBorder};
-  }
-`;
-
-const tableRowHeight = 38;
+// For some reason, tableRowHeight needs to be an odd number for expanding to work correctly on the
+// first row. If it's set to an even number, the slide in has a 1px stutter following the animation.
+const tableRowHeight = 39;
 const TableRowHeader = styled(TableRow)`
   && {
     height: ${tableRowHeight + 'px'};
@@ -89,6 +87,13 @@ const StyledTableCell = styled(TableCell)`
   }
 `;
 
+const TableCellHeader = styled(StyledTableCell)`
+  && {
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+  }
+`;
+
 const StyledLink = styled(Link)`
   && {
     color: ${props => props.theme.colorBodyTextLink};
@@ -107,6 +112,8 @@ const TableRowFooter = styled(TableRow)`
 
 const TableCellFooter = styled(StyledTableCell)`
   && {
+    border-top-style: solid;
+    border-top-width: 1px;
     color: ${props => props.theme.colorTableTextDim};
     font-size: 9px;
   }
@@ -115,13 +122,13 @@ const TableCellFooter = styled(StyledTableCell)`
 /**
  * Base class that implements a table component where new rows fade in.
  */
-class FadeTable extends Component { 
+class FadeTable extends Component { // rename to DynamicTable?!!!
   static propTypes = {
     /**
      * Indicates whether rows should expand when they are created and collapse when they are
      * destroyed.
      */
-    expandRows: PropTypes.bool,
+    expandRows: PropTypes.bool, // rename to slide!!!
     /**
      * The maximum number of rows in the table.
      */
@@ -134,8 +141,11 @@ class FadeTable extends Component {
    * @public
    */
   render() {
+    // BUG: Screen scrolls due to expanding collapsing. Possibly try to set the paper height or min-height to avoid this!!!
+    // Happens when collapsing row is on screen but expanding row is off screen, common with mobile!!!
     return (
       <StyledPaper elevation={1}>
+      {/*!!! <StyledPaper elevation={1} style={{ height: 500 }}> */}
         <TypographyTitle>{this.getTitle()}</TypographyTitle>
         <StyledTable>
           <colgroup>
@@ -153,7 +163,7 @@ class FadeTable extends Component {
                 return (
                   // Using index as the key is fine here and for cells in other rows, since we never
                   // add, remove, reorder, or filter items in the cell arrays.
-                  <StyledTableCell
+                  <TableCellHeader
                     key={index}
                     align={cell.isNumeric ? 'right' : 'inherit'}
                     padding={'checkbox'}
@@ -162,14 +172,14 @@ class FadeTable extends Component {
                     <StyledLink to={cell.link}>{cell.value}</StyledLink> :
                     cell.value
                   }
-                  </StyledTableCell>
+                  </TableCellHeader>
                 );
               })}
             </TableRowHeader>
           </TableHead>
-          <StyledTableBody>
+          <TableBody>
             {this.getBodyRowElements()}
-          </StyledTableBody>
+          </TableBody>
           <TableFooter>
             <TableRowFooter>
               {this.getFooterRow().map((cell, index) => {
@@ -212,12 +222,13 @@ class FadeTable extends Component {
           enter={{ height: tableRowHeight, opacity: 1 }}
           leave={{ height: 0, opacity: 0 }}
         >
-          {bodyRow => style => this.getBodyRowElement(bodyRow, style)}
+          {/* Function signature: (item, state, index) => props => ReactNode */}
+          {(bodyRow, state, index) => style => this.getBodyRowElement(bodyRow, state, index, style)}
         </Transition>
       );
     }
     else {
-      return rows.map((bodyRow) => {
+      return rows.map((bodyRow, index) => {
         // When not expanding/collapsing rows, use a Fade element to fade in and fade out.
         return (
           <Fade
@@ -225,7 +236,7 @@ class FadeTable extends Component {
             in={true}
             timeout={500}
           >
-            {this.getBodyRowElement(bodyRow, { height: tableRowHeight })}
+            {this.getBodyRowElement(bodyRow, 'update', index, { height: tableRowHeight })}
           </Fade>
         );
       });  
@@ -235,11 +246,13 @@ class FadeTable extends Component {
   /**
    * Return the element for the specified body row.
    * @param {Object} bodyRow Object that describes the body row.
+   * @param {String} state The item's transition state: enter, leave, or update.
+   * @param {Number} rowIndex The item's row index. 
    * @param {Object} style The style to apply to the table cell Grid, specifying the height.
    * @return {Object} The element for the specified body row.
    * @private
    */
-  getBodyRowElement(bodyRow, style) {
+  getBodyRowElement(bodyRow, state, rowIndex, style) {
     return (
       <TableRowBody>
         {bodyRow.cells.map((cell, index) => {
@@ -247,6 +260,8 @@ class FadeTable extends Component {
             <StyledTableCell
               key={index}
               padding={'checkbox'}
+              // Hide the border on rows that are leaving, so that table height remains consistent.
+              style={state === 'leave' ? {borderBottomStyle: 'hidden'} : null}
             >
               <Grid container
                 direction='row'
