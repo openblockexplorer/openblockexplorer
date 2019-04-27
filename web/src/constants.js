@@ -36,13 +36,18 @@ const Constants = Object.freeze({
   URI_GITHUB_TODD: 'https://github.com/toddkitchens',
   URI_NASA_EXPLORER: 'https://nssdc.gsfc.nasa.gov/multi/explorer.html',
   URI_TWITTER_DFINITY_EXPLORER: 'https://twitter.com/dfinityexplorer',
+  // Remove colors that are not used!!!
   COLOR_DFINITY_BLACK: 'rgb(41, 42, 46)', // from dfinity.org/press
   COLOR_DFINITY_BLACK_LIGHTER: 'rgb(73, 75, 82)', //  COLOR_DFINITY_BLACK scaled lighter
   COLOR_DFINITY_BLACK_DARKER: 'rgb(27, 28, 31)', // COLOR_DFINITY_BLACK scaled darker
   COLOR_DFINITY_LIGHT_ORANGE: 'rgb(251, 176, 59)', // from dfinity.org style guide
   COLOR_DFINITY_DARK_ORANGE: 'rgb(241, 90, 36)', // from dfinity.org style guide
-  COLOR_DFINITY_BLUE: 'rgb(0, 129, 255)', // from dfinity.org/press
-  COLOR_DFINITY_BLUE_TRANSPARENT: 'rgba(0, 129, 255, 0.75)',
+  COLOR_DFINITY_BLUE_400: '#29ABE2', // DFINITY logo blue
+  COLOR_DFINITY_BLUE_500: '#009DDD',
+  COLOR_DFINITY_BLUE_600: '#0090CF',
+  COLOR_DFINITY_BLUE_700: '#007DBC',
+  COLOR_DFINITY_BLUE_800: '#006DA8',
+  COLOR_DFINITY_BLUE_900: '#004E88',
   COLOR_TEXT_LIGHT: 'white', // This should be removed, replaced with COLOR_DARK_TEXT!!!
   COLOR_DARK_TEXT: 'white',
   COLOR_DARK_TEXT_FADED: 'rgb(190, 191, 192)', // rgba(255, 255, 255, 0.7) on COLOR_DFINITY_BLACK, matches Material-UI Tab opacity
@@ -50,8 +55,12 @@ const Constants = Object.freeze({
   COLOR_TEXT_DARKEST: 'rgb(106, 106, 109)', // rgba(255, 255, 255, 0.3) on COLOR_DFINITY_BLACK
   COLOR_LIGHT_TEXT: 'black',
   COLOR_LIGHT_TEXT_FADED: 'rgb(77, 77, 77)', // rgba(0, 0, 0, 0.7) on white, matches Material-UI Tab opacity
+  COLOR_DARK_BODY_DARKER_MAC_OS: '#1B1B1B', // Calendar, Finder, iTunes, Messages
+  COLOR_DARK_BODY_LIGHTER_MAC_OS: '#262626', // Finder
   COLOR_DARK_DRAWER_DIVIDER_MAC_OS: '#4B4B4B', // Calendar, Messages
   COLOR_DARK_DRAWER_DIVIDER_YOUTUBE: '#333333',
+  COLOR_DARK_FOOTER_TEXT_ICON_NETFLIX: '#808080',
+  COLOR_DARK_TEXT_MAC_OS: '#DCDCDC', // Calendar, iTunes
   COLOR_LIGHT_BODY_TEXT_DIM_GOOGLE: '#5F6368', // About, Account, Contacts, Docs, Drive, Gmail, Material
   COLOR_LIGHT_CHART_GOOGLE: '#9E9E9E', // Analytics, Firebase
   COLOR_LIGHT_DRAWER_DIVIDER_GOOGLE: '#E3E3E3', // Docs, Sheets

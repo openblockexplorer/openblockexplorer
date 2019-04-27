@@ -90,30 +90,30 @@ const GridTable = styled(Grid)`
   }
 `;
 
-const DashCardA = styled(DashCard)`
+const CardBlocks = styled(DashCard)`
   && {
-    background: ${props => props.theme.colorDashCardABackground};
+    background: ${props => props.theme.colorDashCardBackground};
     color: ${props => props.theme.colorBodyText};
   }
 `;
 
-const BlockTimeCardB = styled(BlockTimeCard)`
+const CardBlockTime = styled(BlockTimeCard)`
   && {
-    background: ${props => props.theme.colorDashCardBBackground};
+    background: ${props => props.theme.colorDashCardBackground};
     color: ${props => props.theme.colorBodyText};
   }
 `;
 
-const TransactionsCardC = styled(TransactionsCard)`
+const CardTransactions = styled(TransactionsCard)`
   && {
-    background: ${props => props.theme.colorDashCardCBackground};
+    background: ${props => props.theme.colorDashCardBackground};
     color: ${props => props.theme.colorBodyText};
   }
 `;
 
-const PriceCardD = styled(PriceCard)`
+const CardPrice = styled(PriceCard)`
   && {
-    background: ${props => props.theme.colorDashCardDBackground};
+    background: ${props => props.theme.colorDashCardBackground};
     color: ${props => props.theme.colorBodyText};
   }
 `;
@@ -179,7 +179,7 @@ class HomePage extends TrackablePage {
           <Fade
             timeout={500}
           >
-            <DashCardA
+            <CardBlocks
               cardIndex={0}
               title='Blocks'
               value={blockHeight ? blockHeight.toLocaleString() : 'Loading...'}
@@ -192,7 +192,7 @@ class HomePage extends TrackablePage {
             delay={50}
             timeout={500}
           >
-            <BlockTimeCardB cardIndex={1} />
+            <CardBlockTime cardIndex={1} />
           </Fade>
         </GridCard>
         <GridCard item breakpoint={breakpoint}>
@@ -200,7 +200,7 @@ class HomePage extends TrackablePage {
             delay={100}
             timeout={500}
           >
-            <TransactionsCardC cardIndex={2} />
+            <CardTransactions cardIndex={2} />
           </Fade>
         </GridCard>
         <GridCard item breakpoint={breakpoint}>
@@ -208,7 +208,7 @@ class HomePage extends TrackablePage {
             delay={150}
             timeout={500}
           >
-            <PriceCardD cardIndex={3} />
+            <CardPrice cardIndex={3} />
           </Fade>
         </GridCard>
       </GridSection>
