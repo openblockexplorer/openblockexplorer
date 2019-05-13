@@ -1,5 +1,5 @@
 /**
- * @file BlocksTable
+ * @file BlocksSlideTable
  * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
@@ -7,14 +7,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from "react-apollo";
-import FadeTable from '../FadeTable/FadeTable';
+import DynamicTable from '../DynamicTable/DynamicTable';
 import queryBlocks from '../../graphql/queryBlocks';
 import subscriptionBlock from '../../graphql/subscriptionBlock';
 
 /**
  * This component displays a table of Block objects with data retrieved via GraphQL.
  */
-class BlocksTableWithData extends Component {
+class BlocksSlideTableWithData extends Component {
   static propTypes = {
     /**
      * The current Breakpoint, taking the desktop drawer (large screens) width into account.
@@ -31,7 +31,7 @@ class BlocksTableWithData extends Component {
   };
 
   /**
-   * Create a BlocksTableWithData object.
+   * Create a BlocksSlideTableWithData object.
    * @constructor
    */
   constructor() {
@@ -60,7 +60,7 @@ class BlocksTableWithData extends Component {
           const subscribeToNewObjects = () => this.subscribeToNewObjects(subscribeToMore);
           if (loading)
             return (
-              <BlocksTable
+              <BlocksSlideTable
                 blocks={[]}
                 subscribeToNewObjects={subscribeToNewObjects}
                 breakpoint={breakpoint}
@@ -70,7 +70,7 @@ class BlocksTableWithData extends Component {
             );
           else if (error)
             return (
-              <BlocksTable
+              <BlocksSlideTable
                 blocks={[]}
                 subscribeToNewObjects={subscribeToNewObjects}
                 breakpoint={breakpoint}
@@ -80,12 +80,11 @@ class BlocksTableWithData extends Component {
             );
           else {
             return (
-              <BlocksTable
+              <BlocksSlideTable
                 blocks={data.blocks}
                 subscribeToNewObjects={subscribeToNewObjects}
                 breakpoint={breakpoint}
                 maxRows={maxRows}
-                slide
               />
             );
           }
@@ -142,9 +141,9 @@ class BlocksTableWithData extends Component {
 }
 
 /**
- * This component displays a table of Block objects.
+ * This component displays a table of Block objects where new blocks slide in.
  */
-class BlocksTable extends FadeTable {
+class BlocksSlideTable extends Component {
   static propTypes = {
     /**
      * Array of block objects.
@@ -158,11 +157,6 @@ class BlocksTable extends FadeTable {
      * Boolean indicating whether an error occurred with the GraphQL query.
      */
     error: PropTypes.bool,
-    /**
-     * Indicates whether new rows should slide in, expanding when they are created and collapsing
-     * when they are destroyed.
-     */
-    slide: PropTypes.bool,
     /**
      * Boolean indicating whether the GraphQL query is in progress.
      */
@@ -178,6 +172,17 @@ class BlocksTable extends FadeTable {
   };
   
   /**
+   * Create a BlocksSlideTable object.
+   * @constructor
+   */
+  constructor() {
+    super();
+
+    // Bind to make 'this' work in callbacks.
+    this.getBodyRows = this.getBodyRows.bind(this);
+  }
+
+  /**
    * Invoked by React immediately after a component is mounted (inserted into the tree). 
    * @public
    */
@@ -188,38 +193,42 @@ class BlocksTable extends FadeTable {
   }
 
   /**
-   * Return the title of the table.
-   * @return {String} The title of the table.
-   * @protected
+   * Return a reference to a React element to render into the DOM.
+   * @return {Object} A reference to a React element to render into the DOM.
+   * @public
    */
-  getTitle() {
-    return 'Blocks';
+  render() {
+    const { breakpoint, error, loading, maxRows } = this.props;
+    return (
+      <DynamicTable
+        breakpoint={breakpoint}
+        title='Blocks'
+        columnWidths={['30%', '40%', '30%']}
+        maxRows={maxRows}
+        headerRow={[
+          {value: 'Height', isNumeric: false},
+          {value: 'Timestamp', isNumeric: false},
+          {value: 'Transactions', isNumeric: true}
+        ]}
+        getBodyRows={this.getBodyRows}
+        footerRow={[
+          {value: null, isNumeric: false},
+          {value: null, isNumeric: false},
+          {value: '(simulated data)', isNumeric: true}
+        ]}
+        slide={!loading && !error}
+      />
+    );
   }
 
   /**
-   * Return an array that specifies the column widths of the table.
-   * @return {Array} An array that specifies the column widths of the table.
-   * @protected
-   */
-  getColumnWidths() {
-    return ['30%', '40%', '30%'];
-  }
-
-  /**
-   * Return an array of objects that describe the cells of the header row.
-   * @return {Array} An array of objects that describe the cells of the header row.
-   * @protected
-   */
-  getHeaderRow() {
-    return [
-      {value: 'Height', isNumeric: false, link: null},
-      {value: 'Timestamp', isNumeric: false, link: null},
-      {value: 'Transactions', isNumeric: true, link: null}
-    ];
-  }
-
-  /**
-   * Return an array of objects that describe the body rows.
+   * Return an array of objects that describe the body rows, where each object contains:
+   *  mapKey: A unique key that identifies the row.
+   *  cells: An array of objects that describe the cells of the row, where each object contains:
+   *    value: String containing the value of the cell.
+   *    isNumeric: True if the cell contains a numeric value, false otherwise.
+   *    link: Optional string which provides a link for the cell (to= prop of Link). Set to null
+   *      for no link.
    * @return {Array} An array of objects that describe the body rows.
    * @protected
    */
@@ -248,19 +257,6 @@ class BlocksTable extends FadeTable {
       return bodyRows;
     }
   }
-
-  /**
-   * Return an array of objects that describe the cells of the footer row.
-   * @return {Array} An array of objects that describe the cells of the footer row.
-   * @protected
-   */
-  getFooterRow() {
-    return [
-      {value: null, isNumeric: false, link: null},
-      {value: null, isNumeric: false, link: null},
-      {value: '(simulated data)', isNumeric: true, link: null}
-    ];
-  }
 }
 
-export default BlocksTableWithData;
+export default BlocksSlideTableWithData;

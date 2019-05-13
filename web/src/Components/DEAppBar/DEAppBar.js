@@ -28,6 +28,8 @@ import {
   Typography,
   Zoom
 } from '@material-ui/core';
+import { fade } from '@material-ui/core/styles/colorManipulator';
+import zIndex from '@material-ui/core/styles/zIndex';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import CloseIcon from '@material-ui/icons/Close';
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -35,7 +37,6 @@ import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import zIndex from '@material-ui/core/styles/zIndex';
 import RevealFade from 'react-reveal/Fade';
 import RevealZoom from 'react-reveal/Zoom';
 import Downshift from 'downshift';
@@ -239,8 +240,15 @@ const SearchIconListSearch = styled(SearchIcon)`
 const StyledIconButton = styled(IconButton)`
   && {
     color: ${props => props.theme.colorAppBarTextButton};
+
     &:hover {
-      color: ${props => props.theme.colorAppBarButtonHover};
+      background: ${props => fade(props.theme.colorIconButtonHover, props.theme.opacityActionHover)};
+      color: ${props => props.theme.colorIconButtonHover};
+      /* Reset on touch devices. */
+      @media (hover: none) {
+        background: inherit;
+        color: ${props => props.theme.colorAppBarTextButton};
+      }
     }
   }
 `;

@@ -1,50 +1,65 @@
 /**
  * @file TransactionsPage
- * @copyright Copyright (c) 2018-2019 Dylan Miller, Todd Kitchens, and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
 
 import React from "react";
-import Constants from '../../constants';
 import styled from 'styled-components';
 import {
-  Typography
+  Grid
 } from '@material-ui/core';
+import { duration, easing } from '@material-ui/core/styles/transitions';
+import Fade from 'react-reveal/Fade';
 import TrackablePage from '../TrackablePage/TrackablePage'
+import TransactionsPagedTable from '../TransactionsPagedTable/TransactionsPagedTable';
 import { Breakpoints } from '../../utils/breakpoint';
+import Constants from '../../constants';
 
-const TypographyHeading = styled(Typography)`
+const GridSection = styled(Grid)`
   && {
-    font-family: ${Constants.FONT_PRIMARY};
-    font-size: ${Constants.MATERIAL_FONT_SIZE_H4};
-    font-weight: 400;
-    color: ${props => props.theme.colorBodyText};
+    padding: ${Constants.HOME_PAGE_MARGIN_SM_AND_UP + 'px'};
+    transition: ${'padding ' + duration.standard + 'ms ' + easing.easeInOut};
     ${({ breakpoint }) =>
       breakpoint === Breakpoints.XS && `
-        font-size: ${Constants.MATERIAL_FONT_SIZE_H5};       
+        padding-top: ${Constants.HOME_PAGE_MARGIN_XS + 'px'};
+        padding-bottom: ${Constants.HOME_PAGE_MARGIN_SM_AND_UP + 'px'};
+        padding-left: ${Constants.HOME_PAGE_MARGIN_XS + 'px'};
+        padding-right: ${Constants.HOME_PAGE_MARGIN_XS + 'px'};
       `
     }
   }
 `;
 
-const TypographyBody = styled(Typography)`
+const GridPagedTable = styled(Grid)`
   && {
-    font-family: ${Constants.FONT_PRIMARY};
-    font-size: ${Constants.MATERIAL_FONT_SIZE_BODY_1};
-    line-height: 1.75rem;
-    color: ${props => props.theme.colorBodyTextDim};
+    width: 100%;
   }
 `;
 
 class TransactionsPage extends TrackablePage {
- render() {
-   return (
-     <div style={{ marginTop: '32px', marginLeft: '32px' }}>
-       <TypographyHeading>Transactions</TypographyHeading>
-       <TypographyBody>Transactions page coming soon.</TypographyBody>
-     </div>
-   );
- }
+  /**
+   * Return a reference to a React element to render into the DOM.
+   * @return {Object} A reference to a React element to render into the DOM.
+   * @public
+   */
+  render() {
+    const { breakpoint } = this.props;
+    return (
+      <GridSection container
+        direction='row'
+        justify='space-between'
+        alignItems='flex-start'
+        breakpoint={breakpoint}
+      >
+        <GridPagedTable item breakpoint={breakpoint}>
+          <Fade timeout={500}>
+            <TransactionsPagedTable breakpoint={breakpoint} />
+          </Fade>
+        </GridPagedTable>
+      </GridSection>
+    );
+  }
 }
 
 export default TransactionsPage;

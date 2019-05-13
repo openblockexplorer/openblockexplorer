@@ -13,8 +13,8 @@ import {
 import { duration, easing } from '@material-ui/core/styles/transitions';
 import Fade from 'react-reveal/Fade';
 import TrackablePage from '../TrackablePage/TrackablePage'
-import BlocksTable from '../BlocksTable/BlocksTable';
-import TransactionsTable from '../TransactionsTable/TransactionsTable';
+import BlocksSlideTable from '../BlocksSlideTable/BlocksSlideTable';
+import TransactionsFadeTable from '../TransactionsFadeTable/TransactionsFadeTable';
 import DashCard from '../DashCard/DashCard';
 import BlockTimeCard from '../BlockTimeCard/BlockTimeCard';
 import TransactionsCard from '../TransactionsCard/TransactionsCard';
@@ -271,7 +271,7 @@ class HomePage extends TrackablePage {
           <Fade
             timeout={500}
           >
-            <BlocksTable
+            <BlocksSlideTable
               breakpoint={breakpoint}
               maxRows={8}
               handleAddNewBlock={this.handleAddNewBlock}
@@ -283,7 +283,7 @@ class HomePage extends TrackablePage {
             delay={50}
             timeout={500}
           >
-            <TransactionsTable breakpoint={breakpoint} maxRows={8} />
+            <TransactionsFadeTable breakpoint={breakpoint} maxRows={8} />
           </Fade>
         </GridTable>
       </GridSectionTables>

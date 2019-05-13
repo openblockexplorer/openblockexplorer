@@ -1,35 +1,28 @@
 /**
- * @file BlockTransactionsTable
+ * @file TransactionsPagedTable
  * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import DynamicTable from '../DynamicTable/DynamicTable';
+import PagedTable from '../PagedTable/PagedTable';
+import queryTransactionsConnection from '../../graphql/queryTransactionsConnection';
 import getHashString from '../../utils/getHashString';
 
 /**
- * This component displays a table of a block's Transaction objects.
+ * This component displays a paged table of Transaction objects.
  */
-class BlockTransactionsTable extends Component { 
+class TransactionsPagedTable extends Component {
   static propTypes = {
     /**
      * The current Breakpoint, taking the desktop drawer (large screens) width into account.
      */    
-    breakpoint: PropTypes.number.isRequired,
-    /**
-     * The maximum number of rows in the table.
-     */
-    maxRows: PropTypes.number.isRequired,
-    /**
-     * Array of transaction objects.
-     */
-    transactions: PropTypes.array.isRequired
+    breakpoint: PropTypes.number.isRequired
   };
 
   /**
-   * Create a BlockTransactionsTable object.
+   * Create a TransactionsPagedTable object.
    * @constructor
    */
   constructor() {
@@ -45,22 +38,19 @@ class BlockTransactionsTable extends Component {
    * @public
    */
   render() {
-    const { breakpoint, maxRows } = this.props;
+    const { breakpoint } = this.props;
     return (
-      <DynamicTable
+      <PagedTable
         breakpoint={breakpoint}
         title='Transactions'
         columnWidths={['60%', '40%']}
-        maxRows={maxRows}
         headerRow={[
           {value: 'Hash', isNumeric: false},
           {value: 'Amount', isNumeric: true}
         ]}
+        query={queryTransactionsConnection}
+        getDataConnection={data => data.transactionsConnection}
         getBodyRows={this.getBodyRows}
-        footerRow={[
-          {value: null, isNumeric: false},
-          {value: '(simulated data)', isNumeric: true}
-        ]}
       />
     );
   }
@@ -73,30 +63,28 @@ class BlockTransactionsTable extends Component {
    *    isNumeric: True if the cell contains a numeric value, false otherwise.
    *    link: Optional string which provides a link for the cell (to= prop of Link). Set to null
    *      for no link.
+   * @param {Object} data The data retrieved by getQuery().
    * @return {Array} An array of objects that describe the body rows.
    * @protected
    */
-  getBodyRows() {
-    const { transactions } = this.props;
-    if (transactions) {
-      let bodyRows = transactions.map((transaction) => {
-        return {
-          mapKey: transaction.hash,
-          cells: [
-            {
-              value: getHashString(transaction.hash),
-              isNumeric: false,
-              link: `/tx/0x${transaction.hash}`
-            },
-            {value: transaction.amount.toFixed(8).toString() + ' DFN', isNumeric: true, link: null}
-          ]
-        };
-      });
-      return bodyRows;
-    }
-    else
-      return [];
+  getBodyRows(data) {
+    let bodyRows = data.transactionsConnection.edges.map((edge) => {
+      const transaction = edge.node;
+      return {
+        mapKey: transaction.hash,
+        cells: [
+          {
+            value: getHashString(transaction.hash),
+            isNumeric: false,
+            link: `/tx/0x${transaction.hash}`
+          },
+          {value: transaction.amount.toFixed(8).toString() + ' DFN', isNumeric: true}
+        ]
+      };
+    });
+    return bodyRows;
   }
 }
 
-export default BlockTransactionsTable;
+
+export default TransactionsPagedTable;

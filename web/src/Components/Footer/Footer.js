@@ -90,8 +90,13 @@ const AwesomeIconButtonGrid = styled(Grid)`
 const AwesomeIconButton = styled(IconButton)`
   && {
     &:hover {
-      background: ${props => fade(props.theme.colorFooterTextIcon, 0.2)};
-      color: ${props => props.theme.colorFooterIconHover};
+      background: ${props => fade(props.theme.colorIconButtonHover, props.theme.opacityActionHover)};
+      color: ${props => props.theme.colorIconButtonHover};
+      /* Reset on touch devices. */
+      @media (hover: none) {
+        background: inherit;
+        color: inherit;
+      }
     }
   }
 `;
@@ -106,8 +111,13 @@ const ThemeCheckbox = styled(Checkbox)`
   && {
     color: ${props => props.theme.colorFooterTextIcon};
     &:hover {
-      background: ${props => fade(props.theme.colorFooterTextIcon, 0.2)};
-      color: ${props => props.theme.colorFooterIconHover};
+      background: ${props => fade(props.theme.colorIconButtonHover, props.theme.opacityActionHover)};
+      color: ${props => props.theme.colorIconButtonHover};
+      /* Reset on touch devices. */
+      @media (hover: none) {
+        background: inherit;
+        color: ${props => props.theme.colorFooterTextIcon};
+      }
     }
   }
 `;

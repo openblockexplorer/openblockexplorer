@@ -264,11 +264,11 @@ const ButtonSubscribe = styled(Button)`
     font-size: ${Constants.MATERIAL_FONT_SIZE_BUTTON};
     font-weight: 400;
     text-transform: capitalize;
-    background: ${props => props.theme.colorAboutButtonBackground};
-    color: ${props => props.theme.colorAboutButtonText};
+    background: ${props => props.theme.colorBodyButtonBackground};
+    color: ${props => props.theme.colorBodyButtonText};
     &:hover {
-      background: ${props => props.theme.colorAboutButtonHoverBackground};
-      color: ${props => props.theme.colorAboutButtonHoverText};
+      background: ${props => props.theme.colorBodyButtonHoverBackground};
+      color: ${props => props.theme.colorBodyButtonHoverText};
     }    
   }
 `;
@@ -296,12 +296,12 @@ const ButtonDonate = styled(CoinbaseCommerceButton)`
     font-family: ${Constants.FONT_PRIMARY};
     font-size: ${Constants.MATERIAL_FONT_SIZE_BUTTON};
     font-weight: 400;
-    background: ${props => props.theme.colorAboutButtonBackground};
-    color: ${props => props.theme.colorAboutButtonText};
+    background: ${props => props.theme.colorBodyButtonBackground};
+    color: ${props => props.theme.colorBodyButtonText};
     &:hover {
       cursor: pointer;
-      background: ${props => props.theme.colorAboutButtonHoverBackground};
-      color: ${props => props.theme.colorAboutButtonHoverText};
+      background: ${props => props.theme.colorBodyButtonHoverBackground};
+      color: ${props => props.theme.colorBodyButtonHoverText};
     }    
   }
 `;
@@ -330,7 +330,6 @@ const ImageLinkGridThanks = styled(ImageLinkGrid)`
   }
 `;
 
-// Mailing list signup page needs DE logo rather than the DFINITY one.!!!
 /**
  * Component for the about page.
  */

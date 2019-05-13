@@ -195,8 +195,24 @@ class App extends Component {
                       />
                     }
                   />
-                  <Route exact path="/blocks" component={BlocksPage} />                 
-                  <Route exact path="/txs" component={TransactionsPage} />            
+                  <Route
+                    exact path='/blocks'
+                    render={(props) => 
+                      <BlocksPage
+                        {...props}
+                        breakpoint={breakpoint}
+                      />
+                    }
+                  />
+                  <Route
+                    exact path='/txs'
+                    render={(props) => 
+                      <TransactionsPage
+                        {...props}
+                        breakpoint={breakpoint}
+                      />
+                    }
+                  />
                   <Route exact path="/accounts" component={AccountsPage} />                  
                   <Route exact path="/canisters" component={CanistersPage} />
                   <Route

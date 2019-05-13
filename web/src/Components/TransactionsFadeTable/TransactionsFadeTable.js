@@ -1,5 +1,5 @@
 /**
- * @file TransactionsTable
+ * @file TransactionsFadeTable
  * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from "react-apollo";
-import FadeTable from '../FadeTable/FadeTable';
+import DynamicTable from '../DynamicTable/DynamicTable';
 import queryTransactions from '../../graphql/queryTransactions';
 import subscriptionTransaction from '../../graphql/subscriptionTransaction';
 import getHashString from '../../utils/getHashString';
@@ -15,7 +15,7 @@ import getHashString from '../../utils/getHashString';
 /**
  * This component displays a table of Transaction objects with data retrieved via GraphQL.
  */
-class TransactionsTableWithData extends Component {
+class TransactionsFadeTableWithData extends Component {
   static propTypes = {
     /**
      * The current Breakpoint, taking the desktop drawer (large screens) width into account.
@@ -40,7 +40,7 @@ class TransactionsTableWithData extends Component {
           const subscribeToNewObjects = () => this.subscribeToNewObjects(subscribeToMore);
           if (loading)
             return (
-              <TransactionsTable
+              <TransactionsFadeTable
                 transactions={[]}
                 subscribeToNewObjects={subscribeToNewObjects}
                 breakpoint={breakpoint}
@@ -50,7 +50,7 @@ class TransactionsTableWithData extends Component {
             );
           else if (error)
             return (
-              <TransactionsTable
+              <TransactionsFadeTable
                 transactions={[]}
                 subscribeToNewObjects={subscribeToNewObjects}
                 breakpoint={breakpoint}
@@ -60,7 +60,7 @@ class TransactionsTableWithData extends Component {
             );
           else {
             return (
-              <TransactionsTable
+              <TransactionsFadeTable
                 transactions={data.transactions}
                 subscribeToNewObjects={subscribeToNewObjects}
                 breakpoint={breakpoint}
@@ -101,9 +101,9 @@ class TransactionsTableWithData extends Component {
 }
 
 /**
- * This component displays a table of Transaction objects.
+ * This component displays a table of Transaction objects where new transacations fade in.
  */
-class TransactionsTable extends FadeTable { 
+class TransactionsFadeTable extends Component { 
   static propTypes = {
     /**
      * The current Breakpoint, taking the desktop drawer (large screens) width into account.
@@ -132,6 +132,17 @@ class TransactionsTable extends FadeTable {
   };
   
   /**
+   * Create a TransactionsFadeTable object.
+   * @constructor
+   */
+  constructor() {
+    super();
+
+    // Bind to make 'this' work in callbacks.
+    this.getBodyRows = this.getBodyRows.bind(this);
+  }
+
+  /**
    * Invoked by React immediately after a component is mounted (inserted into the tree). 
    * @public
    */
@@ -142,37 +153,39 @@ class TransactionsTable extends FadeTable {
   }
 
   /**
-   * Return the title of the table.
-   * @return {String} The title of the table.
-   * @protected
+   * Return a reference to a React element to render into the DOM.
+   * @return {Object} A reference to a React element to render into the DOM.
+   * @public
    */
-  getTitle() {
-    return 'Transactions';
+  render() {
+    const { breakpoint, maxRows } = this.props;
+    return (
+      <DynamicTable
+        breakpoint={breakpoint}
+        title='Transactions'
+        columnWidths={['60%', '40%']}
+        maxRows={maxRows}
+        headerRow={[
+          {value: 'Hash', isNumeric: false},
+          {value: 'Amount', isNumeric: true}
+        ]}
+        getBodyRows={this.getBodyRows}
+        footerRow={[
+          {value: null, isNumeric: false},
+          {value: '(simulated data)', isNumeric: true}
+        ]}
+      />
+    );
   }
 
   /**
-   * Return an array that specifies the column widths of the table.
-   * @return {Array} An array that specifies the column widths of the table.
-   * @protected
-   */
-  getColumnWidths() {
-    return ['60%', '40%'];
-  }
-
-  /**
-   * Return an array of objects that describe the cells of the header row.
-   * @return {Array} An array of objects that describe the cells of the header row.
-   * @protected
-   */
-  getHeaderRow() {
-    return [
-      {value: 'Hash', isNumeric: false, link: null},
-      {value: 'Amount', isNumeric: true, link: null}
-    ];
-  }
-
-  /**
-   * Return an array of objects that describe the body rows.
+   * Return an array of objects that describe the body rows, where each object contains:
+   *  mapKey: A unique key that identifies the row.
+   *  cells: An array of objects that describe the cells of the row, where each object contains:
+   *    value: String containing the value of the cell.
+   *    isNumeric: True if the cell contains a numeric value, false otherwise.
+   *    link: Optional string which provides a link for the cell (to= prop of Link). Set to null
+   *      for no link.
    * @return {Array} An array of objects that describe the body rows.
    * @protected
    */
@@ -199,18 +212,6 @@ class TransactionsTable extends FadeTable {
       return bodyRows;
     }
   }
-
-  /**
-   * Return an array of objects that describe the cells of the footer row.
-   * @return {Array} An array of objects that describe the cells of the footer row.
-   * @protected
-   */
-  getFooterRow() {
-    return [
-      {value: null, isNumeric: false, link: null},
-      {value: '(simulated data)', isNumeric: true, link: null}
-    ];
-  }
 }
 
-export default TransactionsTableWithData;
+export default TransactionsFadeTableWithData;

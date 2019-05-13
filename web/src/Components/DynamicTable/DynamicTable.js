@@ -1,5 +1,5 @@
 /**
- * @file FadeTable
+ * @file DynamicTable
  * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
@@ -40,11 +40,6 @@ const TypographyTitle = styled(Typography)`
     font-family: ${Constants.FONT_PRIMARY};
     font-size: ${Constants.MATERIAL_FONT_SIZE_H6};
     font-weight: 300;
-    ${({ breakpoint }) =>
-      breakpoint === Breakpoints.XS && `
-        font-size: ${Constants.MATERIAL_FONT_SIZE_H6};
-      `
-    }
   }
 `;
 
@@ -82,7 +77,7 @@ const StyledTableCell = styled(TableCell)`
     font-size: ${Constants.MATERIAL_FONT_SIZE_BODY_2};
     white-space: nowrap;
     /* Reducing the font size for narrow page widths seems sufficient for resizing the table when
-       Grid spacing is 0 and padding={'checkbox'}. Other settings, such as 'overflow: hidden' and
+       Grid spacing is 0 and padding='checkbox'. Other settings, such as 'overflow: hidden' and
        'max-width: 0px', were also helpful in improving the table at narrow page widths, but do
        not seem to be necessary with the current settings. Another useful setting is
        'text-overflow: ellipsis', though we reduce the font size rather than using ellipsis. */
@@ -129,23 +124,58 @@ const TableCellFooter = styled(StyledTableCell)`
 `;
 
 /**
- * Base class that implements a table component where new rows fade in.
+ * Class that implements a table component where new rows either slide in or fade in.
  */
-class FadeTable extends Component { // rename to DynamicTable?!!!
+class DynamicTable extends Component {
   static propTypes = {
     /**
      * The current Breakpoint, taking the desktop drawer (large screens) width into account.
      */    
     breakpoint: PropTypes.number.isRequired,
     /**
-     * Indicates whether new rows should slide in, expanding when they are created and collapsing
-     * when they are destroyed.
+     * An array that specifies the column widths of the table.
+     */    
+    columnWidths: PropTypes.array.isRequired,
+    /**
+     * Return an array of objects that describe the body rows, where each object contains:
+     *  mapKey: A unique key that identifies the row.
+     *  cells: An array of objects that describe the cells of the row, where each object contains:
+     *    value: String containing the value of the cell.
+     *    isNumeric: True if the cell contains a numeric value, false otherwise.
+     *    link: Optional string which provides a link for the cell (to= prop of Link). Set to null
+     *      for no link.
+     * @return {Array} An array of objects that describe the body rows.
+     */
+    getBodyRows: PropTypes.func.isRequired,
+    /**
+     * An array of objects that describe the cells of the footer row, where each object contains:
+     *  value: String containing the value of the cell.
+     *  isNumeric: True if the cell contains a numeric value, false otherwise.
+     *  link: Optional string which provides a link for the cell (to= prop of Link). Set to null for
+     *    no link.
+     */
+    footerRow: PropTypes.array.isRequired,
+    /**
+     * An array of objects that describe the cells of the header row, where each object contains:
+     *  value: String containing the value of the cell.
+     *  isNumeric: True if the cell contains a numeric value, false otherwise.
+     *  link: Optional string which provides a link for the cell (to= prop of Link). Set to null for
+     *    no link.
+     */
+    headerRow: PropTypes.array.isRequired,
+    /**
+     * Indicates whether new rows should slide in rather than fade in, expanding when they are
+     * created and collapsing when they are destroyed.
      */
     slide: PropTypes.bool,
     /**
      * The maximum number of rows in the table.
      */
-    maxRows: PropTypes.number.isRequired
+    maxRows: PropTypes.number.isRequired,
+    /**
+     * The title of the table.
+     */
+    title: PropTypes.string.isRequired,
   };
 
   /**
@@ -155,13 +185,13 @@ class FadeTable extends Component { // rename to DynamicTable?!!!
    */
   render() {
     // BUG: On Chrome, screen scrolls when collapsing row is on screen but expanding row is off screen!!!
-    const { breakpoint } = this.props;
+    const { breakpoint, columnWidths, footerRow, headerRow, title } = this.props;
     return (
       <StyledPaper elevation={1}>
-        <TypographyTitle breakpoint={breakpoint}>{this.getTitle()}</TypographyTitle>
+        <TypographyTitle>{title}</TypographyTitle>
         <StyledTable>
           <colgroup>
-            {this.getColumnWidths().map((width, index) => {
+            {columnWidths.map((width, index) => {
               // The column width settings seem to be ignored in many cases, depending on cell
               // length. That is, when cell lengths are long, the widths are ignored.
               return (
@@ -170,8 +200,8 @@ class FadeTable extends Component { // rename to DynamicTable?!!!
             })}
           </colgroup>
           <TableHead>
-            <TableRowHeader  breakpoint={breakpoint}>
-              {this.getHeaderRow().map((cell, index) => {
+            <TableRowHeader breakpoint={breakpoint}>
+              {headerRow.map((cell, index) => {
                 return (
                   // Using index as the key is fine here and for cells in other rows, since we never
                   // add, remove, reorder, or filter items in the cell arrays.
@@ -179,7 +209,7 @@ class FadeTable extends Component { // rename to DynamicTable?!!!
                     breakpoint={breakpoint}
                     key={index}
                     align={cell.isNumeric ? 'right' : 'inherit'}
-                    padding={'checkbox'}
+                    padding='checkbox'
                   >
                   {cell.link != null ?
                     <StyledLink to={cell.link}>{cell.value}</StyledLink> :
@@ -195,13 +225,13 @@ class FadeTable extends Component { // rename to DynamicTable?!!!
           </TableBody>
           <TableFooter>
             <TableRowFooter>
-              {this.getFooterRow().map((cell, index) => {
+              {footerRow.map((cell, index) => {
                 return (
                   <TableCellFooter
                     breakpoint={breakpoint}
                     key={index}
                     align={cell.isNumeric ? 'right' : 'inherit'}
-                    padding={'checkbox'}
+                    padding='checkbox'
                   >
                   {cell.link != null ?
                     <StyledLink to={cell.link}>{cell.value}</StyledLink> :
@@ -223,10 +253,10 @@ class FadeTable extends Component { // rename to DynamicTable?!!!
    * @private
    */
   getBodyRowElements() {
-    const { breakpoint, maxRows, slide } = this.props;
+    const { breakpoint, getBodyRows, maxRows, slide } = this.props;
     const rowHeight = breakpoint === Breakpoints.XS ?
       Constants.TABLE_ROW_HEIGHT_XS : Constants.TABLE_ROW_HEIGHT_SM_AND_UP;
-    let rows = this.getBodyRows().slice(0, maxRows);
+    let rows = getBodyRows().slice(0, maxRows);
     if (slide) {
       // Use a Transition element to expand (and fade in) entering rows and collapse (and fade out)
       // leaving rows.
@@ -278,7 +308,7 @@ class FadeTable extends Component { // rename to DynamicTable?!!!
             <StyledTableCell
               breakpoint={breakpoint}
               key={index}
-              padding={'checkbox'}
+              padding='checkbox'
               // Hide the border on rows that are leaving, so that table height remains consistent.
               style={state === 'leave' ? {borderBottomStyle: 'hidden'} : null}
             >
@@ -299,51 +329,6 @@ class FadeTable extends Component { // rename to DynamicTable?!!!
       </TableRowBody>
     );
   }
-
-  /**
-   * Return the title of the table.
-   * @return {String} The title of the table.
-   * @protected
-   */
-  getTitle() {
-    throw new Error('FadeTable.getTitle() not implemented.');
-  }
-
-  /**
-   * Return an array that specifies the column widths of the table.
-   * @return {Array} An array that specifies the column widths of the table.
-   * @protected
-   */
-  getColumnWidths() {
-    throw new Error('FadeTable.getColumnWidths() not implemented.');
-  }
-
-  /**
-   * Return an array of objects that describe the cells of the header row.
-   * @return {Array} An array of objects that describe the cells of the header row.
-   * @protected
-   */
-  getHeaderRow() {
-    throw new Error('FadeTable.getHeaderRow() not implemented.');
-  }
-
-  /**
-   * Return an array of objects that describe the body rows.
-   * @return {Array} An array of objects that describe the body rows.
-   * @protected
-   */
-  getBodyRows() {
-    throw new Error('FadeTable.getBodyRows() not implemented.');
-  }
-
-  /**
-   * Return an array of objects that describe the cells of the footer row.
-   * @return {Array} An array of objects that describe the cells of the footer row.
-   * @protected
-   */
-  getFooterRow() {
-    throw new Error('FadeTable.getFooterRow() not implemented.');
-  }
 }
 
-export default FadeTable;
+export default DynamicTable;

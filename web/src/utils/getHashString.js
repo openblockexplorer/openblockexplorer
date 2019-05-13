@@ -13,7 +13,7 @@
  */
 export default function getHashString(hash, maxLength) {
   if (maxLength === undefined)
-    maxLength = 24;
+    maxLength = 22;
   hash = "0x" + hash;
   if (maxLength !== 0 && hash.length > maxLength) {
     const first = hash.substring(0, maxLength - 4);

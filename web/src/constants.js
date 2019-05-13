@@ -6,8 +6,8 @@
 
 const Constants = Object.freeze({
   // Development server URIs
-  // URI_SERVER_HTTP: 'http://localhost:4000',
-  // URI_SERVER_WEB_SOCKETS: 'ws://localhost:4000',
+  //URI_SERVER_HTTP: 'http://localhost:4000',
+  //URI_SERVER_WEB_SOCKETS: 'ws://localhost:4000',
   // Production server URIs
   URI_SERVER_HTTP: 'https://dfinityexplorer-server.herokuapp.com/',
   URI_SERVER_WEB_SOCKETS: 'wss://dfinityexplorer-server.herokuapp.com/',
@@ -48,12 +48,12 @@ const Constants = Object.freeze({
   COLOR_DFINITY_BLUE_700: '#007DBC',
   COLOR_DFINITY_BLUE_800: '#006DA8',
   COLOR_DFINITY_BLUE_900: '#004E88',
-  COLOR_TEXT_LIGHT: 'white', // This should be removed, replaced with COLOR_DARK_TEXT!!!
-  COLOR_DARK_TEXT: 'white',
+  COLOR_TEXT_LIGHT: '#FFFFFF', // This should be removed, replaced with COLOR_DARK_TEXT!!!
+  COLOR_DARK_TEXT: '#FFFFFF',
   COLOR_DARK_TEXT_FADED: 'rgb(190, 191, 192)', // rgba(255, 255, 255, 0.7) on COLOR_DFINITY_BLACK, matches Material-UI Tab opacity
   COLOR_TEXT_DARKER: 'rgb(148, 149, 151)', // rgba(255, 255, 255, 0.5) on COLOR_DFINITY_BLACK
   COLOR_TEXT_DARKEST: 'rgb(106, 106, 109)', // rgba(255, 255, 255, 0.3) on COLOR_DFINITY_BLACK
-  COLOR_LIGHT_TEXT: 'black',
+  COLOR_LIGHT_TEXT: '#000000',
   COLOR_LIGHT_TEXT_FADED: 'rgb(77, 77, 77)', // rgba(0, 0, 0, 0.7) on white, matches Material-UI Tab opacity
   COLOR_DARK_BODY_DARKER_MAC_OS: '#1B1B1B', // Calendar, Finder, iTunes, Messages
   COLOR_DARK_BODY_LIGHTER_MAC_OS: '#262626', // Finder
@@ -85,6 +85,8 @@ const Constants = Object.freeze({
   MATERIAL_FONT_SIZE_BUTTON: '0.875rem', // 14px
   MATERIAL_FONT_SIZE_CAPTION: '0.75rem', // 12px
   MATERIAL_FONT_SIZE_OVERLINE: '0.625rem', // 10px
+  MATERIAL_CIRCULAR_INDICATOR_SIZE: 48,
+  MATERIAL_UI_ICON_BUTTON_FONT_SIZE: 24,
   FONT_SIZE_TABLE_XS: '0.6875rem', // 11px
   BREAKPOINT_MIN_XS: 0,
   BREAKPOINT_MAX_XS: 599,
