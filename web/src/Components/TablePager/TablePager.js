@@ -88,7 +88,6 @@ const StyledSelect = styled(({ ...other }) => (
   ))`
   && {
     color: ${props => props.theme.colorBodyTextDim};
-    margin-top: 3px;
     padding-left: 4px;
     font-family: ${Constants.FONT_PRIMARY};
     font-size: ${Constants.MATERIAL_FONT_SIZE_CAPTION};
@@ -97,6 +96,7 @@ const StyledSelect = styled(({ ...other }) => (
       top: 0px;
     }
     & .root {
+      margin-top: 3px;
       /**
        * Used to move the rows per page number and the down arrow closer together. Note that this
        * causes problems (number abbreviated with ellipses) for a rows per page number with more
