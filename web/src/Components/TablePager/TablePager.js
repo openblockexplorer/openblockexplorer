@@ -46,6 +46,8 @@ const TypographyCaption = styled(Typography)`
   && {
     font-family: ${Constants.FONT_PRIMARY};
     font-size: ${Constants.MATERIAL_FONT_SIZE_CAPTION};
+    /* Padding to align rows and count text with rows per page number. */
+    padding-bottom: 1px;
   }
 `;
 
@@ -81,7 +83,8 @@ const StyledSelect = styled(({ ...other }) => (
     <Select
       classes={{
         icon: 'icon',
-        root: 'root'
+        root: 'root',
+        selectMenu: 'selectMenu'
       }}
       {...other}
     />
@@ -96,7 +99,6 @@ const StyledSelect = styled(({ ...other }) => (
       top: 0px;
     }
     & .root {
-      margin-top: 3px;
       /**
        * Used to move the rows per page number and the down arrow closer together. Note that this
        * causes problems (number abbreviated with ellipses) for a rows per page number with more
@@ -105,6 +107,11 @@ const StyledSelect = styled(({ ...other }) => (
        * below and not move it closer.
        */
       margin-right: -6px;
+    }
+    & .selectMenu {
+      /* Vertically center rows per page number. Not sure why it is not already centered. */
+      vertical-align: middle;
+      display: table-cell;
     }
   }
 `;
