@@ -390,6 +390,7 @@ class TablePager extends Component {
               {rowsText}
             </TypographyRows>
             <StyledSelect
+              breakpoint={breakpoint}
               input={<InputBase />}
               value={rowsPerPage}
               onChange={onChangeRowsPerPage}
