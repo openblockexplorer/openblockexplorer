@@ -102,10 +102,9 @@ const StyledSelect = styled(({ ...other }) => (
     & .icon {
       color: ${props => props.theme.colorBodyTextDim};
       /* Move icon up for non-XS breakpoints. */
-      top: 0px;
       ${({ breakpoint }) =>
-        breakpoint === Breakpoints.XS && `
-          top: null;
+        breakpoint !== Breakpoints.XS && `
+          top: 0px;
         `
       }
     }
