@@ -46,8 +46,13 @@ const TypographyCaption = styled(Typography)`
   && {
     font-family: ${Constants.FONT_PRIMARY};
     font-size: ${Constants.MATERIAL_FONT_SIZE_CAPTION};
-    /* Padding to align rows and count text with rows per page number. */
+    /* Padding to align rows text and count text with rows per page number for non-XS breakpoints. */
     padding-bottom: 1px;
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        padding-bottom: 0px;
+      `
+    }
   }
 `;
 
@@ -96,7 +101,13 @@ const StyledSelect = styled(({ ...other }) => (
     font-size: ${Constants.MATERIAL_FONT_SIZE_CAPTION};
     & .icon {
       color: ${props => props.theme.colorBodyTextDim};
+      /* Move icon up for non-XS breakpoints. */
       top: 0px;
+      ${({ breakpoint }) =>
+        breakpoint === Breakpoints.XS && `
+          top: null;
+        `
+      }
     }
     & .root {
       /**
