@@ -179,6 +179,16 @@ class DynamicTable extends Component {
   };
 
   /**
+   * Create a DynamicTable object.
+   * @constructor
+   */
+  constructor() {
+    super();
+
+    this.rows = [];
+  }
+
+  /**
    * Return a reference to a React element to render into the DOM.
    * @return {Object} A reference to a React element to render into the DOM.
    * @public
@@ -256,14 +266,21 @@ class DynamicTable extends Component {
     const { breakpoint, getBodyRows, maxRows, slide } = this.props;
     const rowHeight = breakpoint === Breakpoints.XS ?
       Constants.TABLE_ROW_HEIGHT_XS : Constants.TABLE_ROW_HEIGHT_SM_AND_UP;
-    let rows = getBodyRows().slice(0, maxRows);
+
+    // Only get new body rows when the Document (web app) is visible. If we do not do this, then the
+    // Transition component can buffer hundreds of row animations if we switch to another browser
+    // tab for an extended period of time, then when our browser tab regains focus, these animations
+    // are run and the web app can become frozen for several minutes.
+    if (document.visibilityState === "visible")
+      this.rows = getBodyRows().slice(0, maxRows);
+    
     if (slide) {
       // Use a Transition element to expand (and fade in) entering rows and collapse (and fade out)
       // leaving rows.
       // BUG: On windows resize to/from XS, row heights are not changed on existing rows!!!
       return (
         <Transition
-          items={rows}
+          items={this.rows}
           keys={bodyRow => bodyRow.mapKey}
           from={{ height: 0, opacity: 0 }}
           enter={{ height: rowHeight, opacity: 1 }}
@@ -275,7 +292,7 @@ class DynamicTable extends Component {
       );
     }
     else {
-      return rows.map((bodyRow, index) => {
+      return this.rows.map((bodyRow, index) => {
         // When not expanding/collapsing rows, use a Fade element to fade in and fade out.
         return (
           <Fade
