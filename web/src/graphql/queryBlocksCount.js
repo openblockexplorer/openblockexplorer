@@ -11,8 +11,8 @@ import gql from 'graphql-tag';
  * @return {Object} The total count of blocks.
  */
 const queryBlocksCount = gql`
-  {
-    blocksConnection {
+  query BlocksConnection($where: BlockWhereInput) {
+    blocksConnection(where: $where) {
       aggregate {
         count
       }

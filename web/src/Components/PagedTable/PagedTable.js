@@ -246,15 +246,14 @@ class PagedTable extends Component {
         const lastPageRows = this.count - pageIndex * rowsPerPage;
         variables = {last: lastPageRows};
       }
-      else
+      else {
         // We query the first rowsPerPage even in the case when the first page button is clicked.
-        // We count on the Apollo cache returning the same rows every time for this query.
-        // Alternatively, we could query starting at firstId (see commented out code below), which
-        // makes no assumptions about the Apollo cache, but that results in a double query when the
-        // table is first loaded. If the current code causes problems, we can change to the version
-        // which makes no assumptions about the cache.
+        // We count on the Apollo cache returning the same rows every time for this query, based on
+        // the Query fetchPolicy. Specifying "where: { id_lte: this.firstId }" would result in a
+        // double fetch when the page is loaded.
         variables = {first: rowsPerPage};
         //variables = {where: { id_lte: this.firstId }, first: rowsPerPage};
+      }
     }
 
     return (
@@ -264,61 +263,66 @@ class PagedTable extends Component {
         query={query}
         variables={variables}
       >
-        {({ loading, error, data }) => (
-          <Query
-            // Do not use the Apollo cache when getCount is true.
-            fetchPolicy={getCount ? 'network-only' : null}
-            query={queryCount}
-          >
-            {({ loading: loadingCount, error: errorCount, data: dataCount }) => {
-              if (!loading && !error) {
-                this.data = data;
-                const connection = getDataConnection(this.data);
-                if (this.firstId === null && connection.edges.length) // first query
-                  this.firstId = connection.edges[0].node.id;
-                this.startCursor = connection.pageInfo.startCursor;
-                this.endCursor = connection.pageInfo.endCursor;
-              }
-              if (!loadingCount && !errorCount) {
-                const connection = getDataConnection(dataCount);
-                this.count = connection.aggregate.count;
-              }
-              return (
-                <Grid container
-                  direction='column'
-                  justify='center'
-                  alignItems='center'
-                >
-                  <Fade in={loading} timeout={duration.standard} mountOnEnter unmountOnExit>
-                    <DivCircularProgress breakpoint={breakpoint}>
-                      <StyledCircularProgress size={Constants.MATERIAL_CIRCULAR_INDICATOR_SIZE} />
-                    </DivCircularProgress>
-                  </Fade>
-                  <StyledTable loading={loading ? 1 : 0}>
-                    <colgroup>
-                      {columnWidths.map((width, index) => {
-                        // The column width settings seem to be ignored in many cases, depending on cell
-                        // length. That is, when cell lengths are long, the widths are ignored.
-                        return (
-                          <col key={index} width={width} />
-                        );
-                      })}
-                    </colgroup>
-                    <TableHead>
-                      {this.getHeaderRowElement()}
-                    </TableHead>
-                    <TableBody>
-                      {this.getBodyRowElements()}
-                    </TableBody>
-                    <TableFooter>
-                      {this.getFooterRowElement(loadingCount, errorCount, dataCount)}
-                    </TableFooter>
-                  </StyledTable>
-                </Grid>
-              );
-            }}
-          </Query>
-        )}
+        {({ loading, error, data }) => {
+          if (!loading && !error) {
+            this.data = data;
+            const connection = getDataConnection(this.data);
+            if (this.firstId === null && connection.edges.length) // first query
+              this.firstId = connection.edges[0].node.id;
+            this.startCursor = connection.pageInfo.startCursor;
+            this.endCursor = connection.pageInfo.endCursor;
+          }
+
+          return (
+            <Query
+              // Do not use the Apollo cache when getCount is true.
+              fetchPolicy={getCount ? 'network-only' : null}
+              query={queryCount}
+              skip={this.firstId === null}
+              variables={{where: { id_lte: this.firstId }}}
+            >
+              {({ loading: loadingCount, error: errorCount, data: dataCount }) => {
+                if (dataCount != null && !loadingCount && !errorCount) {
+                  const connection = getDataConnection(dataCount);
+                  this.count = connection.aggregate.count;
+                }
+                return (
+                  <Grid container
+                    direction='column'
+                    justify='center'
+                    alignItems='center'
+                  >
+                    <Fade in={loading} timeout={duration.standard} mountOnEnter unmountOnExit>
+                      <DivCircularProgress breakpoint={breakpoint}>
+                        <StyledCircularProgress size={Constants.MATERIAL_CIRCULAR_INDICATOR_SIZE} />
+                      </DivCircularProgress>
+                    </Fade>
+                    <StyledTable loading={loading ? 1 : 0}>
+                      <colgroup>
+                        {columnWidths.map((width, index) => {
+                          // The column width settings seem to be ignored in many cases, depending on cell
+                          // length. That is, when cell lengths are long, the widths are ignored.
+                          return (
+                            <col key={index} width={width} />
+                          );
+                        })}
+                      </colgroup>
+                      <TableHead>
+                        {this.getHeaderRowElement()}
+                      </TableHead>
+                      <TableBody>
+                        {this.getBodyRowElements()}
+                      </TableBody>
+                      <TableFooter>
+                        {this.getFooterRowElement(loadingCount, errorCount, dataCount)}
+                      </TableFooter>
+                    </StyledTable>
+                  </Grid>
+                );
+              }}
+            </Query>
+          );
+        }}
       </Query>
     );
   }

@@ -11,8 +11,8 @@ import gql from 'graphql-tag';
  * @return {Object} The total count of transactions.
  */
 const queryTransactionsCount = gql`
-  {
-    transactionsConnection {
+  query TransactionsConnection($where: TransactionWhereInput) {
+    transactionsConnection(where: $where) {
       aggregate {
         count
       }
