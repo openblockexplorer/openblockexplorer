@@ -4,7 +4,7 @@
  * @license MIT License
  */
 
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
 /**
  * GraphQL query to get auto-complete items based on query string.

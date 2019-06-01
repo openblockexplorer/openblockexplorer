@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PagedTable from '../PagedTable/PagedTable';
 import queryBlocksConnection from '../../graphql/queryBlocksConnection';
+import queryBlocksCount from '../../graphql/queryBlocksCount';
 
 /**
  * This component displays a paged table of Block objects.
@@ -49,6 +50,7 @@ class BlocksPagedTable extends Component {
           {value: 'Transactions', isNumeric: true}
         ]}
         query={queryBlocksConnection}
+        queryCount={queryBlocksCount}
         getDataConnection={data => data.blocksConnection}
         getBodyRows={this.getBodyRows}
       />

@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PagedTable from '../PagedTable/PagedTable';
 import queryTransactionsConnection from '../../graphql/queryTransactionsConnection';
+import queryTransactionsCount from '../../graphql/queryTransactionsCount';
 import getHashString from '../../utils/getHashString';
 
 /**
@@ -49,6 +50,7 @@ class TransactionsPagedTable extends Component {
           {value: 'Amount', isNumeric: true}
         ]}
         query={queryTransactionsConnection}
+        queryCount={queryTransactionsCount}
         getDataConnection={data => data.transactionsConnection}
         getBodyRows={this.getBodyRows}
       />

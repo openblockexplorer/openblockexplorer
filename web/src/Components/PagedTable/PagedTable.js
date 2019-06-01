@@ -173,6 +173,10 @@ class PagedTable extends Component {
      */
     query: PropTypes.object.isRequired,
     /**
+     * GraphQL query to get total count of rows.
+     */
+    queryCount: PropTypes.object.isRequired,
+    /**
      * The title of the table.
      */
     title: PropTypes.string.isRequired,
@@ -224,23 +228,23 @@ class PagedTable extends Component {
    * @private
    */
   getTableElements() {
-    const { breakpoint, columnWidths, getDataConnection, query } = this.props;
+    const { breakpoint, columnWidths, getDataConnection, query, queryCount } = this.props;
     const { pageIndex, priorPageIndex, priorStartCursor, priorEndCursor, rowsPerPage } = this.state;
 
     // Determine the query variables for the current page.
     let variables;
-    const withCount = this.count === 0;
-    if (withCount)
-      variables = {first: rowsPerPage, withCount: withCount};
+    const getCount = this.count === 0;
+    if (getCount)
+      variables = {first: rowsPerPage};
     else {
       const lastPageIndex = Math.ceil(this.count / rowsPerPage) - 1;
       if (pageIndex === priorPageIndex + 1)
-        variables = {after: priorEndCursor, first: rowsPerPage, withCount: withCount};
+        variables = {after: priorEndCursor, first: rowsPerPage};
       else if (pageIndex === priorPageIndex - 1)
-        variables = {before: priorStartCursor, last: rowsPerPage, withCount: withCount};
+        variables = {before: priorStartCursor, last: rowsPerPage};
       else if (pageIndex === lastPageIndex) {
         const lastPageRows = this.count - pageIndex * rowsPerPage;
-        variables = {last: lastPageRows, withCount: withCount};
+        variables = {last: lastPageRows};
       }
       else
         // We query the first rowsPerPage even in the case when the first page button is clicked.
@@ -249,64 +253,72 @@ class PagedTable extends Component {
         // makes no assumptions about the Apollo cache, but that results in a double query when the
         // table is first loaded. If the current code causes problems, we can change to the version
         // which makes no assumptions about the cache.
-        variables = {first: rowsPerPage, withCount: withCount};
-        //variables = {where: { id_lte: this.firstId }, first: rowsPerPage, withCount: false};
+        variables = {first: rowsPerPage};
+        //variables = {where: { id_lte: this.firstId }, first: rowsPerPage};
     }
 
     return (
       <Query
-        // Do not use the Apollo cache when withCount is true.
-        fetchPolicy={withCount ? 'network-only' : null}
+        // Do not use the Apollo cache when getCount is true.
+        fetchPolicy={getCount ? 'network-only' : null}
         query={query}
         variables={variables}
       >
-        {({ loading, error, data }) => {
-          if (!loading && !error)
-          {
-            this.data = data;
-            const connection = getDataConnection(this.data);
-            if (this.data.total) { // first query
-              this.count = this.data.total.aggregate.count;
-              if (connection.edges.length)
-                this.firstId = connection.edges[0].node.id;
-            }
-            this.startCursor = connection.pageInfo.startCursor;
-            this.endCursor = connection.pageInfo.endCursor;
-          }
-          return (
-            <Grid container
-              direction='column'
-              justify='center'
-              alignItems='center'
-            >
-              <Fade in={loading} timeout={duration.standard} mountOnEnter unmountOnExit>
-                <DivCircularProgress breakpoint={breakpoint}>
-                  <StyledCircularProgress size={Constants.MATERIAL_CIRCULAR_INDICATOR_SIZE} />
-                </DivCircularProgress>
-              </Fade>
-              <StyledTable loading={loading ? 1 : 0}>
-                <colgroup>
-                  {columnWidths.map((width, index) => {
-                    // The column width settings seem to be ignored in many cases, depending on cell
-                    // length. That is, when cell lengths are long, the widths are ignored.
-                    return (
-                      <col key={index} width={width} />
-                    );
-                  })}
-                </colgroup>
-                <TableHead>
-                  {this.getHeaderRowElement()}
-                </TableHead>
-                <TableBody>
-                  {this.getBodyRowElements()}
-                </TableBody>
-                <TableFooter>
-                  {this.getFooterRowElement()}
-                </TableFooter>
-              </StyledTable>
-            </Grid>
-          );
-        }}
+        {({ loading, error, data }) => (
+          <Query
+            // Do not use the Apollo cache when getCount is true.
+            fetchPolicy={getCount ? 'network-only' : null}
+            query={queryCount}
+          >
+            {({ loading: loadingCount, error: errorCount, data: dataCount }) => {
+              if (!loading && !error) {
+                this.data = data;
+                const connection = getDataConnection(this.data);
+                if (this.firstId === null && connection.edges.length) // first query
+                  this.firstId = connection.edges[0].node.id;
+                this.startCursor = connection.pageInfo.startCursor;
+                this.endCursor = connection.pageInfo.endCursor;
+              }
+              if (!loadingCount && !errorCount) {
+                const connection = getDataConnection(dataCount);
+                this.count = connection.aggregate.count;
+              }
+              return (
+                <Grid container
+                  direction='column'
+                  justify='center'
+                  alignItems='center'
+                >
+                  <Fade in={loading} timeout={duration.standard} mountOnEnter unmountOnExit>
+                    <DivCircularProgress breakpoint={breakpoint}>
+                      <StyledCircularProgress size={Constants.MATERIAL_CIRCULAR_INDICATOR_SIZE} />
+                    </DivCircularProgress>
+                  </Fade>
+                  <StyledTable loading={loading ? 1 : 0}>
+                    <colgroup>
+                      {columnWidths.map((width, index) => {
+                        // The column width settings seem to be ignored in many cases, depending on cell
+                        // length. That is, when cell lengths are long, the widths are ignored.
+                        return (
+                          <col key={index} width={width} />
+                        );
+                      })}
+                    </colgroup>
+                    <TableHead>
+                      {this.getHeaderRowElement()}
+                    </TableHead>
+                    <TableBody>
+                      {this.getBodyRowElements()}
+                    </TableBody>
+                    <TableFooter>
+                      {this.getFooterRowElement(loadingCount, errorCount, dataCount)}
+                    </TableFooter>
+                  </StyledTable>
+                </Grid>
+              );
+            }}
+          </Query>
+        )}
       </Query>
     );
   }
@@ -393,20 +405,23 @@ class PagedTable extends Component {
    * @private
    */
   getFooterRowElement() {
-    const { breakpoint, } = this.props;
+    const { breakpoint } = this.props;
     const { pageIndex, rowsPerPage } = this.state;
+    const show = this.count > 0;
     return (
-      <TableRowFooter breakpoint={breakpoint}>
-        <TablePager
-          breakpoint={breakpoint}
-          rowsPerPageOptions={[10, 25, 50]}
-          rowsPerPage={rowsPerPage}
-          page={pageIndex}
-          count={this.count}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
-        />
-      </TableRowFooter>
+      <Fade in={show} timeout={duration.standard}>
+        <TableRowFooter breakpoint={breakpoint}>
+          <TablePager
+            breakpoint={breakpoint}
+            rowsPerPageOptions={[10, 25, 50]}
+            rowsPerPage={rowsPerPage}
+            page={pageIndex}
+            count={this.count}
+            onChangePage={this.handleChangePage}
+            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+          />
+        </TableRowFooter>
+      </Fade>
     );
   }
 

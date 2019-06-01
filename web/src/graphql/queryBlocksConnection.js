@@ -4,7 +4,7 @@
  * @license MIT License
  */
 
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
 /**
  * GraphQL Relay-compliant connection query to get a BlockConnection object.
@@ -12,8 +12,7 @@ import gql from 'graphql-tag'
  */
 const queryBlocksConnection = gql`
   query BlocksConnection(
-    $where: BlockWhereInput, $skip: Int, $after: String, $before: String, $first: Int, $last: Int,
-    $withCount: Boolean!) {
+    $where: BlockWhereInput, $skip: Int, $after: String, $before: String, $first: Int, $last: Int) {
     blocksConnection(
       where: $where, orderBy: height_DESC, skip: $skip, after: $after, before: $before,
       first: $first, last: $last) {
@@ -28,12 +27,6 @@ const queryBlocksConnection = gql`
       pageInfo {
         startCursor
         endCursor
-      }
-    }
-    # Use @include directive to conditionally query the total count of blocks.
-    total: blocksConnection @include(if: $withCount) {
-      aggregate {
-        count
       }
     }
   }

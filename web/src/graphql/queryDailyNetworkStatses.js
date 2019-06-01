@@ -4,7 +4,7 @@
  * @license MIT License
  */
 
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
 /**
  * GraphQL query to get daily DFINITY network stats for the specified number of days.
