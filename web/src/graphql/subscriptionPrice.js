@@ -14,6 +14,7 @@ const subscriptionPrice = gql`
   subscription {
     price {
       node {
+        id
         price
       }
     }

@@ -14,6 +14,7 @@ const subscriptionNetworkStats = gql`
   subscription {
     networkStats {
       node {
+        id
         secondsPerBlock
         transactionsPerSecond
       }

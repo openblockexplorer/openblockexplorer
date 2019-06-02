@@ -71,7 +71,12 @@ const apolloClient = new ApolloClient({
     // This allows Apollo to automatically re-render the UI when objects change as the result of
     // mutations. Using object.id only works when every object.id in the application is unique.
     // For this to work in the app, every GraphQL query must ask for the ID of every record.
-    dataIdFromObject: object => object.id
+    dataIdFromObject: object => object.id || null,
+    // Do not add a "__typename to the document". By setting this to false, we avoid a big
+    // performance hit that results from including __typename in connection aggregate count queries.
+    // It is unclear from the Apollo documentation whether __typename is even used by the cache when
+    // dataIdFromObject is defined.
+    addTypename: false
   })
 });
 

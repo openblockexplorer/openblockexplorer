@@ -13,6 +13,7 @@ import gql from 'graphql-tag';
 const queryDailyNetworkStatses = gql`
   query DailyNetworkStatses($last: Int, $skip: Int) {
     dailyNetworkStatses(last: $last, skip: $skip, orderBy: date_ASC) {
+      id
       date
       numBlocks
       numTransactions

@@ -13,6 +13,7 @@ import gql from 'graphql-tag';
 const queryPrice = gql`
   {
     price {
+      id
       price
     }
   }

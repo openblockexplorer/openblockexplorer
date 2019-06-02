@@ -13,6 +13,7 @@ import gql from 'graphql-tag';
 const queryNetworkStats = gql`
   {
     networkStats {
+      id
       secondsPerBlock
       transactionsPerSecond
     }
