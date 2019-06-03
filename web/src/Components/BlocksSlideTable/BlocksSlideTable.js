@@ -131,7 +131,7 @@ class BlocksSlideTableWithData extends Component {
         return {
           blocks: [
             subscriptionData.data.block.node,
-            ...prev.blocks
+            ...(prev != null ? prev.blocks : []) // check if prev is undefined
           ].slice(0, this.props.maxRows)
         };
       }

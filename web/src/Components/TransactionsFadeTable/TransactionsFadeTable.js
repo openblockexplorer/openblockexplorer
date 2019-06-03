@@ -92,7 +92,7 @@ class TransactionsFadeTableWithData extends Component {
         return {
           transactions: [
             subscriptionData.data.transaction.node,
-            ...prev.transactions
+            ...(prev != null ? prev.transactions : []) // check if prev is undefined
           ].slice(0, this.props.maxRows)
         };
       }
