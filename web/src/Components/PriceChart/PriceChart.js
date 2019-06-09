@@ -181,7 +181,7 @@ class PriceChart extends AreaChart {
    * @protected
    */
   getGetTickX(value) {
-    return new Date(value).toLocaleDateString();
+    return new Date(value).toLocaleDateString('default', { timeZone: 'UTC' });
   }
 
   /**
@@ -201,7 +201,7 @@ class PriceChart extends AreaChart {
    * @protected
    */
   getGetTooltipX(value) {
-    return new Date(value).toLocaleDateString();
+    return new Date(value).toLocaleDateString('default', { timeZone: 'UTC' });
   }
 
   /**
