@@ -36,8 +36,8 @@ class TransactionsChartWithData extends Component {
     return (
       <Query
         query={queryDailyNetworkStatses}
-        // To get the last 14 days of complete data, we skip the current day.
-        variables={{ last: 14, skip: 1 }}
+        // Get the last 14 days.
+        variables={{ last: 14 }}
       >
         {({ loading, error, data }) => {
           if (loading) {
