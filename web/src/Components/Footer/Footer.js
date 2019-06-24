@@ -269,7 +269,7 @@ class Footer extends ResponsiveComponent {
       case Breakpoints.SM:
         return '(Data is simulated)';
       default:
-        return '(Network and price data is simulated)';
+        return '(Network data is simulated)';
     }
   }
 
@@ -282,9 +282,9 @@ class Footer extends ResponsiveComponent {
     const breakpoint = getBreakpoint();
     switch (breakpoint) {
       case Breakpoints.XS:
-        return 'Price data by ';
+        return 'Futures price data by ';
       default:
-        return 'Price data provided by Nomics.com ';
+        return 'Futures price data provided by Nomics.com ';
     }
   }
 
