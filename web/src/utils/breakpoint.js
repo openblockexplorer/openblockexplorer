@@ -22,7 +22,6 @@ export const Breakpoints = Object.freeze({
  * @private
  */
 export function getBreakpoint(isDesktopDrawerOpen) {
-  // Look at calls to this function and see if passing in isDesktopDrawerOpen is appropriate!!!
   const drawerWidth =  isDesktopDrawerOpen ? Constants.DRAWER_WIDTH : 0;
   if (window.matchMedia('(max-width: ' + (Constants.BREAKPOINT_MAX_XS + drawerWidth) + 'px)').matches)
     return Breakpoints.XS;
@@ -57,6 +56,17 @@ export function isBreakpointGreaterOrEqualTo(breakpoint) {
     default:
       return window.matchMedia('(min-width: ' + Constants.BREAKPOINT_MIN_XL + 'px)').matches;
   }
+}
+
+/**
+ * Return true if the current breakpoint is greater than or equal to the smallest "desktop"
+ * breakpoint.
+ * @return {Boolean} True if the current breakpoint is greater than or equal to the smallest
+ * "desktop" breakpoint.
+ * @private
+ */
+export function isBreakpointDesktop() {
+  return isBreakpointGreaterOrEqualTo(Breakpoints.MD);
 }
 
 /**

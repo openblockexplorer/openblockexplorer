@@ -26,7 +26,6 @@ export const themeLight = {
   isDark: false,
   colorAboutBackgroundPrimary: '#FFFFFF',
   colorAboutBackgroundSecondary: '#F8F9FA', // Google Analytics (verified), Wikipedia (verified)
-  //!!!colorAboutBackgroundSecondary: '#FAFAFA', // YouTube (verified), Google Translate (verified), DFINITY
   colorAboutHeaderText: '#FFFFFF',
   colorAboutTwitterBackground: '#FFFFFF',
   colorAppBarBackground: '#FFFFFF',
@@ -42,13 +41,7 @@ export const themeLight = {
   colorBodyTextDim: Constants.COLOR_LIGHT_BODY_TEXT_DIM_GOOGLE,
   colorBodyTextLink: Constants.COLOR_DFINITY_BLUE_700,
   colorDashCardBackground: '#FFFFFF',
-  // Remove extraneous colorDashCardIcon settings once finalized!!!
-  //!!!colorDashCardIcon: [Constants.COLOR_DFINITY_BLUE_700, '#722B8D', '#C40059', '#F07200'],
-  //!!!colorDashCardIcon: ['rgba(0, 125, 188, 1)', 'rgba(114, 43, 141, 0.8)', 'rgba(196, 0, 89, 0.8)', 'rgba(240, 114, 0, 0.8)'],
-  //!!!colorDashCardIcon: [Constants.COLOR_DFINITY_BLUE_700, '#843196', '#DA005E', '#F68200'],
   colorDashCardIcon: [Constants.COLOR_DFINITY_BLUE_700, '#9440A6', '#DA005E', '#F79308'], // Ori's purple and orange
-  // Actual DFINITY symbol colors.
-  //!!!colorDashCardIcon: ['rgb(41, 171, 226)', 'rgb(99, 38, 132)', 'rgb(237, 30, 121)', 'rgb(251, 176, 59)'],
   colorDashCardIconOpacity: 1.0,
   colorDrawerBackground: '#FFFFFF',
   colorDrawerDivider: Constants.COLOR_LIGHT_DRAWER_DIVIDER_GOOGLE,

@@ -42,7 +42,11 @@ import RevealZoom from 'react-reveal/Zoom';
 import Downshift from 'downshift';
 import ResponsiveComponent from '../ResponsiveComponent/ResponsiveComponent'
 import querySearchAutoComplete from '../../graphql/querySearchAutoComplete';
-import { Breakpoints, isBreakpointLessOrEqualTo, isBreakpointGreaterOrEqualTo } from '../../utils/breakpoint';
+import {
+  Breakpoints,
+  isBreakpointLessOrEqualTo,
+  isBreakpointDesktop
+} from '../../utils/breakpoint';
 import Constants from '../../constants';
 import dfinityExplorerLogo from './dfinity-explorer-logo.png';
 
@@ -151,7 +155,7 @@ const TypographyExplorer = styled(TypographyAppName)`
   }
 `;
 
-// Need to use new breakpoint method here and elsewhere, but probably call GetBreakpoint without drawer from render()!!!
+// Need to use new breakpoint method here and elsewhere (search "@media (max-width"), but probably call GetBreakpoint without drawer from render()!!!
 const InputSearch = styled(Input)`
   && {
     /*
@@ -190,11 +194,13 @@ const ListSearch = styled(List)`
     }
     @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
       /* This font size is smaller than Material Design standards, but fits a auto-complete hash. */
-      /* BUG: A full hash pushes the close button off of the screen with this font size!!! */
-      /* This bug existed in old code too, but you could see a tiny bit of the close button!!! */
-      /* It seems like this could have to do with style={{ flexGrow: '1' }}>!!! */
-      /* For now, changing the font size smaller than 0.5625rem to avoid bug!!! */
-      /* font-size: 0.5625rem; this is the size we would like!!! */
+      /**
+       * BUG: A full hash pushes the close button off of the screen with this font size
+       * This bug existed in old code too, but you could see a tiny bit of the close button
+       * It seems like this could have to do with style={{ flexGrow: '1' }}>
+       * For now, changing the font size smaller than 0.5625rem to avoid bug
+       * font-size: 0.5625rem; this is the size we would like!!!
+       */
       font-size: 7px;
     }
   }
@@ -481,7 +487,7 @@ class DEAppBar extends ResponsiveComponent {
 
     // Close the mobile drawer (small screens) when screen is resized larger, so that it does not
     // reappear when the screen is resized smaller.
-    if (isBreakpointGreaterOrEqualTo(Breakpoints.MD) && this.props.isMobileDrawerOpen)
+    if (isBreakpointDesktop() && this.props.isMobileDrawerOpen)
       this.props.handleMobileDrawerMenuClick();
   }
 
@@ -600,8 +606,7 @@ class DEAppBar extends ResponsiveComponent {
       <Zoom in={true} timeout={300}>
         <StyledIconButton
           onClick={
-            isBreakpointLessOrEqualTo(Breakpoints.SM) ?
-              handleMobileDrawerMenuClick: handleDesktopDrawerMenuClick
+            isBreakpointDesktop() ? handleDesktopDrawerMenuClick : handleMobileDrawerMenuClick
           }
         >
           <StyledMenuIcon />
@@ -669,7 +674,14 @@ class DEAppBar extends ResponsiveComponent {
     // The Material Design documentation states: "Modal drawer: In a responsive layout grid, at a
     // defined minimum breakpoint of at least 600dp width, a standard drawer should be replaced with
     // a modal drawer." We use a modal drawer for breakpoints xs and sm (i.e., up to 960px).
-    if (isBreakpointLessOrEqualTo(Breakpoints.SM)) {
+    if (isBreakpointDesktop()) {
+      return (
+        <StyledDrawer variant='persistent' open={this.props.isDesktopDrawerOpen}>
+          {this.getDrawerContent()}
+        </StyledDrawer>
+      );
+    }
+    else {
       return (
         <StyledSwipeableDrawer
           open={this.props.isMobileDrawerOpen}
@@ -680,13 +692,6 @@ class DEAppBar extends ResponsiveComponent {
             {this.getDrawerContent()}
           </div>
         </StyledSwipeableDrawer>
-      );
-    }
-    else {
-      return (
-        <StyledDrawer variant='persistent' open={this.props.isDesktopDrawerOpen}>
-          {this.getDrawerContent()}
-        </StyledDrawer>
       );
     }  
   }

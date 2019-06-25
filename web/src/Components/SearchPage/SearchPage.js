@@ -14,23 +14,29 @@ import {
 } from '@material-ui/core';
 import querySearchGetType from '../../graphql/querySearchGetType';
 import TrackablePage from '../TrackablePage/TrackablePage'
+import { Breakpoints } from '../../utils/breakpoint';
 import Constants from '../../constants';
 
-const StyledTypography = styled(Typography)`
+const TypographyHeading = styled(Typography)`
   && {
     font-family: ${Constants.FONT_PRIMARY};
-    font-size: 1em;
+    font-size: ${Constants.MATERIAL_FONT_SIZE_H4};
+    font-weight: 400;
     color: ${props => props.theme.colorBodyText};
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        font-size: ${Constants.MATERIAL_FONT_SIZE_H5};       
+      `
+    }
   }
 `;
 
-const ExplorerTypography = styled(StyledTypography)`
+const TypographyBody = styled(Typography)`
   && {
-    font-weight: 400;
-    font-size: 2em;
-    /* Why is letter-spacing set to 0 here?!!! */
-    letter-spacing: 0;
-    color: ${Constants.COLOR_DFINITY_LIGHT_ORANGE};
+    font-family: ${Constants.FONT_PRIMARY};
+    font-size: ${Constants.MATERIAL_FONT_SIZE_BODY_1};
+    line-height: 1.75rem;
+    color: ${props => props.theme.colorBodyTextDim};
   }
 `;
 
@@ -51,19 +57,20 @@ class SearchPage extends TrackablePage {
    * @public
    */
   render() {
+    const { breakpoint } = this.props;
     const { query } = this.props.match.params;
     return (
       <div style={{ marginTop: '32px', marginLeft: '32px' }}>
-        <ExplorerTypography>Search</ExplorerTypography>
+        <TypographyHeading breakpoint={breakpoint}>Search</TypographyHeading>
         <Query query={querySearchGetType} variables={{ query }}>
           {({ loading, error, data }) => {
             if (loading)
               return (
-                <StyledTypography>Searching...</StyledTypography>              
+                <TypographyBody>Searching...</TypographyBody>              
               );
             else if (error)
               return (
-                <StyledTypography>Network error</StyledTypography>             
+                <TypographyBody>Network error</TypographyBody>             
               );
             else if (data.searchGetType.type === "Block")
               return (
@@ -75,7 +82,7 @@ class SearchPage extends TrackablePage {
               );
             else
               return (              
-                <StyledTypography>Sorry, this is an invalid search string.</StyledTypography>             
+                <TypographyBody>Sorry, this is an invalid search string.</TypographyBody>             
               );
           }}
         </Query>

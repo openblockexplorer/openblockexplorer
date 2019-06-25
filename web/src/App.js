@@ -36,7 +36,7 @@ import SearchPage from './Components/SearchPage/SearchPage';
 import DEAppBar from './Components/DEAppBar/DEAppBar';
 import Footer from './Components/Footer/Footer';
 import Constants from './constants';
-import { Breakpoints, getBreakpoint, isBreakpointGreaterOrEqualTo } from './utils/breakpoint';
+import { Breakpoints, getBreakpoint, isBreakpointDesktop } from './utils/breakpoint';
 
 // Create an http link.
 const httpLink = new HttpLink({
@@ -157,10 +157,7 @@ class App extends Component {
       routerRef
     } = this.state;
 
-    // It seems like the >= MD logic here should be kept in one place. It's also in DEAppBar!!!
-    // Can't I somehow make this cleaner?!!!
-    const isDesktopDrawerOpen =
-      isDesktopDrawerEnabled && isBreakpointGreaterOrEqualTo(Breakpoints.MD);
+    const isDesktopDrawerOpen = isDesktopDrawerEnabled && isBreakpointDesktop();
     const breakpoint = getBreakpoint(isDesktopDrawerOpen);
 
     return (

@@ -5,13 +5,13 @@
  */
 
 import React from "react";
-import Constants from '../../constants';
 import styled from 'styled-components';
 import {
   Typography
 } from '@material-ui/core';
 import TrackablePage from '../TrackablePage/TrackablePage'
 import { Breakpoints } from '../../utils/breakpoint';
+import Constants from '../../constants';
 
 const TypographyHeading = styled(Typography)`
   && {
@@ -38,9 +38,10 @@ const TypographyBody = styled(Typography)`
 
 class AccountsPage extends TrackablePage {
   render() {
+    const { breakpoint } = this.props;
     return (
       <div style={{ marginTop: '32px', marginLeft: '32px' }}>
-        <TypographyHeading>Accounts</TypographyHeading>
+        <TypographyHeading breakpoint={breakpoint}>Accounts</TypographyHeading>
         <TypographyBody>Accounts page coming soon.</TypographyBody>
       </div>
     );
