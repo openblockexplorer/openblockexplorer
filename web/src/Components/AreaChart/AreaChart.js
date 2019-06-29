@@ -21,6 +21,7 @@ import {
   XAxis,
   YAxis
 } from 'recharts';
+import { Breakpoints } from '../../utils/breakpoint';
 import Constants from '../../constants';
 
 const StyledPaper = styled(Paper)`
@@ -41,8 +42,10 @@ const TypographyTitle = styled(Typography)`
     font-family: ${Constants.FONT_PRIMARY};
     font-size: ${Constants.MATERIAL_FONT_SIZE_H6};
     font-weight: 300;
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      font-size: ${Constants.MATERIAL_FONT_SIZE_H6};
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        font-size: ${Constants.MATERIAL_FONT_SIZE_H6};
+      `
     }
   }
 `;
@@ -61,6 +64,10 @@ const StyledAreaChart = styled(RechartsAreaChart)`
 class AreaChart extends Component {
   static propTypes = {
     /**
+     * The current Breakpoint, taking the desktop drawer (large screens) width into account.
+     */    
+    breakpoint: PropTypes.number.isRequired,
+    /**
      * The height of the chart (not including the title).
      */
     chartHeight: PropTypes.number.isRequired,
@@ -76,12 +83,12 @@ class AreaChart extends Component {
    * @public
    */
   render() {
-    const { chartHeight, theme } = this.props;
+    const { breakpoint, chartHeight, theme } = this.props;
     const data = this.getData();
     const tooltipElevation = 2;
     return (
       <StyledPaper elevation={1}>
-        <TypographyTitle>{this.getTitle()}</TypographyTitle>
+        <TypographyTitle breakpoint={breakpoint}>{this.getTitle()}</TypographyTitle>
         { data.length > 0 &&
           <ResponsiveContainer width='100%' height={chartHeight}>
             <StyledAreaChart

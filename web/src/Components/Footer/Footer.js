@@ -25,40 +25,44 @@ import Constants from '../../constants';
 
 const FooterToolbar = styled(Toolbar)`
   && {
-    /*!!! position: fixed; */
     left: 0;
     right: 0;
     bottom: 0;
     height: ${Constants.FOOTER_HEIGHT + 'px'};
+    padding-left: 0px;
+    padding-right: 0px;
     text-align: center;
     background: ${props => props.theme.colorFooterBackground};
     color: ${props => props.theme.colorFooterTextIcon};
-    /* This doesn't seem to do anything!!!
-    padding-left: 8;
-    padding-right: 8; */
   }
 `;
 
 const OneThirdGrid = styled(Grid)`
   && {
     width: 33.33%;
+  }
 `;
 
-// Need narrower margins for left and right grids for small screens!!!
 const LeftThirdGrid = styled(OneThirdGrid)`
   && {
-    margin-left: 32px;
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      margin-left: 8px;
+    margin-left: ${Constants.FOOTER_MARGIN_SM_AND_UP + 'px'};
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        margin-left: ${Constants.FOOTER_MARGIN_XS + 'px'};
+      `
     }
+  }
 `;
 
 const RightThirdGrid = styled(OneThirdGrid)`
   && {
-    margin-right: 32px;
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      margin-right: 8px;
+    margin-right: ${Constants.FOOTER_MARGIN_SM_AND_UP + 'px'};
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        margin-right: ${Constants.FOOTER_MARGIN_XS + 'px'};
+      `
     }
+  }
 `;
 
 const FooterTypography = styled(Typography)`
@@ -81,8 +85,10 @@ const FooterA = styled.a`
 const AwesomeIconButtonGrid = styled(Grid)`
   && {
     // Look into why this is needed!!!
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      min-width: 35px;
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        min-width: 35px;
+      `
     }
   }
 `;
@@ -164,77 +170,86 @@ class Footer extends ResponsiveComponent {
    * @public
    */
   render() {
+    const breakpoint = getBreakpoint();
     return (
       <FooterToolbar>
-        {/*!!! <Grid container direction='row' justify='center' alignItems='center'> */}
-          {/*!!! <Grid container direction='row' justify='center' alignItems='center' wrap='nowrap'> */}
-            <LeftThirdGrid container direction='row' justify='flex-start' alignItems='center'>
-              <Grid item>
-                <FooterTypography color='inherit'>
-                  {this.getCopyrightText()}
-                </FooterTypography>
-              </Grid>
-            </LeftThirdGrid>
-            <OneThirdGrid container direction='column' justify='center' alignItems='center'>
-              <Grid item>
-                <FooterTypography color='inherit'>
-                  {this.getSimulatedText()}
-                </FooterTypography>
-              </Grid>
-              { this.props.location.pathname === '/' &&
-                <Grid item>
-                  <FooterTypography color='inherit'>
-                    {'('}
-                    {this.getNomicsTextDescription()}
-                    <FooterA href={Constants.URI_ABOUT_NOMICS} target='_blank' rel='noopener noreferrer'>
-                      {this.getNomicsTextLink()}
-                    </FooterA>
-                    {')'}
-                  </FooterTypography>
-                </Grid>
+        <LeftThirdGrid
+          container
+          direction='row'
+          justify='flex-start'
+          alignItems='center'
+          breakpoint={breakpoint}
+        >
+          <Grid item>
+            <FooterTypography color='inherit'>
+              {this.getCopyrightText()}
+            </FooterTypography>
+          </Grid>
+        </LeftThirdGrid>
+        <OneThirdGrid container direction='column' justify='center' alignItems='center'>
+          <Grid item>
+            <FooterTypography color='inherit'>
+              {this.getSimulatedText()}
+            </FooterTypography>
+          </Grid>
+          { this.props.location.pathname === '/' &&
+            <Grid item>
+              <FooterTypography color='inherit'>
+                {'('}
+                {this.getNomicsTextDescription()}
+                <FooterA href={Constants.URI_ABOUT_NOMICS} target='_blank' rel='noopener noreferrer'>
+                  {this.getNomicsTextLink()}
+                </FooterA>
+                {')'}
+              </FooterTypography>
+            </Grid>
+          }
+        </OneThirdGrid>
+        <RightThirdGrid
+          container direction='row'
+          justify='flex-end'
+          alignItems='center'
+          wrap='nowrap'
+          breakpoint={breakpoint}
+        >
+          <AwesomeIconButtonGrid item breakpoint={breakpoint}>
+            <AwesomeIconButton
+              color='inherit'
+              href={Constants.URI_DFINITY_EXPLORER_TWITTER}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <AwesomeIcon className='fa fa-twitter' />
+            </AwesomeIconButton>
+          </AwesomeIconButtonGrid>
+          <AwesomeIconButtonGrid item breakpoint={breakpoint}>
+            <AwesomeIconButton
+              color='inherit'
+              href={Constants.URI_DFINITY_EXPLORER_GITHUB}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <AwesomeIcon className='fa fa-github' />
+            </AwesomeIconButton>
+          </AwesomeIconButtonGrid>
+          <AwesomeIconButtonGrid item breakpoint={breakpoint}>
+            <ThemeCheckbox
+              color='default'
+              checked={this.props.isThemeDark}
+              icon={
+                <ThemeSvgIcon>
+                  <path d={Constants.ICON_SVG_PATH_THEME_LIGHT} />
+                </ThemeSvgIcon>
               }
-            </OneThirdGrid>
-            <RightThirdGrid container direction='row' justify='flex-end' alignItems='center' wrap='nowrap'>
-              <AwesomeIconButtonGrid item>
-                <AwesomeIconButton
-                  color='inherit'
-                  href={Constants.URI_DFINITY_EXPLORER_TWITTER}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <AwesomeIcon className='fa fa-twitter' />
-                </AwesomeIconButton>
-              </AwesomeIconButtonGrid>
-              <AwesomeIconButtonGrid item>
-                <AwesomeIconButton
-                  color='inherit'
-                  href={Constants.URI_DFINITY_EXPLORER_GITHUB}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <AwesomeIcon className='fa fa-github' />
-                </AwesomeIconButton>
-              </AwesomeIconButtonGrid>
-              <AwesomeIconButtonGrid item>
-                <ThemeCheckbox
-                  color='default'
-                  checked={this.props.isThemeDark}
-                  icon={
-                    <ThemeSvgIcon>
-                      <path d={Constants.ICON_SVG_PATH_THEME_LIGHT} />
-                    </ThemeSvgIcon>
-                  }
-                  checkedIcon={
-                    <ThemeSvgIcon>
-                      <path d={Constants.ICON_SVG_PATH_THEME_DARK} />
-                    </ThemeSvgIcon>
-                  }
-                  onChange={this.props.handleThemeChange}
-                />
-              </AwesomeIconButtonGrid>
-            </RightThirdGrid>
-          {/*!!! </Grid> */}
-        {/*!!! </Grid> */}
+              checkedIcon={
+                <ThemeSvgIcon>
+                  <path d={Constants.ICON_SVG_PATH_THEME_DARK} />
+                </ThemeSvgIcon>
+              }
+              onChange={this.props.handleThemeChange}
+            />
+          </AwesomeIconButtonGrid>
+        </RightThirdGrid>
       </FooterToolbar>
     );
   }

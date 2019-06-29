@@ -30,14 +30,14 @@ export const themeLight = {
   colorAboutTwitterBackground: '#FFFFFF',
   colorAppBarBackground: '#FFFFFF',
   colorAppBarTextButton: Constants.COLOR_LIGHT_TEXT_FADED, // (#4D4D4D)
-  colorAppBarDfinityText: '#000000', // consider matching to colorBodyText!!!
+  colorAppBarDfinityText: Constants.COLOR_LIGHT_BODY_TEXT_GOOGLE,
   colorAppBarExplorerText: Constants.COLOR_DFINITY_BLUE_700,
   colorBodyBackground: '#F8F9FA', // Wikipedia (verified)
   colorBodyButtonBackground: Constants.COLOR_DFINITY_BLUE_700,
   colorBodyButtonText: Constants.COLOR_TEXT_LIGHT,
   colorBodyButtonHoverBackground: Constants.COLOR_DFINITY_BLUE_500,
   colorBodyButtonHoverText: Constants.COLOR_TEXT_LIGHT,
-  colorBodyText: '#202124', // Google text (verified)
+  colorBodyText: Constants.COLOR_LIGHT_BODY_TEXT_GOOGLE,
   colorBodyTextDim: Constants.COLOR_LIGHT_BODY_TEXT_DIM_GOOGLE,
   colorBodyTextLink: Constants.COLOR_DFINITY_BLUE_700,
   colorDashCardBackground: '#FFFFFF',
@@ -61,7 +61,7 @@ export const themeLight = {
   colorTableTextDim: '#909090', // YouTube, footer text dim (verified)
   colorFooterBackground: '#F5F5F5',
   colorFooterTextIcon: '#909090', // YouTube (verified)
-  colorSearchText: '#202124', // Google text (verified)
+  colorSearchText: Constants.COLOR_LIGHT_BODY_TEXT_GOOGLE,
   colorSearchIcon: '#9E9E9E', //  Material Design icon(verified)
   opacityActionDisabled: 0.26, // Material-UI createPalette.js theme.palette.action.disabled light theme
   opacityActionHover: 0.08 // Material-UI createPalette.js theme.palette.action.hoverOpacity light theme
@@ -109,7 +109,7 @@ export const themeDark = {
   colorTableTextDim: '#717171', // YouTube (Dark), footer text dim (verified)
   colorFooterBackground: Constants.COLOR_DARK_BODY_LIGHTER_MAC_OS,
   colorFooterTextIcon: Constants.COLOR_DARK_FOOTER_TEXT_ICON_NETFLIX,
-  colorSearchText: '#202124', // Google text (verified)
+  colorSearchText: Constants.COLOR_LIGHT_BODY_TEXT_GOOGLE,
   colorSearchIcon: '#9E9E9E', //  Material Design icon (verified)
   opacityActionDisabled: 0.3, // Material-UI createPalette.js theme.palette.action.disabled dark theme
   opacityActionHover: 0.1 // Material-UI createPalette.js theme.palette.action.hoverOpacity dark theme

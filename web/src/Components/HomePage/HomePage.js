@@ -236,7 +236,7 @@ class HomePage extends TrackablePage {
           <Fade
             timeout={500}
           >
-            <TransactionsChart chartHeight={chartHeight} />
+            <TransactionsChart chartHeight={chartHeight} breakpoint={breakpoint} />
           </Fade>
         </GridChart>
         <GridChart item breakpoint={breakpoint}>
@@ -244,7 +244,7 @@ class HomePage extends TrackablePage {
             delay={50}
             timeout={500}
           >
-            <PriceChart chartHeight={chartHeight} />
+            <PriceChart chartHeight={chartHeight} breakpoint={breakpoint} />
           </Fade>
         </GridChart>
       </GridSection>

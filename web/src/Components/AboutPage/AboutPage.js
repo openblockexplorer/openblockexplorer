@@ -638,6 +638,7 @@ class AboutPage extends TrackablePage {
    */
   getSectionThanks() {
     // Possibly add: GraphQL Yoga, Recharts!!!
+    // Change Postgres to MySQL!!!
     const { breakpoint, isThemeDark } = this.props;
     
     // Adjust heights based on the perceived size of images (i.e., some images contain smaller logos

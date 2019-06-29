@@ -44,6 +44,7 @@ import ResponsiveComponent from '../ResponsiveComponent/ResponsiveComponent'
 import querySearchAutoComplete from '../../graphql/querySearchAutoComplete';
 import {
   Breakpoints,
+  getBreakpoint,
   isBreakpointLessOrEqualTo,
   isBreakpointDesktop
 } from '../../utils/breakpoint';
@@ -70,9 +71,11 @@ const StyledToolbar = styled(Toolbar)`
   && {
     padding-left: 12px;
     padding-right: 12px;
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      padding-left: 4px;
-      padding-right: 4px;
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        padding-left: 4px;
+        padding-right: 4px;
+      `
     }
   }
 `;
@@ -83,11 +86,13 @@ const SearchToolbar = styled(Toolbar)`
     padding-bottom: 4px;
     padding-left: 16px;
     padding-right: 12px;
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      padding-top: 4px;
-      padding-bottom: 4px;
-      padding-left: 8px;
-      padding-right: 4px;
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 8px;
+        padding-right: 4px;
+      `
     }
   }
 `;
@@ -95,8 +100,10 @@ const SearchToolbar = styled(Toolbar)`
 const ImgProductIcon = styled.img`
   && {
     margin-left: 12px;
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      margin-left: 0px;
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        margin-left: 0px;
+      `
     }
   }
 `;
@@ -109,8 +116,10 @@ const TypographyAppName = styled(Typography)`
     font-weight: bold;
     font-size: 20px;
     user-select: none;
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      font-size: 14px;
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        font-size: 14px;
+      `
     }
   }
 `;
@@ -120,9 +129,11 @@ const TypographyDfinity = styled(TypographyAppName)`
     margin-left: 12px;
     letter-spacing: 12px;
     color: ${props => props.theme.colorAppBarDfinityText};
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      margin-left: 8.4px;
-      letter-spacing: 8.4px;
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        margin-left: 8.4px;
+        letter-spacing: 8.4px;
+      `
     }
   }
 `;
@@ -137,8 +148,10 @@ const TypographyBorder = styled.div`
     width: 0px;
     height: 29px;
     border-right: ${props => '1px solid ' + props.theme.colorAppBarDfinityText};
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      height: 20.3px;
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        height: 20.3px;
+      `
     }
   }
 `;
@@ -148,14 +161,15 @@ const TypographyExplorer = styled(TypographyAppName)`
     margin-left: 14px;
     letter-spacing: 7.5px;
     color: ${props => props.theme.colorAppBarExplorerText};
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      margin-left: 9.8px;
-      letter-spacing: 5.25px;
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        margin-left: 9.8px;
+        letter-spacing: 5.25px;
+      `
     }
   }
 `;
 
-// Need to use new breakpoint method here and elsewhere (search "@media (max-width"), but probably call GetBreakpoint without drawer from render()!!!
 const InputSearch = styled(Input)`
   && {
     /*
@@ -167,13 +181,16 @@ const InputSearch = styled(Input)`
     color: ${props => props.theme.colorSearchText};
     font-family: ${Constants.FONT_PRIMARY};
     font-size: ${Constants.MATERIAL_FONT_SIZE_H6};
-    @media (max-width: ${Constants.BREAKPOINT_MAX_SM + 'px'}) {
-      margin-top: 0.875rem;
-      /* font-size "Body 2" is not small enough to fit a hash, but this is smallest we should go. */
-      font-size: ${Constants.MATERIAL_FONT_SIZE_BODY_2};
-    }
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      margin-top: 0.625rem;
+    ${({ breakpoint }) =>
+      (breakpoint === Breakpoints.SM && `
+        margin-top: 0.875rem;
+        /* font-size "Body 2" is not small enough to fit a hash, but this is smallest we should
+           go. */
+        font-size: ${Constants.MATERIAL_FONT_SIZE_BODY_2};
+      `) ||
+      (breakpoint === Breakpoints.XS && `
+        margin-top: 0.625rem;
+      `)
     }
   }
 `;
@@ -189,19 +206,22 @@ const ListSearch = styled(List)`
     font-family: ${Constants.FONT_PRIMARY};
     font-size: ${Constants.MATERIAL_FONT_SIZE_BODY_1};
     color:  ${props => props.theme.colorSearchText};
-    @media (max-width: ${Constants.BREAKPOINT_MAX_SM + 'px'}) {
-      font-size: ${Constants.MATERIAL_FONT_SIZE_BODY_2};
-    }
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      /* This font size is smaller than Material Design standards, but fits a auto-complete hash. */
-      /**
-       * BUG: A full hash pushes the close button off of the screen with this font size
-       * This bug existed in old code too, but you could see a tiny bit of the close button
-       * It seems like this could have to do with style={{ flexGrow: '1' }}>
-       * For now, changing the font size smaller than 0.5625rem to avoid bug
-       * font-size: 0.5625rem; this is the size we would like!!!
-       */
-      font-size: 7px;
+    ${({ breakpoint }) =>
+      (breakpoint === Breakpoints.SM && `
+        font-size: ${Constants.MATERIAL_FONT_SIZE_BODY_2};
+      `) ||
+      (breakpoint === Breakpoints.XS && `
+        /* This font size is smaller than Material Design standards, but fits an auto-complete
+           hash. */
+        /**
+         * BUG: A full hash pushes the close button off of the screen with this font size
+         * This bug existed in old code too, but you could see a tiny bit of the close button
+         * It seems like this could have to do with style={{ flexGrow: '1' }}>
+         * For now, changing the font size smaller than 0.5625rem to avoid bug
+         * font-size: 0.5625rem; this is the size we would like!!!
+         */
+        font-size: 7px;
+      `)
     }
   }
 `;
@@ -230,15 +250,17 @@ const SearchIconListSearch = styled(SearchIcon)`
      * breakpoints based on trial and error.
      */
     margin-right: 0px;
-    @media (max-width: ${Constants.BREAKPOINT_MAX_SM + 'px'}) {
-      width: ${Constants.MATERIAL_FONT_SIZE_BODY_2};
-      height: ${Constants.MATERIAL_FONT_SIZE_BODY_2};
-    }
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      /* BUG: 0.5625rem is the size we would like (see above)!!! */
-      width: 7px;
-      height: 7px;
-      margin-right: -7px;
+    ${({ breakpoint }) =>
+      (breakpoint === Breakpoints.SM && `
+        width: ${Constants.MATERIAL_FONT_SIZE_BODY_2};
+        height: ${Constants.MATERIAL_FONT_SIZE_BODY_2};
+      `) ||
+      (breakpoint === Breakpoints.XS && `
+        /* BUG: 0.5625rem is the size we would like (see above)!!! */
+        width: 7px;
+        height: 7px;
+        margin-right: -7px;
+      `)
     }
   }
 `;
@@ -270,9 +292,11 @@ const StyledSearchIcon = styled(SearchIcon)`
   && {
     width: 32px;
     height: 32px;
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      width: 24px;
-      height: 24px;
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        width: 24px;
+        height: 24px;
+      `
     }
   }
 `;
@@ -281,9 +305,11 @@ const StyledCloseIcon = styled(CloseIcon)`
   && {
     width: 32px;
     height: 32px;
-    @media (max-width: ${Constants.BREAKPOINT_MAX_XS + 'px'}) {
-      width: 24px;
-      height: 24px;
+    ${({ breakpoint }) =>
+      breakpoint === Breakpoints.XS && `
+        width: 24px;
+        height: 24px;
+      `
     }
   }
 `;
@@ -497,8 +523,9 @@ class DEAppBar extends ResponsiveComponent {
    * @private
    */
   getToolbarSearchContent() {
+    const breakpoint = getBreakpoint();
     return (
-      <SearchToolbar variant='dense'>
+      <SearchToolbar variant='dense' breakpoint={breakpoint}>
         <Grid container direction='row' justify='space-between' alignItems='flex-start' wrap='nowrap'>
           <Grid item style={{ flexGrow: '1' }}>
             <Downshift
@@ -523,6 +550,7 @@ class DEAppBar extends ResponsiveComponent {
                         fullWidth: true,
                         placeholder: 'Search for block, transaction, or address'
                       })}
+                      breakpoint={breakpoint}
                     />
                   </form>
                   <Query
@@ -531,9 +559,9 @@ class DEAppBar extends ResponsiveComponent {
                   >
                     {({ loading, error, data }) => {
                       if (loading || error || !data.searchAutoComplete || !isOpen)
-                        return <ListSearch />;
+                        return <ListSearch breakpoint={breakpoint} />;
                       return (    
-                        <ListSearch {...getMenuProps()}>
+                        <ListSearch {...getMenuProps()} breakpoint={breakpoint}>
                           {data.searchAutoComplete.items.map((item, index) => (
                             <ListItemSearch
                               disableGutters
@@ -547,7 +575,7 @@ class DEAppBar extends ResponsiveComponent {
                               })}
                             >
                               <ListItemIcon>
-                                <SearchIconListSearch />
+                                <SearchIconListSearch breakpoint={breakpoint} />
                               </ListItemIcon>
                               {item}
                             </ListItemSearch>
@@ -563,7 +591,7 @@ class DEAppBar extends ResponsiveComponent {
           <Grid item>
             <Zoom in={true} timeout={300}>
               <IconButton onClick={this.handleCloseClick}>
-                <StyledCloseIcon />
+                <StyledCloseIcon breakpoint={breakpoint} />
               </IconButton>
             </Zoom>
           </Grid>
@@ -578,8 +606,9 @@ class DEAppBar extends ResponsiveComponent {
    * @private
    */
   getToolbarDefaultContent() {
+    const breakpoint = getBreakpoint();
     return (
-      <StyledToolbar>
+      <StyledToolbar breakpoint={breakpoint}>
         <Grid container alignItems='center' wrap='nowrap'>
           <Grid item>
             {this.getMenuButton()}
@@ -621,6 +650,7 @@ class DEAppBar extends ResponsiveComponent {
    * @private
    */
   getAppTitle() {
+    const breakpoint = getBreakpoint();
     return (
       <Link
         style={{ textDecoration: 'none' }}
@@ -633,19 +663,20 @@ class DEAppBar extends ResponsiveComponent {
                 src={dfinityExplorerLogo}
                 height={this.getProductIconHeight()}
                 alt='logo'
+                breakpoint={breakpoint}
               >
               </ImgProductIcon>
             </Grid>
             <Grid item>
-              <TypographyDfinity>DFINITY</TypographyDfinity>
+              <TypographyDfinity breakpoint={breakpoint}>DFINITY</TypographyDfinity>
             </Grid>
             <RevealZoom timeout={350}>
               <Grid item>
-                <TypographyBorder />
+                <TypographyBorder breakpoint={breakpoint} />
               </Grid>
             </RevealZoom>
             <Grid item>
-              <TypographyExplorer>ExpIorer</TypographyExplorer>
+              <TypographyExplorer breakpoint={breakpoint}>ExpIorer</TypographyExplorer>
             </Grid>
           </RevealFade>
         </Grid>
@@ -765,10 +796,11 @@ class DEAppBar extends ResponsiveComponent {
    * @private
    */
   getSearchButton() {
+    const breakpoint = getBreakpoint();
     return (
       <Zoom in={true} timeout={300}>
         <StyledIconButton onClick={this.handleSearchClick}>
-          <StyledSearchIcon />
+          <StyledSearchIcon breakpoint={breakpoint} />
         </StyledIconButton>
       </Zoom>
     );

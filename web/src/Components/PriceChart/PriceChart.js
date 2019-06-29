@@ -17,6 +17,10 @@ import queryCandles from '../../graphql/queryCandles';
 class PriceChartWithData extends Component {
   static propTypes = {
     /**
+     * The current Breakpoint, taking the desktop drawer (large screens) width into account.
+     */    
+    breakpoint: PropTypes.number.isRequired,
+    /**
      * The height of the chart (not including the title).
      */
     chartHeight: PropTypes.number.isRequired,
@@ -44,7 +48,7 @@ class PriceChartWithData extends Component {
    * @public
    */
   render() {
-    const { chartHeight, theme } = this.props;
+    const { breakpoint, chartHeight, theme } = this.props;
     return (
       <Query
         query={queryCandles}
@@ -58,6 +62,7 @@ class PriceChartWithData extends Component {
                 chartHeight={chartHeight}
                 theme={theme}
                 loading
+                breakpoint={breakpoint}
               />
             );
           }
@@ -68,6 +73,7 @@ class PriceChartWithData extends Component {
                 chartHeight={chartHeight}
                 theme={theme}
                 error
+                breakpoint={breakpoint}
               />
             );
           }
@@ -77,6 +83,7 @@ class PriceChartWithData extends Component {
                 candles={data.candles}
                 chartHeight={chartHeight}
                 theme={theme}
+                breakpoint={breakpoint}
               />
             );
           }
@@ -91,6 +98,10 @@ class PriceChartWithData extends Component {
  */
 class PriceChart extends AreaChart { 
   static propTypes = {
+    /**
+     * The current Breakpoint, taking the desktop drawer (large screens) width into account.
+     */    
+    breakpoint: PropTypes.number.isRequired,
     /**
      * Array of Candle objects.
      */

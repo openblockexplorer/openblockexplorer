@@ -53,7 +53,6 @@ const Constants = Object.freeze({
   COLOR_DARK_TEXT_FADED: 'rgb(190, 191, 192)', // rgba(255, 255, 255, 0.7) on COLOR_DFINITY_BLACK, matches Material-UI Tab opacity
   COLOR_TEXT_DARKER: 'rgb(148, 149, 151)', // rgba(255, 255, 255, 0.5) on COLOR_DFINITY_BLACK
   COLOR_TEXT_DARKEST: 'rgb(106, 106, 109)', // rgba(255, 255, 255, 0.3) on COLOR_DFINITY_BLACK
-  COLOR_LIGHT_TEXT: '#000000',
   COLOR_LIGHT_TEXT_FADED: 'rgb(77, 77, 77)', // rgba(0, 0, 0, 0.7) on white, matches Material-UI Tab opacity
   COLOR_DARK_BODY_DARKER_MAC_OS: '#1B1B1B', // Calendar, Finder, iTunes, Messages
   COLOR_DARK_BODY_LIGHTER_MAC_OS: '#262626', // Finder
@@ -61,6 +60,7 @@ const Constants = Object.freeze({
   COLOR_DARK_DRAWER_DIVIDER_YOUTUBE: '#333333',
   COLOR_DARK_FOOTER_TEXT_ICON_NETFLIX: '#808080',
   COLOR_DARK_TEXT_MAC_OS: '#DCDCDC', // Calendar, iTunes
+  COLOR_LIGHT_BODY_TEXT_GOOGLE: '#202124', // About, Account, News, Gmail, Contacts, Docs, Keep, Material
   COLOR_LIGHT_BODY_TEXT_DIM_GOOGLE: '#5F6368', // About, Account, Contacts, Docs, Drive, Gmail, Material
   COLOR_LIGHT_CHART_GOOGLE: '#9E9E9E', // Analytics, Firebase
   COLOR_LIGHT_DRAWER_DIVIDER_GOOGLE: '#E3E3E3', // Docs, Sheets
@@ -100,6 +100,8 @@ const Constants = Object.freeze({
   BREAKPOINT_LG_MAX_WIDTH: 1140, // from Bootstrap
   DRAWER_WIDTH: 256,
   FOOTER_HEIGHT: 96,
+  FOOTER_MARGIN_XS: 8,
+  FOOTER_MARGIN_SM_AND_UP: 32,
   ICON_SVG_PATH_TPS: 'M16 8V4l8 8-8 8v-4h-5V8h5zM9 8H7v8h2V8zM4.986 8H3v8h1.986V8zM1 8H0v8h1V8z',
   ICON_SVG_PATH_VOLUME: 'M24 14.182h-6.545v7.636H24zm-8.727-12H8.727v19.636h6.546zM6.545 21.818H0v-12h6.545z',
   ICON_SVG_PATH_MARKET_CAP: 'M24 3.621l-7.21 1.467 2.062 2.053-6.43 6.438-3.606-3.607L0 18.675l1.694 1.703 7.117-7.01 3.594 3.597 8.149-8.126 2.003 1.995z',

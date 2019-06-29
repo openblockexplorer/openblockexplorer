@@ -17,6 +17,10 @@ import queryDailyNetworkStatses from '../../graphql/queryDailyNetworkStatses';
 class TransactionsChartWithData extends Component {
   static propTypes = {
     /**
+     * The current Breakpoint, taking the desktop drawer (large screens) width into account.
+     */    
+    breakpoint: PropTypes.number.isRequired,
+    /**
      * The height of the chart (not including the title).
      */
     chartHeight: PropTypes.number.isRequired,
@@ -32,7 +36,7 @@ class TransactionsChartWithData extends Component {
    * @public
    */
   render() {
-    const { chartHeight, theme } = this.props;
+    const { breakpoint, chartHeight, theme } = this.props;
     return (
       <Query
         query={queryDailyNetworkStatses}
@@ -47,6 +51,7 @@ class TransactionsChartWithData extends Component {
                 chartHeight={chartHeight}
                 theme={theme}
                 loading
+                breakpoint={breakpoint}
               />
             );
           }
@@ -57,6 +62,7 @@ class TransactionsChartWithData extends Component {
                 chartHeight={chartHeight}
                 theme={theme}
                 error
+                breakpoint={breakpoint}
               />
             );
           }
@@ -66,6 +72,7 @@ class TransactionsChartWithData extends Component {
                 dailyNetworkStatses={data.dailyNetworkStatses}
                 chartHeight={chartHeight}
                 theme={theme}
+                breakpoint={breakpoint}
               />
             );
           }
@@ -80,6 +87,10 @@ class TransactionsChartWithData extends Component {
  */
 class TransactionsChart extends AreaChart { 
   static propTypes = {
+    /**
+     * The current Breakpoint, taking the desktop drawer (large screens) width into account.
+     */    
+    breakpoint: PropTypes.number.isRequired,
     /**
      * The height of the chart (not including the title).
      */
