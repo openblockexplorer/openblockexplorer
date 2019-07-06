@@ -37,10 +37,9 @@ import dfinityLogoLight from './dfinity-logo-light-mode.png';
 import githubOctocat from './github-octocat.png';
 import graphqlLogo from './graphql-logo.png';
 import materialUiLogo from './material-ui-logo.png';
+import mySqlLogo from './mysql-logo.png';
 import nomicsLogoDark from './nomics-logo-dark-mode.png';
 import nomicsLogoLight from './nomics-logo-light-mode.png';
-import postgresLogoDark from './postgresql-logo.png';
-import postgresLogoLight from './postgresql-logo-text.png';
 import prismaLogoDark from './prisma-logo-dark-mode.png';
 import prismaLogoLight from './prisma-logo-light-mode.png';
 import reactLogo from './react-logo-text.png';
@@ -638,7 +637,6 @@ class AboutPage extends TrackablePage {
    */
   getSectionThanks() {
     // Possibly add: GraphQL Yoga, Recharts!!!
-    // Change Postgres to MySQL!!!
     const { breakpoint, isThemeDark } = this.props;
     
     // Adjust heights based on the perceived size of images (i.e., some images contain smaller logos
@@ -649,9 +647,8 @@ class AboutPage extends TrackablePage {
     const nomicsHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 0.9;
     const apolloHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT;
     const graphqlHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 1.4;
-    const prismaHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 1.0;
-    const postgresHeight =
-      Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * (isThemeDark ? 1.0 : 1.4);
+    const prismaHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT;
+    const mySqlHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 1.2;
     const dfinityHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 1.2;
 
     // Define the image link objects for the ImageLinkGrid.
@@ -699,10 +696,10 @@ class AboutPage extends TrackablePage {
         href: Constants.URI_ABOUT_PRISMA
       },
       {
-        src: isThemeDark ? postgresLogoDark : postgresLogoLight,
-        height: postgresHeight,
-        alt: 'PostgreSQL logo',
-        href: Constants.URI_ABOUT_POSTGRES
+        src: mySqlLogo,
+        height: mySqlHeight,
+        alt: 'MySQL logo',
+        href: Constants.URI_ABOUT_MY_SQL
       },
       {
         src: isThemeDark ? dfinityLogoDark : dfinityLogoLight,

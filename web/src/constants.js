@@ -24,7 +24,7 @@ const Constants = Object.freeze({
   URI_ABOUT_GRAPHQL: 'https://graphql.org/',
   URI_ABOUT_GRAPHQL_YOGA: 'https://github.com/prisma/graphql-yoga',
   URI_ABOUT_MATERIAL_UI: 'https://material-ui.com/',
-  URI_ABOUT_POSTGRES: 'https://www.postgresql.org/',
+  URI_ABOUT_MY_SQL: 'https://www.mysql.com/',
   URI_ABOUT_PRISMA: 'https://www.prisma.io/',
   URI_ABOUT_REACT: 'https://reactjs.org/',
   URI_ABOUT_STYLED_COMPONENTS: 'https://www.styled-components.com/',
