@@ -1,6 +1,6 @@
 /**
  * @file Footer
- * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2020 Dylan Miller and dfinityexplorer contributors
  * @license MIT License
  */
 
@@ -263,11 +263,11 @@ class Footer extends ResponsiveComponent {
     const breakpoint = getBreakpoint();
     switch (breakpoint) {
       case Breakpoints.XS:
-        return '© 2019 dfinityexplorer';
+        return '© 2020 dfinityexplorer';
       case Breakpoints.SM:
-        return '© 2019 dfinityexplorer contributors';
+        return '© 2020 dfinityexplorer contributors';
       default:
-        return '© 2019 dfinityexplorer contributors | All rights reserved';
+        return '© 2020 dfinityexplorer contributors | All rights reserved';
     }
   }
 
