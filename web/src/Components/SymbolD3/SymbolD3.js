@@ -1,5 +1,5 @@
 /**
- * @file DfinitySymbolD3
+ * @file SymbolD3
  * @copyright Copyright (c) 2018-2020 Dylan Miller and openblockexplorer contributors
  * @license MIT License
  */
@@ -14,7 +14,7 @@ import getRandomInt from '../../utils/getRandomInt';
 /**
  * This class draws the DFINITY logo infinity symbol using a d3 force-directed graph.
  */
-class DfinitySymbolD3 extends Component  {
+class SymbolD3 extends Component  {
   static propTypes = {
     /**
      * True is the theme is dark, false if the theme is light.
@@ -32,7 +32,7 @@ class DfinitySymbolD3 extends Component  {
   };
 
   /**
-   * Create a DfinitySymbolD3 object.
+   * Create a SymbolD3 object.
    * @constructor
    */
   constructor(props) {
@@ -757,4 +757,4 @@ class DfinitySymbolD3 extends Component  {
   }
 }
 
-export default DfinitySymbolD3;
+export default SymbolD3;

@@ -24,7 +24,7 @@ import { TwitterTimelineEmbed } from 'react-twitter-embed';
 import CoinbaseCommerceButton from 'react-coinbase-commerce';
 import 'react-coinbase-commerce/dist/coinbase-commerce-button.css';
 import TrackablePage from '../TrackablePage/TrackablePage';
-import DfinitySymbolD3 from '../DfinitySymbolD3/DfinitySymbolD3';
+import SymbolD3 from '../SymbolD3/SymbolD3';
 import ImageLinkGrid from '../ImageLinkGrid/ImageLinkGrid';
 import { Breakpoints } from '../../utils/breakpoint';
 import Constants from '../../constants';
@@ -407,8 +407,8 @@ class AboutPage extends TrackablePage {
       <GridSectionPrimary container direction='row' justify='space-between' alignItems='center' breakpoint={breakpoint}>
         <GridSymbolLeft item breakpoint={breakpoint}>
           <Grid container direction='row' justify='center' alignItems='center'>
-            <DfinitySymbolD3
-              width={this.getDfinitySymbolD3Width()}
+            <SymbolD3
+              width={this.getSymbolD3Width()}
               isThemeDark={isThemeDark}
             />
           </Grid>
@@ -750,11 +750,11 @@ class AboutPage extends TrackablePage {
   }
 
   /**
-   * Return the width of the DfinitySymbolD3 component based on the current breakpoint.
-   * @return {Number} The width of the DfinitySymbolD3 component based on the current breakpoint.
+   * Return the width of the SymbolD3 component based on the current breakpoint.
+   * @return {Number} The width of the SymbolD3 component based on the current breakpoint.
    * @private
    */
-  getDfinitySymbolD3Width() {
+  getSymbolD3Width() {
     const { breakpoint, isDesktopDrawerOpen } = this.props;
     const contentWidth =  window.innerWidth - (isDesktopDrawerOpen ? Constants.DRAWER_WIDTH : 0);
 
