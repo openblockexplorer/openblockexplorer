@@ -1,10 +1,10 @@
-# DFINITY Explorer
-[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/dfinityexplorer/dfinityexplorer/blob/master/LICENSE)
-[![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/dfinityexplorer)
+# Open Block Explorer
+[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/openblockexplorer/openblockexplorer/blob/master/LICENSE)
+[![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/dylancm4)
 
-[DFINITY Explorer](https://www.dfinityexplorer.org/) is an open-source block explorer built by the DFINITY community. Read more about the project in the [wiki](https://github.com/dfinityexplorer/dfinityexplorer/wiki).
+[Open Block Explorer](https://www.openblockexplorer.org/) is an open-source block explorer prototype. Read more about the project in the [wiki](https://github.com/openblockexplorer/openblockexplorer/wiki).
 
-This repo is the front end of DFINITY Explorer.
+This repo is the front end of Open Block Explorer.
 
 ## Open-Source Libraries Used
 * Apollo
@@ -33,8 +33,8 @@ This repo is the front end of DFINITY Explorer.
 
 ## Code of Conduct
 
-Please note that this project is released with a [Contributor Code of Conduct](https://github.com/dfinityexplorer/dfinityexplorer/blob/master/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+Please note that this project is released with a [Contributor Code of Conduct](https://github.com/openblockexplorer/openblockexplorer/blob/master/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 ## Copyright and License
 
-Copyright 2018-2019 the [dfinityexplorer contributors](https://github.com/dfinityexplorer/dfinityexplorer/graphs/contributors). Code released under the [MIT License](https://github.com/dfinityexplorer/dfinityexplorer/blob/master/LICENSE).
+Copyright 2018-2020 the [openblockexplorer contributors](https://github.com/openblockexplorer/openblockexplorer/graphs/contributors). Code released under the [MIT License](https://github.com/openblockexplorer/openblockexplorer/blob/master/LICENSE).
