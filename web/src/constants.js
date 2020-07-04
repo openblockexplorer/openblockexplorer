@@ -32,7 +32,6 @@ const Constants = Object.freeze({
   URI_GITHUB_DYLAN: 'https://github.com/dylancm4',
   URI_GITHUB_MIT_LICENSE: 'https://github.com/openblockexplorer/openblockexplorer/blob/master/LICENSE',
   URI_GITHUB_TODD: 'https://github.com/toddkitchens',
-  URI_NASA_EXPLORER: 'https://nssdc.gsfc.nasa.gov/multi/explorer.html',
   URI_TWITTER_OPEN_BLOCK_EXPLORER: 'https://twitter.com/dylancm4',
   // Remove colors that are not used!!!
   COLOR_DFINITY_BLACK: 'rgb(41, 42, 46)', // from dfinity.org/press

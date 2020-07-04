@@ -49,7 +49,7 @@ import {
   isBreakpointDesktop
 } from '../../utils/breakpoint';
 import Constants from '../../constants';
-import dfinityExplorerLogo from './dfinity-explorer-logo.png';
+import openBlockExplorerLogo from './open-block-explorer-logo.png';
 
 const StyledAppBar = styled(AppBar)`
   && {
@@ -124,11 +124,11 @@ const TypographyAppName = styled(Typography)`
   }
 `;
 
-const TypographyDfinity = styled(TypographyAppName)`
+const TypographyOpen = styled(TypographyAppName)`
   && {
     margin-left: 12px;
     letter-spacing: 12px;
-    color: ${props => props.theme.colorAppBarDfinityText};
+    color: ${props => props.theme.colorAppBarOpenText};
     ${({ breakpoint }) =>
       breakpoint === Breakpoints.XS && `
         margin-left: 8.4px;
@@ -139,15 +139,15 @@ const TypographyDfinity = styled(TypographyAppName)`
 `;
 
 /**
- * A separate div is used for the border between DFINITY and Explorer, so that it can be
+ * A separate div is used for the border between OPEN and Explorer, so that it can be
  * animated. The height is based on TypographyAppName font-size, and matches exactly what
- * "border-right: 1px solid" in TypographyDfinity would look like.
+ * "border-right: 1px solid" in TypographyOpen would look like.
  */
 const TypographyBorder = styled.div`
   && {
     width: 0px;
     height: 29px;
-    border-right: ${props => '1px solid ' + props.theme.colorAppBarDfinityText};
+    border-right: ${props => '1px solid ' + props.theme.colorAppBarOpenText};
     ${({ breakpoint }) =>
       breakpoint === Breakpoints.XS && `
         height: 20.3px;
@@ -660,7 +660,7 @@ class DEAppBar extends ResponsiveComponent {
           <RevealFade timeout={500}>
             <Grid item>
               <ImgProductIcon
-                src={dfinityExplorerLogo}
+                src={openBlockExplorerLogo}
                 height={this.getProductIconHeight()}
                 alt='logo'
                 breakpoint={breakpoint}
@@ -668,7 +668,7 @@ class DEAppBar extends ResponsiveComponent {
               </ImgProductIcon>
             </Grid>
             <Grid item>
-              <TypographyDfinity breakpoint={breakpoint}>DFINITY</TypographyDfinity>
+              <TypographyDfinity breakpoint={breakpoint}>OPEN</TypographyDfinity>
             </Grid>
             <RevealZoom timeout={350}>
               <Grid item>

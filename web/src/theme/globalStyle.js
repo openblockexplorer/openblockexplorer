@@ -30,7 +30,7 @@ export const themeLight = {
   colorAboutTwitterBackground: '#FFFFFF',
   colorAppBarBackground: '#FFFFFF',
   colorAppBarTextButton: Constants.COLOR_LIGHT_TEXT_FADED, // (#4D4D4D)
-  colorAppBarDfinityText: Constants.COLOR_LIGHT_BODY_TEXT_GOOGLE,
+  colorAppBarOpenText: Constants.COLOR_LIGHT_BODY_TEXT_GOOGLE,
   colorAppBarExplorerText: Constants.COLOR_DFINITY_BLUE_700,
   colorBodyBackground: '#F8F9FA', // Wikipedia (verified)
   colorBodyButtonBackground: Constants.COLOR_DFINITY_BLUE_700,
@@ -78,7 +78,7 @@ export const themeDark = {
   colorAboutTwitterBackground: Constants.COLOR_DARK_BODY_LIGHTER_MAC_OS,
   colorAppBarBackground: Constants.COLOR_DARK_BODY_LIGHTER_MAC_OS,
   colorAppBarTextButton: Constants.COLOR_DARK_TEXT_FADED,
-  colorAppBarDfinityText: Constants.COLOR_DARK_TEXT,
+  colorAppBarOpenText: Constants.COLOR_DARK_TEXT,
   colorAppBarExplorerText: Constants.COLOR_DFINITY_LIGHT_ORANGE,
   colorBodyBackground: Constants.COLOR_DARK_BODY_DARKER_MAC_OS,
   colorBodyButtonBackground: Constants.COLOR_DFINITY_BLUE_700,

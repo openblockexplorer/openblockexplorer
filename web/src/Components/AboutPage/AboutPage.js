@@ -29,7 +29,7 @@ import ImageLinkGrid from '../ImageLinkGrid/ImageLinkGrid';
 import { Breakpoints } from '../../utils/breakpoint';
 import Constants from '../../constants';
 import bannerXHorizon from './banner-x-horizon.png';
-import dfinityExplorerLogo from './dfinity-explorer-logo-large.png';
+import openBlockExplorerLogo from './open-block-explorer-logo-large.png';
 import apolloLogoDark from './apollo-logo-dark-mode.png';
 import apolloLogoLight from './apollo-logo-light-mode.png';
 import dfinityLogoDark from './dfinity-logo-dark-mode.png';
@@ -382,9 +382,7 @@ class AboutPage extends TrackablePage {
             <GridParallax container direction='column' justify='center' alignItems='flex-start' breakpoint={breakpoint}>
               <Grid item>
                 <TypographyParallax breakpoint={breakpoint}>
-                  An open-source block explorer
-                  <br />
-                  built by the DFINITY community
+                  An open-source block explorer prototype
                 </TypographyParallax>
               </Grid>
             </GridParallax>
@@ -420,20 +418,10 @@ class AboutPage extends TrackablePage {
             </TypographyHeading>
             <br />
             <TypographyBody>
-              {'Our mission is to provide a bridge between you and the '}
-              <StyledA href={Constants.URI_ABOUT_DFINITY} target='_blank' rel='noopener noreferrer'>DFINITY</StyledA>
-              {' Internet Computer, allowing you to easily search for and retrieve information '}
+              {'Our mission is to provide a bridge between you and the blockchain, '}
+              {'allowing you to easily search for and retrieve information '}
               {'which is useful in a format that is understandable, with everything you want to '}
               {'know right at your fingertips.'}
-            </TypographyBody>
-            <br />
-            <TypographyBody>
-              {'DFINITY aims to build their organization into a “NASA for decentralization”. '}
-              {'There have in fact been '}
-              <StyledA href={Constants.URI_NASA_EXPLORER} target='_blank' rel='noopener noreferrer'>89 NASA “Explorer” missions</StyledA>
-              {' since 1958, carrying a wide variety of scientific investigations. We want DFINITY '}
-              {'Explorer to be the perfect vehicle to explore the DFINITY universe.'}
-              &nbsp;&nbsp;🚀
             </TypographyBody>
           </Fade>
         </GridTextRight>
@@ -459,7 +447,7 @@ class AboutPage extends TrackablePage {
             </TypographyHeading>
             <br />
             <TypographyBody>
-              {'DFINITY Explorer is an open-source project under the '}
+              {'Open Block Explorer is an open-source project under the '}
               <StyledA href={Constants.URI_GITHUB_MIT_LICENSE} target='_blank' rel='noopener noreferrer'>MIT license</StyledA>
               {', providing transparency, reliability, and security.'}
             </TypographyBody>
@@ -475,7 +463,7 @@ class AboutPage extends TrackablePage {
           <Grid container direction='row' justify='center' alignItems='center'>
             <Flip right timeout={800}>
               <ImgSection
-                src={dfinityExplorerLogo}
+                src={openBlockExplorerLogo}
                 alt='logo'>
               </ImgSection>
             </Flip>
@@ -503,7 +491,7 @@ class AboutPage extends TrackablePage {
             <PaperTwitter elevation={2} breakpoint={breakpoint}>
               <TwitterTimelineEmbed
                 sourceType='profile'
-                screenName='dfinityexplorer'
+                screenName='dylancm4'
                 theme={theme}
                 options={{height: 432}}
                 // Setting key here is a bit of a hack. Since TwitterTimelineEmbed only uses the theme
@@ -526,8 +514,8 @@ class AboutPage extends TrackablePage {
             <br />
             <TypographyBody>
               {'Follow '}
-              <StyledA href={Constants.URI_TWITTER_OPEN_BLOCK_EXPLORER} target='_blank' rel='noopener noreferrer'>@dfinityexplorer</StyledA>
-              {' on Twitter to learn about the latest DFINITY-related news, videos, and events.'}
+              <StyledA href={Constants.URI_TWITTER_OPEN_BLOCK_EXPLORER} target='_blank' rel='noopener noreferrer'>@dylancm4</StyledA>
+              {' on Twitter to learn about the latest project news.'}
             </TypographyBody>
             <br />
             <TypographyBody>
@@ -540,8 +528,7 @@ class AboutPage extends TrackablePage {
             <br />
             <TypographyBody>
               {'Join our mailing list today to stay up to date on development of our project. '}
-              {'We’ll let you know when DFINITY Explorer goes live along with the DFINITY network '}
-              {'later in 2019.'}
+              {'We’ll let you know when Open Block Explorer goes live with real blockchain data.'}
             </TypographyBody>
             {/* Begin MailChimp Signup Form */}
             <form action='https://dfinityexplorer.us18.list-manage.com/subscribe/post?u=059dc252f5f0cea2fec413c42&amp;id=4ebbd6c248' method='post' id='mc-embedded-subscribe-form' name='mc-embedded-subscribe-form' className='validate' target='_blank' rel='noopener noreferrer' noValidate>
@@ -586,7 +573,7 @@ class AboutPage extends TrackablePage {
             </TypographyHeading>
             <br />
             <TypographyBody>
-              {'DFINITY Explorer is a cooperative effort, made with '}
+              {'Open Block Explorer is a cooperative effort, made with '}
               <SpanHeart>♥</SpanHeart>
               {' by '}
               <StyledA href={Constants.URI_GITHUB_DYLAN} target='_blank' rel='noopener noreferrer'>@dylancm4</StyledA>
@@ -594,8 +581,7 @@ class AboutPage extends TrackablePage {
               <StyledA href={Constants.URI_GITHUB_TODD} target='_blank' rel='noopener noreferrer'>@toddkitchens</StyledA>
               {', and a friendly bunch of '}
               <StyledA href={Constants.URI_GITHUB_CONTRIBUTORS} target='_blank' rel='noopener noreferrer'>contributors</StyledA>
-              {' from the DFINITY community. We are passionate about DFINITY and we want to build '}
-              {'things to help it to succeed.'}
+              {'.'}
             </TypographyBody>
             <br />
             <TypographyBody>
