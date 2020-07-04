@@ -32,8 +32,6 @@ import bannerXHorizon from './banner-x-horizon.png';
 import openBlockExplorerLogo from './open-block-explorer-logo-large.png';
 import apolloLogoDark from './apollo-logo-dark-mode.png';
 import apolloLogoLight from './apollo-logo-light-mode.png';
-import dfinityLogoDark from './dfinity-logo-dark-mode.png';
-import dfinityLogoLight from './dfinity-logo-light-mode.png';
 import githubOctocat from './github-octocat.png';
 import graphqlLogo from './graphql-logo.png';
 import materialUiLogo from './material-ui-logo.png';
@@ -382,7 +380,7 @@ class AboutPage extends TrackablePage {
             <GridParallax container direction='column' justify='center' alignItems='flex-start' breakpoint={breakpoint}>
               <Grid item>
                 <TypographyParallax breakpoint={breakpoint}>
-                  An open-source block explorer prototype
+                  An open-source block explorer prototype.
                 </TypographyParallax>
               </Grid>
             </GridParallax>
@@ -635,7 +633,6 @@ class AboutPage extends TrackablePage {
     const graphqlHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 1.4;
     const prismaHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT;
     const mySqlHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 1.2;
-    const dfinityHeight = Constants.ABOUT_PAGE_PROJECT_ICONS_HEIGHT * 1.2;
 
     // Define the image link objects for the ImageLinkGrid.
     const imageLinks = [
@@ -686,12 +683,6 @@ class AboutPage extends TrackablePage {
         height: mySqlHeight,
         alt: 'MySQL logo',
         href: Constants.URI_ABOUT_MY_SQL
-      },
-      {
-        src: isThemeDark ? dfinityLogoDark : dfinityLogoLight,
-        height: dfinityHeight,
-        alt: 'DFINITY logo',
-        href: Constants.URI_ABOUT_DFINITY
       }
     ];
 

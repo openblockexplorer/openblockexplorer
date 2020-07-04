@@ -124,7 +124,7 @@ const TypographyAppName = styled(Typography)`
   }
 `;
 
-const TypographyOpen = styled(TypographyAppName)`
+const TypographyBlock = styled(TypographyAppName)`
   && {
     margin-left: 12px;
     letter-spacing: 12px;
@@ -141,7 +141,7 @@ const TypographyOpen = styled(TypographyAppName)`
 /**
  * A separate div is used for the border between OPEN and Explorer, so that it can be
  * animated. The height is based on TypographyAppName font-size, and matches exactly what
- * "border-right: 1px solid" in TypographyOpen would look like.
+ * "border-right: 1px solid" in TypographyBlock would look like.
  */
 const TypographyBorder = styled.div`
   && {
@@ -668,7 +668,7 @@ class DEAppBar extends ResponsiveComponent {
               </ImgProductIcon>
             </Grid>
             <Grid item>
-              <TypographyDfinity breakpoint={breakpoint}>OPEN</TypographyDfinity>
+              <TypographyBlock breakpoint={breakpoint}>BLOCK</TypographyBlock>
             </Grid>
             <RevealZoom timeout={350}>
               <Grid item>

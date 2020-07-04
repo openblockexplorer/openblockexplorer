@@ -18,7 +18,6 @@ const Constants = Object.freeze({
     'https://fonts.googleapis.com/css?family=Istok+Web:400|Muli:200,300,400,500',
   URI_ABOUT_APOLLO: 'https://www.apollographql.com/',
   URI_ABOUT_NOMICS: 'https://p.nomics.com/cryptocurrency-bitcoin-api',
-  URI_ABOUT_DFINITY: 'https://dfinity.org/',
   URI_ABOUT_GRAPHQL: 'https://graphql.org/',
   URI_ABOUT_GRAPHQL_YOGA: 'https://github.com/prisma/graphql-yoga',
   URI_ABOUT_MATERIAL_UI: 'https://material-ui.com/',
