@@ -9,8 +9,8 @@ const Constants = Object.freeze({
   //URI_SERVER_HTTP: 'http://localhost:4000',
   //URI_SERVER_WEB_SOCKETS: 'ws://localhost:4000',
   // Production server URIs
-  URI_SERVER_HTTP: 'https://dfinityexplorer-server.herokuapp.com/',
-  URI_SERVER_WEB_SOCKETS: 'wss://dfinityexplorer-server.herokuapp.com/',
+  URI_SERVER_HTTP: 'https://openblockexplorer-server.herokuapp.com/',
+  URI_SERVER_WEB_SOCKETS: 'wss://openblockexplorer-server.herokuapp.com/',
   URI_CDN_FONT_AWESOME:
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
   // Remove any fonts that aren't used!!!
