@@ -1,8 +1,8 @@
 {
-  "name": "dfinityexplorer",
+  "name": "openblockexplorer",
   "version": "0.0.1",
   "private": true,
-  "homepage": "https://www.dfinityexplorer.org",
+  "homepage": "https://www.openblockexplorer.org",
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",

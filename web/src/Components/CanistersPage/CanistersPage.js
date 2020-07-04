@@ -1,6 +1,6 @@
 /**
  * @file CanistersPage
- * @copyright Copyright (c) 2018-2019 Dylan Miller, Todd Kitchens, and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2020 Dylan Miller, Todd Kitchens, and openblockexplorer contributors
  * @license MIT License
  */
 

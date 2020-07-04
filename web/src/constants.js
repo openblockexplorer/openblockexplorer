@@ -1,6 +1,6 @@
 /**
  * @file constants
- * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2020 Dylan Miller and openblockexplorer contributors
  * @license MIT License
  */
 
@@ -16,8 +16,6 @@ const Constants = Object.freeze({
   // Remove any fonts that aren't used!!!
   URI_CDN_GOOGLE_FONTS:
     'https://fonts.googleapis.com/css?family=Istok+Web:400|Muli:200,300,400,500',
-  URI_DFINITY_EXPLORER_TWITTER: 'https://twitter.com/dfinityexplorer',
-  URI_DFINITY_EXPLORER_GITHUB: 'https://github.com/dfinityexplorer/dfinityexplorer',
   URI_ABOUT_APOLLO: 'https://www.apollographql.com/',
   URI_ABOUT_NOMICS: 'https://p.nomics.com/cryptocurrency-bitcoin-api',
   URI_ABOUT_DFINITY: 'https://dfinity.org/',
@@ -28,14 +26,14 @@ const Constants = Object.freeze({
   URI_ABOUT_PRISMA: 'https://www.prisma.io/',
   URI_ABOUT_REACT: 'https://reactjs.org/',
   URI_ABOUT_STYLED_COMPONENTS: 'https://www.styled-components.com/',
-  URI_GITHUB_CONTRIBUTORS: 'https://github.com/orgs/dfinityexplorer/people',
-  URI_GITHUB_DFINITY_EXPLORER_PROJECT: 'https://github.com/dfinityexplorer/dfinityexplorer',
-  URI_GITHUB_DFINITY_EXPLORER_WIKI: 'https://github.com/dfinityexplorer/dfinityexplorer/wiki',
+  URI_GITHUB_CONTRIBUTORS: 'https://github.com/orgs/openblockexplorer/people',
+  URI_GITHUB_OPEN_BLOCK_EXPLORER_PROJECT: 'https://github.com/openblockexplorer/openblockexplorer',
+  URI_GITHUB_OPEN_BLOCK_EXPLORER_WIKI: 'https://github.com/openblockexplorer/openblockexplorer/wiki',
   URI_GITHUB_DYLAN: 'https://github.com/dylancm4',
-  URI_GITHUB_MIT_LICENSE: 'https://github.com/dfinityexplorer/dfinityexplorer/blob/master/LICENSE',
+  URI_GITHUB_MIT_LICENSE: 'https://github.com/openblockexplorer/openblockexplorer/blob/master/LICENSE',
   URI_GITHUB_TODD: 'https://github.com/toddkitchens',
   URI_NASA_EXPLORER: 'https://nssdc.gsfc.nasa.gov/multi/explorer.html',
-  URI_TWITTER_DFINITY_EXPLORER: 'https://twitter.com/dfinityexplorer',
+  URI_TWITTER_OPEN_BLOCK_EXPLORER: 'https://twitter.com/dylancm4',
   // Remove colors that are not used!!!
   COLOR_DFINITY_BLACK: 'rgb(41, 42, 46)', // from dfinity.org/press
   COLOR_DFINITY_BLACK_LIGHTER: 'rgb(73, 75, 82)', //  COLOR_DFINITY_BLACK scaled lighter

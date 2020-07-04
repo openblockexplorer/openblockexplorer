@@ -1,6 +1,6 @@
 /**
  * @file AboutPage
- * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2020 Dylan Miller and openblockexplorer contributors
  * @license MIT License
  */
 
@@ -526,15 +526,15 @@ class AboutPage extends TrackablePage {
             <br />
             <TypographyBody>
               {'Follow '}
-              <StyledA href={Constants.URI_TWITTER_DFINITY_EXPLORER} target='_blank' rel='noopener noreferrer'>@dfinityexplorer</StyledA>
+              <StyledA href={Constants.URI_TWITTER_OPEN_BLOCK_EXPLORER} target='_blank' rel='noopener noreferrer'>@dfinityexplorer</StyledA>
               {' on Twitter to learn about the latest DFINITY-related news, videos, and events.'}
             </TypographyBody>
             <br />
             <TypographyBody>
               {'Learn more about our project on '}
-              <StyledA href={Constants.URI_GITHUB_DFINITY_EXPLORER_PROJECT} target='_blank' rel='noopener noreferrer'>GitHub</StyledA>
+              <StyledA href={Constants.URI_GITHUB_OPEN_BLOCK_EXPLORER_PROJECT} target='_blank' rel='noopener noreferrer'>GitHub</StyledA>
               {' and in our '}
-              <StyledA href={Constants.URI_GITHUB_DFINITY_EXPLORER_WIKI} target='_blank' rel='noopener noreferrer'>wiki</StyledA>
+              <StyledA href={Constants.URI_GITHUB_OPEN_BLOCK_EXPLORER_WIKI} target='_blank' rel='noopener noreferrer'>wiki</StyledA>
               {'.'}
             </TypographyBody>
             <br />

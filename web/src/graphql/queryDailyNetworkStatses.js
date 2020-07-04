@@ -1,13 +1,13 @@
 /**
  * @file queryDailyNetworkStatses
- * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2020 Dylan Miller and openblockexplorer contributors
  * @license MIT License
  */
 
 import gql from 'graphql-tag';
 
 /**
- * GraphQL query to get daily DFINITY network stats for the specified number of days.
+ * GraphQL query to get daily network stats for the specified number of days.
  * @return {Array} The array of DailyNetworkStats objects.
  */
 const queryDailyNetworkStatses = gql`

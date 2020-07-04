@@ -1,11 +1,11 @@
 /**
  * @file transaction
- * @copyright Copyright (c) 2018-2019 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2020 Dylan Miller and openblockexplorer contributors
  * @license MIT License
  */
 
 /**
- * This class represents a DFINITY transaction.
+ * This class represents a transaction.
  */
 class Transaction {
   /**

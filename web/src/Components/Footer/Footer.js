@@ -1,6 +1,6 @@
 /**
  * @file Footer
- * @copyright Copyright (c) 2018-2020 Dylan Miller and dfinityexplorer contributors
+ * @copyright Copyright (c) 2018-2020 Dylan Miller and openblockexplorer contributors
  * @license MIT License
  */
 
@@ -215,7 +215,7 @@ class Footer extends ResponsiveComponent {
           <AwesomeIconButtonGrid item breakpoint={breakpoint}>
             <AwesomeIconButton
               color='inherit'
-              href={Constants.URI_DFINITY_EXPLORER_TWITTER}
+              href={Constants.URI_TWITTER_OPEN_BLOCK_EXPLORER}
               target='_blank'
               rel='noopener noreferrer'
             >
@@ -225,7 +225,7 @@ class Footer extends ResponsiveComponent {
           <AwesomeIconButtonGrid item breakpoint={breakpoint}>
             <AwesomeIconButton
               color='inherit'
-              href={Constants.URI_DFINITY_EXPLORER_GITHUB}
+              href={Constants.URI_GITHUB_OPEN_BLOCK_EXPLORER_PROJECT}
               target='_blank'
               rel='noopener noreferrer'
             >
@@ -263,11 +263,11 @@ class Footer extends ResponsiveComponent {
     const breakpoint = getBreakpoint();
     switch (breakpoint) {
       case Breakpoints.XS:
-        return '© 2020 dfinityexplorer';
+        return '© 2020 openblockexplorer';
       case Breakpoints.SM:
-        return '© 2020 dfinityexplorer contributors';
+        return '© 2020 openblockexplorer contributors';
       default:
-        return '© 2020 dfinityexplorer contributors | All rights reserved';
+        return '© 2020 openblockexplorer contributors | All rights reserved';
     }
   }
 
