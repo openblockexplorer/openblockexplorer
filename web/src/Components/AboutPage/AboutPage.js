@@ -406,6 +406,7 @@ class AboutPage extends TrackablePage {
             <SymbolD3
               width={this.getSymbolD3Width()}
               isThemeDark={isThemeDark}
+              circleMode={true}
             />
           </Grid>
         </GridSymbolLeft>

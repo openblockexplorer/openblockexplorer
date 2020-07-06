@@ -12,16 +12,20 @@ import * as filters from 'pixi-filters';
 import getRandomInt from '../../utils/getRandomInt';
 
 /**
- * This class draws the DFINITY logo infinity symbol using a d3 force-directed graph.
+ * This class draws an infinity symbol using a d3 force-directed graph.
  */
 class SymbolD3 extends Component  {
   static propTypes = {
+    /**
+     * True for circle mode, where the symbol is shaped like a circle.
+     */
+    circleMode: PropTypes.bool,
     /**
      * True is the theme is dark, false if the theme is light.
      */
     isThemeDark: PropTypes.bool.isRequired,
     /**
-     * True for logo mode, where the symbol is shaped more like the DFINITY logo, and various
+     * True for logo mode, where the symbol is shaped differently, slighty taller, and various
      * adjustments are made with the intention of rendering at small sizes (e.g., in an app bar).
      */
     logoMode: PropTypes.bool,
@@ -47,9 +51,9 @@ class SymbolD3 extends Component  {
 
     // A force-directed graph can be a difficult beast to tame. Most changes to settings in this
     // class will likely change the shape of the graph and require changing other settings through
-    // trial and error in order to get the graph back to the DFINITY logo shape. Any number of the
+    // trial and error in order to get the graph back to the infinity symbol shape. Any number of the
     // settings below could be made into constructor parameters. Another idea would be to pre-define
-    // different groups of settings that produce a shape which approximates the DFINITY logo
+    // different groups of settings that produce a shape which approximates the infinity symbol
     // shape, and then allow the caller to specify which group of settings to use. Since there is
     // currently only one group of settings defined, settings groups would not currently be useful.
 
@@ -71,7 +75,7 @@ class SymbolD3 extends Component  {
 
     // Specify the number of symbol nodes and the number of vertices for each symbol node. The
     // current values of 36 symbol nodes and 8 vertices (octagon) was arrived at after trial and
-    // error to produce a shape which resembles the DFINITY logo.
+    // error to produce a shape which resembles the infinity symbol.
     this.numSymbolNodes = this.props.logoMode ? 41 : 36;
     this.numVertices = this.props.logoMode ? 10 : 8;
     this.numNodes = this.numSymbolNodes * this.numVertices;
@@ -106,8 +110,7 @@ class SymbolD3 extends Component  {
     this.symbolHeightMultiplier = this.props.logoMode ? 1.325 : 1.111111;
 
     // The initial rotateOffset does two things: it determines which part of the symbol goes in
-    // front (blue is on top in the DFINITY logo), and it makes a small adjustment to align the
-    // colors correctly.
+    // front (blue is on top), and it makes a small adjustment to align the colors correctly.
     this.rotateOffset = this.numSymbolNodes / 2 - 1.2;
 
     // The rotate interval frequency.
@@ -138,7 +141,7 @@ class SymbolD3 extends Component  {
     // of 0 indicates no scaling. Note that drag/drop is not currently implemented when scaling.
     this.scaleSimulationToPixi = this.props.width ? this.props.width / this.simulationWidth : 1.0;
 
-    // Draw the DFINITY logo infinity symbol.
+    // Draw the infinity symbol.
     this.draw();
   }
 
@@ -183,7 +186,7 @@ class SymbolD3 extends Component  {
   }
 
   /**
-   * Draw the DFINITY logo infinity symbol.
+   * Draw the infinity symbol.
    * @public
    */
   draw() {
@@ -248,11 +251,13 @@ class SymbolD3 extends Component  {
   getNodePosition(index) {
     const t =
       2 * Math.PI * ((index + this.rotateOffset) % this.numSymbolNodes) / this.numSymbolNodes;
-    const scale = 2 / (3 - Math.cos(2 * t));
+    const scale = this.props.circleMode ? 0.4 : 2 / (3 - Math.cos(2 * t));
     const fx = this.centerX + scale * Math.cos(t) * this.scaleToWindow;
     const fy =
-      this.centerY +
-      scale * Math.sin(2 * t) * this.symbolHeightMultiplier / 2 * this.scaleToWindow;
+      this.centerY + 
+      (this.props.circleMode ?
+        scale * Math.sin(t) * this.scaleToWindow :
+        scale * Math.sin(2 * t) * this.symbolHeightMultiplier / 2 * this.scaleToWindow);
     return [fx, fy];
   }
 
@@ -523,7 +528,7 @@ class SymbolD3 extends Component  {
     const lightOrange = [251,176,59];
     const blue = [41,171,226];
 
-    // Certain color transitions in the DFINITY logo are small, others are gradual.
+    // Certain color transitions are small, others are gradual.
     const transitionPercentSmall = 0.02;
     const transitionPercentGradual = 0.1;
     const transitionIndicesSmall = numIndices * transitionPercentSmall;
