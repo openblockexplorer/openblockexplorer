@@ -117,7 +117,12 @@ class SymbolD3 extends Component  {
     this.rotateTimeMs = 33.3; // 30 frames/sec max
 
     // The amount of rotation for every rotate interval.
-    this.rotateAmount = this.props.logoMode ? 0 : 0.000015;
+    if (this.props.logoMode)
+      this.rotateAmount = 0;
+    else if (this.props.circleMode)
+      this.rotateAmount = 0.000100;
+    else
+      this.rotateAmount = 0.000015;
 
     // The currently selected node index.
     this.selectedNodeIndex = -1;
@@ -521,7 +526,55 @@ class SymbolD3 extends Component  {
    * @private
    */
   getColorArray(index, numIndices) {
-    // These colors come from the DFINITY logo.
+    if (this.props.circleMode)
+      return this.getColorArrayCircle(index, numIndices);
+    else
+      return this.getColorArrayInfinity(index, numIndices);
+  }
+
+  /**
+   * Return the color for circleMode based on the specified index and number of indices.
+   * @param {Number} index The index to return the color of.
+   * @param {Number} numIndices The total number of indices used to determine the color.
+   * @return {Array} The color arrayof the specified index.
+   * @private
+   */
+  getColorArrayCircle(index, numIndices) {
+    const lightGray = [174, 173, 174];
+    const darkGray =  [88, 89, 91];
+    const transitionPercent = 0.25;
+    const transitionIndices = numIndices * transitionPercent;
+
+    const lastLightIndex = numIndices * 0.5 - transitionIndices;
+    const lastDarkIndex =
+      lastLightIndex + transitionIndices + numIndices * 0.5 - transitionIndices;
+
+    // Determine the color based on the color zone the index is in.
+    if (index <= lastLightIndex)
+      return lightGray;
+    else if (index <= lastLightIndex + transitionIndices)
+    {
+      const percentage = (index - lastLightIndex) / transitionIndices;
+      return this.gradientColor(darkGray, lightGray, percentage);
+    }
+    else if (index <= lastDarkIndex)
+      return darkGray;
+    else
+    {
+      const percentage = (index - lastDarkIndex) / transitionIndices;
+      return this.gradientColor(lightGray, darkGray, percentage);
+    }
+  }
+
+  /**
+   * Return the color for the infinity symbol based on the specified index and number of indices.
+   * @param {Number} index The index to return the color of.
+   * @param {Number} numIndices The total number of indices used to determine the color.
+   * @return {Array} The color arrayof the specified index.
+   * @private
+   */
+  getColorArrayInfinity(index, numIndices) {
+    // These colors come from the D logo.
     const purple = [99,38,132];
     const pink = [237,30,121];
     const darkOrange = [241,90,36];
@@ -534,7 +587,7 @@ class SymbolD3 extends Component  {
     const transitionIndicesSmall = numIndices * transitionPercentSmall;
     const transitionIndicesGradual = numIndices * transitionPercentGradual;
 
-    // The number of indices of each color was determined by analyzing the DFINITY logo.
+    // The number of indices of each color was determined by analyzing the D logo.
     const lastPurpleIndex = numIndices * 0.15 - transitionIndicesGradual;
     const lastPinkIndex =
       lastPurpleIndex + transitionIndicesGradual + numIndices * 0.15 - transitionIndicesSmall;
