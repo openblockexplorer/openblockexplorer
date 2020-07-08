@@ -30,7 +30,6 @@ import BlocksPage from './Components/BlocksPage/BlocksPage';
 import BlockDetailsPage from './Components/BlockDetailsPage/BlockDetailsPage';
 import TransactionsPage from './Components/TransactionsPage/TransactionsPage';
 import TransactionDetailsPage from './Components/TransactionDetailsPage/TransactionDetailsPage';
-import CanistersPage from './Components/CanistersPage/CanistersPage';
 import AboutPage from './Components/AboutPage/AboutPage';
 import SearchPage from './Components/SearchPage/SearchPage';
 import DEAppBar from './Components/DEAppBar/DEAppBar';
@@ -216,7 +215,6 @@ class App extends Component {
                     }
                   />
                   <Route exact path="/accounts" component={AccountsPage} />                  
-                  <Route exact path="/canisters" component={CanistersPage} />
                   <Route
                     exact path='/about'
                     render={(props) => 

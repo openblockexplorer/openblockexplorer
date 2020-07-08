@@ -772,12 +772,6 @@ class DEAppBar extends ResponsiveComponent {
             </DrawerListItemIcon>
             <DrawerListItemText primary='Accounts' />
           </DrawerListItem>            
-          <DrawerListItem button component={Link} to='/canisters' selected={this.isActiveRoute('/canisters')}>
-            <DrawerListItemIcon>
-              <DescriptionIcon />
-            </DrawerListItemIcon>
-            <DrawerListItemText primary='Canisters' />
-          </DrawerListItem>
           <StyledDivider />
           <DrawerListItem button component={Link} to='/about' selected={this.isActiveRoute('/about')}>
             <DrawerListItemIcon>
