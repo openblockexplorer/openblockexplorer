@@ -128,7 +128,7 @@ class TransactionDetailsPage extends TrackablePage {
                   <TypographyBody>
                     {'Amount: '}
                     {data.transaction.amount.toFixed(8).toString()}
-                    {' DFN'}
+                    {' ABC'}
                   </TypographyBody>
                   <TypographyBody>
                     {'Block Height: '}

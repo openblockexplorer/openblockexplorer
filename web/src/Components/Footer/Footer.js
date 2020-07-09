@@ -297,9 +297,9 @@ class Footer extends ResponsiveComponent {
     const breakpoint = getBreakpoint();
     switch (breakpoint) {
       case Breakpoints.XS:
-        return 'Futures price data by ';
+        return 'Simulated price data by ';
       default:
-        return 'Futures price data provided by Nomics.com ';
+        return 'Simulated price data provided by Nomics.com ';
     }
   }
 

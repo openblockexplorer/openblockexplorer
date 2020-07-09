@@ -12,7 +12,7 @@ class Transaction {
    * Create a Transaction object.
    * @constructor
    * @param {String} hash The hash of the transaction.
-   * @param {Number} amount The DFN value transferred for the transaction.
+   * @param {Number} amount The value transferred for the transaction.
    */
   constructor(hash, amount) {
     this.hash = hash;

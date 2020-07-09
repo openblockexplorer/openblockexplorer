@@ -205,7 +205,7 @@ class TransactionsFadeTable extends Component {
               isNumeric: false,
               link: `/tx/0x${transaction.hash}`
             },
-            {value: transaction.amount.toFixed(8).toString() + ' DFN', isNumeric: true, link: null}
+            {value: transaction.amount.toFixed(8).toString() + ' ABC', isNumeric: true, link: null}
           ]
         };
       });

@@ -222,7 +222,7 @@ class PriceChart extends AreaChart {
    * @protected
    */
   getGetTooltipY(value) {
-    return `DFN [IOU] Price: $${value.toFixed(2)}`;
+    return `ABC Price: $${value.toFixed(2)}`;
   }
 }
 

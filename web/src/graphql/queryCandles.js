@@ -7,7 +7,7 @@
 import gql from 'graphql-tag';
 
 /**
- * GraphQL query to get DFN OHLCV candles for the specified date range.
+ * GraphQL query to get price OHLCV candles for the specified date range.
  * @return {Array} The array of Candle objects.
  */
 const queryCandles = gql`
